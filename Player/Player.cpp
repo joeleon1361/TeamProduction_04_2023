@@ -182,6 +182,26 @@ void Player::Move()
 			position.y += moveDirection.y * speed;
 			position.z += moveDirection.z * speed;
 		}
+
+		if (rotSpeed > abs(rotY))
+		{
+			rotSpeed = rotY;
+		}
+
+		if (CrossVec.y < 0)
+		{
+			rotSpeed *= -1;
+		}
+
+		rotation.y += rotSpeed;
+		SetRotation(rotation);
+
+		XMMATRIX matRotation = XMMatrixRotationY(XMConvertToRadians(rotSpeed));
+		XMVECTOR dir = { direction.x, direction.y, direction.z, 0 };
+		dir = XMVector3TransformNormal(dir, matRotation);
+		direction = dir;
+
+		SetPosition(position);
 	}
 
 	// XŽ²‚ð§ŒÀ
