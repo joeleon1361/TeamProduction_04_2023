@@ -220,6 +220,9 @@
     <ClCompile Include="GameBase\SceneManager.cpp">
       <Filter>GameBase</Filter>
     </ClCompile>
+    <ClCompile Include="Math\Vector.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -399,6 +402,9 @@
     </ClInclude>
     <ClInclude Include="GameBase\BaseScene.h">
       <Filter>GameBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

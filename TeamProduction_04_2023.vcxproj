@@ -178,6 +178,7 @@
     <ClCompile Include="Math\Lerp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameBase\MyGame.cpp" />
+    <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="OBJ\ObjMaterial.cpp" />
     <ClCompile Include="OBJ\ObjMesh.cpp" />
     <ClCompile Include="OBJ\ObjModel.cpp" />
@@ -297,6 +298,7 @@
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Math\Lerp.h" />
     <ClInclude Include="GameBase\MyGame.h" />
+    <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="OBJ\ObjMaterial.h" />
     <ClInclude Include="OBJ\ObjMesh.h" />
     <ClInclude Include="OBJ\ObjModel.h" />

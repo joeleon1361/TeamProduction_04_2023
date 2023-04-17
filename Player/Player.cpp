@@ -2,6 +2,9 @@
 
 using namespace DirectX;
 
+ID3D12Device* Player::device = nullptr;
+Camera* Player::camera = nullptr;
+
 Player* Player::Create(ObjModel* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
@@ -111,62 +114,110 @@ void Player::Move()
 {
 	Input* input = Input::GetInstance();
 
-	
-		if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_A) || input->PushKey(DIK_D))
+	XMMATRIX camMatWorld = XMMatrixInverse(nullptr, camera->GetViewMatrix());
+	const Vector3 camDirectionZ = Vector3(camMatWorld.r[2].m128_f32[0], 0, camMatWorld.r[2].m128_f32[2]).Normalize();
+	const Vector3 camDirectionY = Vector3(camMatWorld.r[1].m128_f32[0], 0, camMatWorld.r[1].m128_f32[2]).Normalize();
+	const Vector3 camDirectionX = Vector3(camMatWorld.r[0].m128_f32[0], 0, camMatWorld.r[0].m128_f32[2]).Normalize();
+
+	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_A) || input->PushKey(DIK_D))
+	{
+		// 移動後の座標を計算
+		/*if (input->PushKey(DIK_W))
 		{
-			// 移動後の座標を計算
-			if (input->PushKey(DIK_W))
-			{
-				playerSpeed.y += 0.05f;
-			}
-			if (input->PushKey(DIK_S))
-			{
-				playerSpeed.y -= 0.05f;
-			}
-			if (input->PushKey(DIK_D))
-			{
-				playerSpeed.x += 0.05f;
-			}
-			if (input->PushKey(DIK_A))
-			{
-				playerSpeed.x -= 0.05f;
-			}
+			playerSpeed.y += 0.05f;
+		}
+		if (input->PushKey(DIK_S))
+		{
+			playerSpeed.y -= 0.05f;
+		}
+		if (input->PushKey(DIK_D))
+		{
+			playerSpeed.x += 0.05f;
+		}
+		if (input->PushKey(DIK_A))
+		{
+			playerSpeed.x -= 0.05f;
+		}*/
+
+		moveDirection = {};
+
+		if (input->PushKey(DIK_A))
+		{
+			moveDirection += camDirectionX * -1;
+		}
+		else if (input->PushKey(DIK_D))
+		{
+			moveDirection += camDirectionX;
+		}
+		if (input->PushKey(DIK_S))
+		{
+			moveDirection += camDirectionZ * -1;
+		}
+		else if (input->PushKey(DIK_W))
+		{
+			moveDirection += camDirectionZ;
 		}
 
-		// X軸を制限
-		playerSpeed.x = max(playerSpeed.x, -0.4f);
-		playerSpeed.x = min(playerSpeed.x, +0.4f);
+		moveDirection.Normalize();
+		direction.Normalize();
 
-		// Y軸を制限
-		playerSpeed.y = max(playerSpeed.y, -0.4f);
-		playerSpeed.y = min(playerSpeed.y, +0.4f);
+		float cosA;
+		cosA = direction.Dot(moveDirection);
 
-		// 傾きを戻す
-		if (input->PushKey(DIK_A) == 0 && input->PushKey(DIK_D) == 0 && playerSpeed.x != 0.0f)
+		if (cosA > 1.0f)
 		{
-			if (playerSpeed.x > 0.0f)
-			{
-				playerSpeed.x -= 0.02f;
-			}
-
-			if (playerSpeed.x < 0.0f)
-			{
-				playerSpeed.x += 0.02f;
-			}
+			cosA = 1.0f;
+		}
+		else if (cosA < -1.0f)
+		{
+			cosA = -1.0f;
 		}
 
-		if (input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S) == 0 && playerSpeed.y != 0.0f)
-		{
-			if (playerSpeed.y > 0.0f)
-			{
-				playerSpeed.y -= 0.02f;
-			}
+		float rotY = (float)acos(cosA) * 180 / 3.14159365f;
+		const Vector3 CrossVec = direction.Cross(moveDirection);
 
-			if (playerSpeed.y < 0.0f)
-			{
-				playerSpeed.y += 0.02f;
-			}
+		if (abs(rotY) < 55)
+		{
+			position.x += moveDirection.x * speed;
+			position.y += moveDirection.y * speed;
+			position.z += moveDirection.z * speed;
 		}
+	}
+
+	// X軸を制限
+	/*playerSpeed.x = max(playerSpeed.x, -0.4f);
+	playerSpeed.x = min(playerSpeed.x, +0.4f);*/
+
+	// Y軸を制限
+	/*playerSpeed.y = max(playerSpeed.y, -0.4f);
+	playerSpeed.y = min(playerSpeed.y, +0.4f);*/
+
+	// 傾きを戻す
+	/*if (input->PushKey(DIK_A) == 0 && input->PushKey(DIK_D) == 0 && playerSpeed.x != 0.0f)
+	{
+		if (playerSpeed.x > 0.0f)
+		{
+			playerSpeed.x -= 0.02f;
+		}
+
+		if (playerSpeed.x < 0.0f)
+		{
+			playerSpeed.x += 0.02f;
+		}
+	}
+
+	if (input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S) == 0 && playerSpeed.y != 0.0f)
+	{
+		if (playerSpeed.y > 0.0f)
+		{
+			playerSpeed.y -= 0.02f;
+		}
+
+		if (playerSpeed.y < 0.0f)
+		{
+			playerSpeed.y += 0.02f;
+		}
+	}*/
 }
 
 // 前方向時の自機の傾き
