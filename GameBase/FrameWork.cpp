@@ -66,9 +66,9 @@ void FrameWork::Finalize()
 	SceneManager::GetInstance()->Finalize();
 	// //FBXLoader解放
 	FbxLoader::GetInstance()->Finalize();
-	safe_delete(sound);
+	Sound::GetInstance()->Finalize();
 	// safe_delete(input);
-	safe_delete(dxCommon);
+	//safe_delete(dxCommon);
 	delete postEffect;
 
 	// ゲームウィンドウの破棄
