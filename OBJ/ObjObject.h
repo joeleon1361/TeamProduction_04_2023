@@ -75,6 +75,7 @@ private: // 静的メンバ変数
 	static ID3D12GraphicsCommandList* cmdList;
 	// テクスチャあり用パイプライン
 	static PipelineSet pipelineSet;
+public:
 	// カメラ
 	static Camera *camera;
 	

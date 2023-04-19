@@ -27,6 +27,13 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd)
 		return result;
 	}
 
+	// マウスデバイスの生成	
+	result = dinput->CreateDevice(GUID_SysMouse, &devMouse, NULL);
+	if (FAILED(result)) {
+		assert(0);
+		return result;
+	}
+
 	// 入力データ形式のセット
 	result = devkeyboard->SetDataFormat(&c_dfDIKeyboard); // 標準形式
 	if (FAILED(result)) {
@@ -36,6 +43,20 @@ bool Input::Initialize(HINSTANCE hInstance, HWND hwnd)
 
 	// 排他制御レベルのセット
 	result = devkeyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	if (FAILED(result)) {
+		assert(0);
+		return result;
+	}
+
+	// 入力データ形式のセット
+	result = devMouse->SetDataFormat(&c_dfDIMouse2); // 標準形式
+	if (FAILED(result)) {
+		assert(0);
+		return result;
+	}
+
+	// 排他制御レベルのセット
+	result = devMouse->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	if (FAILED(result)) {
 		assert(0);
 		return result;
@@ -55,6 +76,16 @@ void Input::Update()
 
 	// キーの入力
 	result = devkeyboard->GetDeviceState(sizeof(key), key);
+
+	{// Mouse
+		result = devMouse->Acquire();	// マウス動作開始
+
+		// 前回の入力を保存
+		mouseStatePre = mouseState;
+
+		// マウスの入力
+		result = devMouse->GetDeviceState(sizeof(mouseState), &mouseState);
+	}
 }
 
 bool Input::PushKey(BYTE keyNumber)
@@ -69,6 +100,26 @@ bool Input::PushKey(BYTE keyNumber)
 
 	// 押していない
 	return false;
+}
+
+bool Input::PushMouseRight()
+{
+	// 0でなければ押している
+	if (mouseState.rgbButtons[1]) {
+		return true;
+	}
+
+	// 押していない
+	return false;
+}
+
+Input::MouseMove Input::GetMouseMove()
+{
+	MouseMove tmp;
+	tmp.lX = mouseState.lX;
+	tmp.lY = mouseState.lY;
+	tmp.lZ = mouseState.lZ;
+	return tmp;
 }
 
 bool Input::TriggerKey(BYTE keyNumber)

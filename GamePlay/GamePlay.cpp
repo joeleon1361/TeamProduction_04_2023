@@ -21,6 +21,7 @@ void GamePlay::Initialize()
 	// カメラセット
 	ObjObject::SetCamera(camera);
 	FbxObject3d::SetCamera(camera);
+	Player::SetCamera(camera);
 
 	// デバイスをセット
 	FbxObject3d::SetDevice(dxCommon->GetDevice());
@@ -47,6 +48,7 @@ void GamePlay::Initialize()
 	camera->SetTarget({ 0, 0, 0 });
 	camera->SetEye({ 0, 0, -10 });
 	camera->SetUp({ 0, 1, 0 });
+	camera->SetDistance(48.0f);
 
 	// 座標のセット
 	player->SetPosition({ 0.0f,0.0f,0.0f });
@@ -68,6 +70,12 @@ void GamePlay::Update()
 	{
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
+	}
+
+	camera->SetTarget(player->GetPosition());
+	if (abs((float)acos(player->direction.Dot(player->moveDirection)) * 180 / 3.14159365f) < 55)
+	{
+		camera->MoveVector({ player->moveDirection.x * 0.25f, player->moveDirection.y * 0.25f, player->moveDirection.z * 0.25f });
 	}
 
 	// カメラの更新

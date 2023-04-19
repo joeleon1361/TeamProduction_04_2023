@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Input.h"
+#include "Vector.h"
 #include <DirectXMath.h>
 
 // カメラ
@@ -88,6 +90,10 @@ public: // メンバ関数
 	// ベクトルによる移動
 	void MoveVector( const XMFLOAT3 & move );
 
+	void SetDistance(float distance) {
+		this->distance = distance; viewDirty = true;
+	}
+
 protected: // メンバ変数
 	// ビュー行列
 	XMMATRIX matView = DirectX::XMMatrixIdentity();
@@ -111,5 +117,16 @@ protected: // メンバ変数
 	XMFLOAT3 up = { 0, 1, 0 };
 	// アスペクト比
 	float aspectRatio = 1.0f;
+
+	// スケーリング
+	float scaleX = 1.0f;
+	float scaleY = 1.0f;
+	float rotation = 0.0f;
+
+	float phi;
+	float theta;
+
+	XMMATRIX matRot = DirectX::XMMatrixIdentity();
+	float distance = 20;
 };
 

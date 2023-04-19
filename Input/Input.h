@@ -9,6 +9,13 @@
 // 入力
 class Input
 {
+public:
+	struct MouseMove {
+		LONG    lX;
+		LONG    lY;
+		LONG    lZ;
+	};
+
 private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -26,6 +33,10 @@ public: // メンバ関数
 	// キーの押下をチェック
 	bool PushKey(BYTE keyNumber);
 
+	bool PushMouseRight();
+
+	MouseMove GetMouseMove();
+
 	// キーのトリガーをチェック
 	bool TriggerKey(BYTE keyNumber);
 
@@ -34,6 +45,9 @@ private: // メンバ変数
 	ComPtr<IDirectInputDevice8> devkeyboard;
 	BYTE key[256] = {};
 	BYTE keyPre[256] = {};
+	ComPtr<IDirectInputDevice8> devMouse;
+	DIMOUSESTATE2 mouseState = {};
+	DIMOUSESTATE2 mouseStatePre = {};
 
 protected:
 	Input() = default;

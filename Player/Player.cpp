@@ -3,7 +3,7 @@
 using namespace DirectX;
 
 ID3D12Device* Player::device = nullptr;
-Camera* Player::camera = nullptr;
+//Camera* Player::camera = nullptr;
 
 Player* Player::Create(ObjModel* model)
 {
@@ -114,10 +114,10 @@ void Player::Move()
 {
 	Input* input = Input::GetInstance();
 
-	XMMATRIX camMatWorld = XMMatrixInverse(nullptr, camera->GetViewMatrix());
-	const Vector3 camDirectionZ = Vector3(camMatWorld.r[2].m128_f32[0], 0, camMatWorld.r[2].m128_f32[2]).Normalize();
-	const Vector3 camDirectionY = Vector3(camMatWorld.r[1].m128_f32[0], 0, camMatWorld.r[1].m128_f32[2]).Normalize();
-	const Vector3 camDirectionX = Vector3(camMatWorld.r[0].m128_f32[0], 0, camMatWorld.r[0].m128_f32[2]).Normalize();
+	XMMATRIX camMatWorld = XMMatrixInverse(nullptr, ObjObject::camera->GetViewMatrix());
+	const Vector3 camDirectionZ = Vector3(camMatWorld.r[2].m128_f32[0], camMatWorld.r[2].m128_f32[1], camMatWorld.r[2].m128_f32[2]).Normalize();
+	const Vector3 camDirectionY = Vector3(camMatWorld.r[1].m128_f32[0], camMatWorld.r[1].m128_f32[1], camMatWorld.r[1].m128_f32[2]).Normalize();
+	const Vector3 camDirectionX = Vector3(camMatWorld.r[0].m128_f32[0], camMatWorld.r[0].m128_f32[1], camMatWorld.r[0].m128_f32[2]).Normalize();
 
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{
@@ -152,10 +152,12 @@ void Player::Move()
 		if (input->PushKey(DIK_S))
 		{
 			moveDirection += camDirectionZ * -1;
+			//position.y -= 1.0f;
 		}
 		else if (input->PushKey(DIK_W))
 		{
 			moveDirection += camDirectionZ;
+			//position.y += 1.0f;
 		}
 
 		moveDirection.Normalize();
@@ -176,6 +178,7 @@ void Player::Move()
 		float rotY = (float)acos(cosA) * 180 / 3.14159365f;
 		const Vector3 CrossVec = direction.Cross(moveDirection);
 
+		float rotSpeed = rotationSpeed;
 		if (abs(rotY) < 55)
 		{
 			position.x += moveDirection.x * speed;
@@ -193,8 +196,7 @@ void Player::Move()
 			rotSpeed *= -1;
 		}
 
-		rotation.y += rotSpeed;
-		SetRotation(rotation);
+		//rotation.y += rotSpeed;
 
 		XMMATRIX matRotation = XMMatrixRotationY(XMConvertToRadians(rotSpeed));
 		XMVECTOR dir = { direction.x, direction.y, direction.z, 0 };

@@ -22,7 +22,7 @@ public: // 静的メンバ関数
 private:
 	static ID3D12Device* device;
 
-	static Camera* camera;
+	//static Camera* camera;
 
 public: // メンバ関数
 	// 初期化
@@ -46,13 +46,15 @@ private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	DebugText debugText;
 
-	Vector3 direction = { 0, 0, 1 };
-	Vector3 moveDirection = {};
-	float rotSpeed = 22.5f;
-	float speed = 1.0f;
+	float rotationSpeed = 30.0f;
+	float speed = 0.25f;
 
 	XMFLOAT3 playerSpeed = {};
 
 	XMFLOAT3 rollRotation = {};
+	
+public:
+	Vector3 direction = { 0, 0, 1 };
+	Vector3 moveDirection = {};
 };
 
