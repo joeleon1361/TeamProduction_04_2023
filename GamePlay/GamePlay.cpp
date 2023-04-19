@@ -83,6 +83,12 @@ void GamePlay::Update()
 
 	// プレイヤーの更新
 	player->Update();
+
+	if (camera->dirty)
+	{
+		player->SetRotation({ camera->eyeTransfer.x, player->GetRotation().y, camera->eyeTransfer.z});
+	}
+
 	objSkydome->Update();
 }
 

@@ -46,15 +46,15 @@ void Player::Update()
 {
 	ObjObject::Update();
 
-	rotation.z = rollRotation.z;
-	position.x += playerSpeed.x;
-	position.y += playerSpeed.y;
+	//rotation.z = rollRotation.z;
+	//position.x += playerSpeed.x;
+	//position.y += playerSpeed.y;
 
 	// オブジェクト移動
 	Move();
 
 	// ローリング
-	Rolling();
+	//Rolling();
 
 	DebugTextUpdate();
 }
@@ -92,13 +92,13 @@ void Player::DebugTextUpdate()
 		<< playerSpeed.z << ")"; // z
 	debugText.Print(PlayerSpeed.str(), 10, 130, 1.0f);
 
-	std::ostringstream RollRotation;
-	RollRotation << "RollRotation:("
-		<< std::fixed << std::setprecision(2)
-		<< rollRotation.x << "," // x
-		<< rollRotation.y << "," // y
-		<< rollRotation.z << ")"; // z
-	debugText.Print(RollRotation.str(), 10, 170, 1.0f);
+	//std::ostringstream RollRotation;
+	//RollRotation << "RollRotation:("
+	//	<< std::fixed << std::setprecision(2)
+	//	<< rollRotation.x << "," // x
+	//	<< rollRotation.y << "," // y
+	//	<< rollRotation.z << ")"; // z
+	//debugText.Print(RollRotation.str(), 10, 170, 1.0f);
 }
 
 void Player::DebugTextDraw()
@@ -196,7 +196,7 @@ void Player::Move()
 			rotSpeed *= -1;
 		}
 
-		//rotation.y += rotSpeed;
+		rotation.y += rotSpeed;
 
 		XMMATRIX matRotation = XMMatrixRotationY(XMConvertToRadians(rotSpeed));
 		XMVECTOR dir = { direction.x, direction.y, direction.z, 0 };
@@ -204,6 +204,7 @@ void Player::Move()
 		direction = dir;
 
 		SetPosition(position);
+		//SetRotation(rotation);
 	}
 
 	// X軸を制限

@@ -105,8 +105,6 @@ protected: // メンバ変数
 	XMMATRIX matProjection = DirectX::XMMatrixIdentity();
 	// ビュー射影行列
 	XMMATRIX matViewProjection = DirectX::XMMatrixIdentity();
-	// ビュー行列ダーティフラグ
-	bool viewDirty = false;
 	// 射影行列ダーティフラグ
 	bool projectionDirty = false;
 	// 視点座標
@@ -118,15 +116,17 @@ protected: // メンバ変数
 	// アスペクト比
 	float aspectRatio = 1.0f;
 
-	// スケーリング
-	float scaleX = 1.0f;
-	float scaleY = 1.0f;
-	float rotation = 0.0f;
-
 	float phi;
 	float theta;
+	float nowTheta;
 
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
 	float distance = 20;
+
+public:
+	// ビュー行列ダーティフラグ
+	bool viewDirty = false;
+	bool dirty = false;
+	XMFLOAT3 eyeTransfer = { 0, 10, 0 };
 };
 

@@ -6,12 +6,9 @@ Camera::Camera( int window_width, int window_height )
 {
 	aspectRatio = (float)window_width / window_height;
 
-	// Adjust to scale relative to screen size
-	scaleX = 1.0f / (float)window_width;
-	scaleY = 1.0f / (float)window_height;
-
 	phi = -3.14159265f / 2;
 	theta = 0;
+	nowTheta = theta;
 
 	//ビュー行列の計算
 	UpdateViewMatrix();
@@ -27,9 +24,7 @@ void Camera::Update()
 {
 	Input* input = Input::GetInstance();
 
-	bool dirty = false;
-	float angleX = 0.0f;
-	float angleY = 0.0f;
+	dirty = false;
 
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
@@ -63,9 +58,10 @@ void Camera::Update()
 	}*/
 
 	if (dirty || viewDirty) {
-		float nowTheta = theta;
+		nowTheta = theta;
 		/*if (theta < 0)
 			nowTheta = 0;*/
+		eyeTransfer = Vector3(sin(nowTheta), cos(phi) * cos(nowTheta), sin(phi) * cos(nowTheta)) * distance;
 		eye = Vector3(cos(phi) * cos(nowTheta), sin(nowTheta), sin(phi) * cos(nowTheta)) * distance + target;
 		viewDirty = true;
 	}
