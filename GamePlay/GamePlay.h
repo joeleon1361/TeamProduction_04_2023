@@ -98,8 +98,10 @@ private: // メンバ変数
 	
 	ObjModel* modelPlayer = nullptr;
 	ObjModel* modelSkydome = nullptr;
+	ObjModel* modelBoss = nullptr;
 
 	Player* player = nullptr;
+	Boss* boss = nullptr;
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<Bullet>> playerBullets;

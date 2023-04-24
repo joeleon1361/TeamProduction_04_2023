@@ -22,6 +22,7 @@ void GamePlay::Initialize()
 	ObjObject::SetCamera(camera);
 	FbxObject3d::SetCamera(camera);
 	Player::SetCamera(camera);
+	Boss::SetCamera(camera);
 
 	// デバイスをセット
 	FbxObject3d::SetDevice(dxCommon->GetDevice());
@@ -38,12 +39,15 @@ void GamePlay::Initialize()
 	
 	player = Player::Create();
 	objSkydome = ObjObject::Create();
+	boss = Boss::Create();
 
 	modelPlayer = ObjModel::CreateFromOBJ("bullet");
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
+	modelBoss = ObjModel::CreateFromOBJ("bullet2");
 
 	player->SetModel(modelPlayer);
 	objSkydome->SetModel(modelSkydome);
+	boss->SetModel(modelBoss);
 
 	camera->SetTarget({ 0, 0, 0 });
 	camera->SetEye({ 0, 0, -10 });
@@ -54,6 +58,10 @@ void GamePlay::Initialize()
 	player->SetPosition({ 0.0f,0.0f,0.0f });
 	player->SetRotation({ 0.0f, 0.0f, 0.0f });
 	player->SetScale({ 1.0f, 1.0f, 1.0f });
+
+	boss->SetPosition({ 0.0f,0.0f,0.0f });
+	boss->SetRotation({ 0.0f, 0.0f, 0.0f });
+	boss->SetScale({ 1.0f, 1.0f, 1.0f });
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -72,13 +80,14 @@ void GamePlay::Update()
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 
-	camera->SetTarget(player->GetPosition());
+	camera->SetTarget(boss->GetPosition());
 
 	// カメラの更新
 	camera->Update();
 
 	// プレイヤーの更新
 	player->Update();
+	boss->Update();
 
 	objSkydome->Update();
 }
@@ -107,6 +116,7 @@ void GamePlay::Draw()
 	// 3Dオブクジェクトの描画
 	
 	player->Draw();
+	boss->Draw();
 	objSkydome->Draw();
 	
 	// 3Dオブジェクト描画後処理
