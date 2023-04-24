@@ -73,21 +73,12 @@ void GamePlay::Update()
 	}
 
 	camera->SetTarget(player->GetPosition());
-	if (abs((float)acos(player->direction.Dot(player->moveDirection)) * 180 / 3.14159365f) < 55)
-	{
-		camera->MoveVector({ player->moveDirection.x * 0.25f, player->moveDirection.y * 0.25f, player->moveDirection.z * 0.25f });
-	}
 
 	// カメラの更新
 	camera->Update();
 
 	// プレイヤーの更新
 	player->Update();
-
-	if (camera->dirty)
-	{
-		player->SetRotation({ camera->eyeTransfer.x, player->GetRotation().y, camera->eyeTransfer.z});
-	}
 
 	objSkydome->Update();
 }

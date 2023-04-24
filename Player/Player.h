@@ -52,6 +52,14 @@ private: // ƒƒ“ƒo•Ï”
 	XMFLOAT3 playerSpeed = {};
 
 	XMFLOAT3 rollRotation = {};
+	XMFLOAT3 axis = { 0.0f, 0.0f, 0.0f };
+	float xAngle = 90.0f;
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+	float hypotenuse = 0.0f;
+	float radians = 0.0f;
+	float degrees = 90.0f;
 	
 public:
 	Vector3 direction = { 0, 0, 1 };

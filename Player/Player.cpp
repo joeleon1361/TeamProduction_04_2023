@@ -39,6 +39,12 @@ bool Player::Initialize()
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
+	axis = { position.x + cosf(XMConvertToRadians(xAngle)) * 50.0f, 0.0f, position.z + sinf(XMConvertToRadians(xAngle)) * 50.0f };
+	x = (axis.x - position.x);
+	z = (axis.z - position.z);
+	y = (axis.y - position.y);
+	hypotenuse = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+
 	return true;
 }
 
@@ -114,133 +120,47 @@ void Player::Move()
 {
 	Input* input = Input::GetInstance();
 
-	XMMATRIX camMatWorld = XMMatrixInverse(nullptr, ObjObject::camera->GetViewMatrix());
-	const Vector3 camDirectionZ = Vector3(camMatWorld.r[2].m128_f32[0], camMatWorld.r[2].m128_f32[1], camMatWorld.r[2].m128_f32[2]).Normalize();
-	const Vector3 camDirectionY = Vector3(camMatWorld.r[1].m128_f32[0], camMatWorld.r[1].m128_f32[1], camMatWorld.r[1].m128_f32[2]).Normalize();
-	const Vector3 camDirectionX = Vector3(camMatWorld.r[0].m128_f32[0], camMatWorld.r[0].m128_f32[1], camMatWorld.r[0].m128_f32[2]).Normalize();
-
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{
-		// 移動後の座標を計算
-		/*if (input->PushKey(DIK_W))
+		if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 		{
-			playerSpeed.y += 0.05f;
+			if (input->PushKey(DIK_A))
+			{
+				xAngle += 1.0f;
+			}
+			else if (input->PushKey(DIK_D))
+			{
+				xAngle -= 1.0f;
+			}
+			axis.x = position.x + cosf(XMConvertToRadians(xAngle)) * 50.0f;
+			axis.z = position.z + sinf(XMConvertToRadians(xAngle)) * 50.0f;
+			x = (axis.x - position.x);
+			z = (axis.z - position.z);
 		}
-		if (input->PushKey(DIK_S))
+		if (input->PushKey(DIK_S) || input->PushKey(DIK_W))
 		{
-			playerSpeed.y -= 0.05f;
-		}
-		if (input->PushKey(DIK_D))
-		{
-			playerSpeed.x += 0.05f;
-		}
-		if (input->PushKey(DIK_A))
-		{
-			playerSpeed.x -= 0.05f;
-		}*/
-
-		moveDirection = {};
-
-		if (input->PushKey(DIK_A))
-		{
-			moveDirection += camDirectionX * -1;
-		}
-		else if (input->PushKey(DIK_D))
-		{
-			moveDirection += camDirectionX;
-		}
-		if (input->PushKey(DIK_S))
-		{
-			moveDirection += camDirectionZ * -1;
-			//position.y -= 1.0f;
-		}
-		else if (input->PushKey(DIK_W))
-		{
-			moveDirection += camDirectionZ;
-			//position.y += 1.0f;
+			if (input->PushKey(DIK_S))
+			{
+				axis.y -= 1.0f;
+			}
+			else if (input->PushKey(DIK_W))
+			{
+				axis.y += 1.0f;
+			}
+			y = (axis.y - position.y);
 		}
 
-		moveDirection.Normalize();
-		direction.Normalize();
-
-		float cosA;
-		cosA = direction.Dot(moveDirection);
-
-		if (cosA > 1.0f)
-		{
-			cosA = 1.0f;
-		}
-		else if (cosA < -1.0f)
-		{
-			cosA = -1.0f;
-		}
-
-		float rotY = (float)acos(cosA) * 180 / 3.14159365f;
-		const Vector3 CrossVec = direction.Cross(moveDirection);
-
-		float rotSpeed = rotationSpeed;
-		if (abs(rotY) < 55)
-		{
-			position.x += moveDirection.x * speed;
-			position.y += moveDirection.y * speed;
-			position.z += moveDirection.z * speed;
-		}
-
-		if (rotSpeed > abs(rotY))
-		{
-			rotSpeed = rotY;
-		}
-
-		if (CrossVec.y < 0)
-		{
-			rotSpeed *= -1;
-		}
-
-		rotation.y += rotSpeed;
-
-		XMMATRIX matRotation = XMMatrixRotationY(XMConvertToRadians(rotSpeed));
-		XMVECTOR dir = { direction.x, direction.y, direction.z, 0 };
-		dir = XMVector3TransformNormal(dir, matRotation);
-		direction = dir;
-
-		SetPosition(position);
-		//SetRotation(rotation);
+		hypotenuse = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+		radians = atan2(z, x);
+		degrees = XMConvertToDegrees(radians);
 	}
 
-	// X軸を制限
-	/*playerSpeed.x = max(playerSpeed.x, -0.4f);
-	playerSpeed.x = min(playerSpeed.x, +0.4f);*/
+	position.x += 1.0f * (x / hypotenuse);
+	position.y += 1.0f * (y / hypotenuse);
+	position.z += 1.0f * (z / hypotenuse);
 
-	// Y軸を制限
-	/*playerSpeed.y = max(playerSpeed.y, -0.4f);
-	playerSpeed.y = min(playerSpeed.y, +0.4f);*/
-
-	// 傾きを戻す
-	/*if (input->PushKey(DIK_A) == 0 && input->PushKey(DIK_D) == 0 && playerSpeed.x != 0.0f)
-	{
-		if (playerSpeed.x > 0.0f)
-		{
-			playerSpeed.x -= 0.02f;
-		}
-
-		if (playerSpeed.x < 0.0f)
-		{
-			playerSpeed.x += 0.02f;
-		}
-	}
-
-	if (input->PushKey(DIK_W) == 0 && input->PushKey(DIK_S) == 0 && playerSpeed.y != 0.0f)
-	{
-		if (playerSpeed.y > 0.0f)
-		{
-			playerSpeed.y -= 0.02f;
-		}
-
-		if (playerSpeed.y < 0.0f)
-		{
-			playerSpeed.y += 0.02f;
-		}
-	}*/
+	SetPosition(position);
+	SetRotation({ -axis.y, -degrees + 90.0f, rotation.z });
 }
 
 // 前方向時の自機の傾き
