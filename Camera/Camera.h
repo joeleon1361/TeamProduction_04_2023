@@ -121,10 +121,13 @@ protected: // メンバ変数
 	float nowTheta;
 
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
-	float distance = 20;
+	float distance = 48;
 
 public:
 	// ビュー行列ダーティフラグ
+	XMFLOAT3 bossPos = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 playerPos = { 0.0f, 0.0f, 0.0f };
+
 	bool viewDirty = false;
 	bool dirty = false;
 	XMFLOAT3 eyeTransfer = { 0, 10, 0 };

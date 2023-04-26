@@ -81,6 +81,8 @@ void GamePlay::Update()
 	}
 
 	camera->SetTarget(boss->GetPosition());
+	camera->bossPos = boss->GetPosition();
+	camera->playerPos = player->GetPosition();
 
 	// カメラの更新
 	camera->Update();
