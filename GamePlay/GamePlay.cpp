@@ -49,14 +49,9 @@ void GamePlay::Initialize()
 	objSkydome->SetModel(modelSkydome);
 	boss->SetModel(modelBoss);
 
-	camera->SetTarget({ 0, 0, 0 });
-	camera->SetEye({ 0, 0, -10 });
-	camera->SetUp({ 0, 1, 0 });
-	camera->SetDistance(48.0f);
-
 	// 座標のセット
 	player->SetPosition({ 0.0f,0.0f,0.0f });
-	player->SetRotation({ 0.0f, 0.0f, 0.0f });
+	player->SetRotation({ 0.0f, 180.0f, 0.0f });
 	player->SetScale({ 1.0f, 1.0f, 1.0f });
 
 	boss->SetPosition({ 0.0f,0.0f,0.0f });
@@ -66,6 +61,13 @@ void GamePlay::Initialize()
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
 	objSkydome->SetScale({ 5.0f, 5.0f, 5.0f });
+
+	camera->SetTarget(boss->GetPosition());
+	camera->SetEye({ 0, 0, -10 });
+	camera->SetUp({ 0, 1, 0 });
+	//camera->SetDistance(48.0f);
+	camera->bossPos = boss->GetPosition();
+	camera->playerPos = player->GetPosition();
 }
 
 void GamePlay::Finalize()
@@ -80,10 +82,25 @@ void GamePlay::Update()
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 
-	camera->SetTarget(boss->GetPosition());
+	//camera->SetDistance(sqrtf(pow(boss->GetPosition().x - player->GetPosition().x, 2) + pow(boss->GetPosition().y - player->GetPosition().y, 2) + pow(boss->GetPosition().z - player->GetPosition().z, 2)) + 48.0f);
+	camera->bossPos = boss->GetPosition();
+	camera->playerPos = player->GetPosition();
+	camera->playerRot = player->GetRotation();
 
 	// カメラの更新
 	camera->Update();
+
+	//Debug Start
+	/*char msgbuf[256];
+	char msgbuf2[256];
+	char msgbuf3[256];
+	sprintf_s(msgbuf, 256, "X: %f\n", newPosition.x);
+	sprintf_s(msgbuf2, 256, "Y: %f\n", newPosition.y);
+	sprintf_s(msgbuf3, 256, "Z: % f\n", newPosition.z);
+	OutputDebugStringA(msgbuf);
+	OutputDebugStringA(msgbuf2);
+	OutputDebugStringA(msgbuf3);*/
+	//Debug End
 
 	// プレイヤーの更新
 	player->Update();
