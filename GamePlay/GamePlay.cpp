@@ -49,11 +49,6 @@ void GamePlay::Initialize()
 	objSkydome->SetModel(modelSkydome);
 	boss->SetModel(modelBoss);
 
-	camera->SetTarget({ 0, 0, 0 });
-	camera->SetEye({ 0, 0, -10 });
-	camera->SetUp({ 0, 1, 0 });
-	camera->SetDistance(48.0f);
-
 	// 座標のセット
 	player->SetPosition({ 0.0f,0.0f,0.0f });
 	player->SetRotation({ 0.0f, 0.0f, 0.0f });
@@ -66,6 +61,13 @@ void GamePlay::Initialize()
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
 	objSkydome->SetScale({ 5.0f, 5.0f, 5.0f });
+
+	camera->SetTarget(boss->GetPosition());
+	camera->SetEye({ 0, 0, -10 });
+	camera->SetUp({ 0, 1, 0 });
+	camera->SetDistance(48.0f);
+	camera->bossPos = boss->GetPosition();
+	camera->playerPos = player->GetPosition();
 }
 
 void GamePlay::Finalize()
@@ -80,7 +82,7 @@ void GamePlay::Update()
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 
-	camera->SetTarget(boss->GetPosition());
+	//camera->SetDistance(sqrtf())
 	camera->bossPos = boss->GetPosition();
 	camera->playerPos = player->GetPosition();
 

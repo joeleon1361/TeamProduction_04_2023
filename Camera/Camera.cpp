@@ -64,12 +64,12 @@ void Camera::Update()
 		XMFLOAT3 cameraUp = up;
 
 		// limit the pitch angle to prevent camera flipping
-		if (theta > 89.0f) {
+		/*if (theta > 89.0f) {
 			theta = 89.0f;
 		}
 		if (theta < -89.0f) {
 			theta = -89.0f;
-		}
+		}*/
 
 		// calculate the new camera front vector
 		XMFLOAT3 front;
