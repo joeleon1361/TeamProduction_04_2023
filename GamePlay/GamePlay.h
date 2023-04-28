@@ -20,6 +20,8 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Boss.h"
+#include "BossPartsRing.h"
+#include "BossCore.h"
 #include "TargetBullet.h"
 
 #include "Spline.h"
@@ -45,6 +47,8 @@ class Boss;
 class BossBullet;
 class TargetBullet;
 class StageObject;
+class BossPartsRing;
+class BossCore;
 
 // ゲームシーン
 class GamePlay : public BaseScene
@@ -99,9 +103,15 @@ private: // メンバ変数
 	ObjModel* modelPlayer = nullptr;
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBoss = nullptr;
+	ObjModel* modelBossPartsRing = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
+	BossPartsRing* bossPartsRing = nullptr;
+	BossCore* bossCore_1 = nullptr;
+	BossCore* bossCore_2 = nullptr;
+	BossCore* bossCore_3 = nullptr;
+	BossCore* bossCore_4 = nullptr;
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<Bullet>> playerBullets;

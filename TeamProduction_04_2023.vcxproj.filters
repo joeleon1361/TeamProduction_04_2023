@@ -223,6 +223,12 @@
     <ClCompile Include="Math\Vector.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="BossPartsRing.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossCore.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -405,6 +411,12 @@
     </ClInclude>
     <ClInclude Include="Math\Vector.h">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="BossPartsRing.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossCore.h">
+      <Filter>Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -36,23 +36,34 @@ void GamePlay::Initialize()
 	}
 
 	gameBG = Sprite::Create(TextureNumber::game_bg, { 0.0f,0.0f });
-	
+
 	player = Player::Create();
 	objSkydome = ObjObject::Create();
 	boss = Boss::Create();
+	bossPartsRing = BossPartsRing::Create();
+	bossCore_1 = BossCore::Create();
+	bossCore_2 = BossCore::Create();
+	bossCore_3 = BossCore::Create();
+	bossCore_4 = BossCore::Create();
 
 	modelPlayer = ObjModel::CreateFromOBJ("bullet");
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
 	modelBoss = ObjModel::CreateFromOBJ("bullet2");
+	modelBossPartsRing = ObjModel::CreateFromOBJ("bossPartsRing");
 
 	player->SetModel(modelPlayer);
 	objSkydome->SetModel(modelSkydome);
 	boss->SetModel(modelBoss);
+	bossPartsRing->SetModel(modelBossPartsRing);
+	bossCore_1->SetModel(modelBoss);
+	bossCore_2->SetModel(modelBoss);
+	bossCore_3->SetModel(modelBoss);
+	bossCore_4->SetModel(modelBoss);
 
 	camera->SetTarget({ 0, 0, 0 });
-	camera->SetEye({ 0, 0, -10 });
+	camera->SetEye({ 0, 30, -10 });
 	camera->SetUp({ 0, 1, 0 });
-	camera->SetDistance(48.0f);
+	camera->SetDistance(20.0f);
 
 	// 座標のセット
 	player->SetPosition({ 0.0f,0.0f,0.0f });
@@ -62,6 +73,25 @@ void GamePlay::Initialize()
 	boss->SetPosition({ 0.0f,0.0f,0.0f });
 	boss->SetRotation({ 0.0f, 0.0f, 0.0f });
 	boss->SetScale({ 1.0f, 1.0f, 1.0f });
+
+	bossPartsRing->SetScale({ 3.0f, 3.0f ,3.0f });
+	bossPartsRing->SetParent(boss);
+
+	bossCore_1->SetPosition({ 0.0f , 0.0f, -1.0f });
+	bossCore_1->SetScale({0.3f, 0.3f, 0.3f });
+	bossCore_1->SetParent(bossPartsRing);
+
+	bossCore_2->SetPosition({ 1.0f , 0.0f, 0.0f });
+	bossCore_2->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCore_2->SetParent(bossPartsRing);
+
+	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_3->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCore_3->SetParent(bossPartsRing);
+
+	bossCore_4->SetPosition({ -1.0f , 0.0f, 0.0f });
+	bossCore_4->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCore_4->SetParent(bossPartsRing);
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -88,6 +118,11 @@ void GamePlay::Update()
 	// プレイヤーの更新
 	player->Update();
 	boss->Update();
+	bossPartsRing->Update();
+	bossCore_1->Update();
+	bossCore_2->Update();
+	bossCore_3->Update();
+	bossCore_4->Update();
 
 	objSkydome->Update();
 }
@@ -114,11 +149,16 @@ void GamePlay::Draw()
 	ObjObject::PreDraw(cmdList);
 
 	// 3Dオブクジェクトの描画
-	
+
 	player->Draw();
 	boss->Draw();
+	bossPartsRing->Draw();
+	bossCore_1->Draw();
+	bossCore_2->Draw();
+	bossCore_3->Draw();
+	bossCore_4->Draw();
 	objSkydome->Draw();
-	
+
 	// 3Dオブジェクト描画後処理
 	ObjObject::PostDraw();
 #pragma endregion

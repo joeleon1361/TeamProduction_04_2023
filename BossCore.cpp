@@ -1,12 +1,11 @@
-#include "Boss.h"
-#include "Input.h"
+#include "BossCore.h"
 
 using namespace DirectX;
 
-Boss* Boss::Create(ObjModel* model)
+BossCore* BossCore::Create(ObjModel* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Boss* instance = new Boss();
+	BossCore* instance = new BossCore();
 	if (instance == nullptr) {
 		return nullptr;
 	}
@@ -25,7 +24,7 @@ Boss* Boss::Create(ObjModel* model)
 	return instance;
 }
 
-bool Boss::Initialize()
+bool BossCore::Initialize()
 {
 	if (!ObjObject::Initialize())
 	{
@@ -35,24 +34,7 @@ bool Boss::Initialize()
 	return true;
 }
 
-void Boss::Update()
+void BossCore::Update()
 {
 	ObjObject::Update();
-
-	if (input->PushKey(DIK_UP))
-	{
-		rotation.x += 1.0f;
-	}
-	if (input->PushKey(DIK_DOWN))
-	{
-		rotation.x -= 1.0f;
-	}
-	if (input->PushKey(DIK_RIGHT))
-	{
-		rotation.y -= 1.0f;
-	}
-	if (input->PushKey(DIK_LEFT))
-	{
-		rotation.y += 1.0f;
-	}
 }
