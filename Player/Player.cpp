@@ -34,6 +34,10 @@ bool Player::Initialize()
 		return false;
 	}
 
+	// モデルのセット
+	modelPlayer = ObjModel::CreateFromOBJ("bullet");
+	SetModel(modelPlayer);
+
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化

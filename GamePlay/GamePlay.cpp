@@ -46,26 +46,16 @@ void GamePlay::Initialize()
 	bossCore_3 = BossCore::Create();
 	bossCore_4 = BossCore::Create();
 
-	modelPlayer = ObjModel::CreateFromOBJ("bullet");
+	// モデルセット
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
-	modelBoss = ObjModel::CreateFromOBJ("bullet2");
-	modelBossPartsRing = ObjModel::CreateFromOBJ("bossPartsRing");
-
-	player->SetModel(modelPlayer);
 	objSkydome->SetModel(modelSkydome);
-	boss->SetModel(modelBoss);
-	bossPartsRing->SetModel(modelBossPartsRing);
-	bossCore_1->SetModel(modelBoss);
-	bossCore_2->SetModel(modelBoss);
-	bossCore_3->SetModel(modelBoss);
-	bossCore_4->SetModel(modelBoss);
 
+	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
 	camera->SetEye({ 0, 30, -10 });
 	camera->SetUp({ 0, 1, 0 });
 	camera->SetDistance(20.0f);
 
-	// 座標のセット
 	player->SetPosition({ 0.0f,0.0f,0.0f });
 	player->SetRotation({ 0.0f, 0.0f, 0.0f });
 	player->SetScale({ 1.0f, 1.0f, 1.0f });

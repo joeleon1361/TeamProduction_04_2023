@@ -23,6 +23,8 @@ public: // メンバ関数
 private: // メンバ変数
 	Input* input = Input::GetInstance();
 
+	ObjModel* modelBoss = nullptr;
+
 public:
 	// 発射タイマー
 	int32_t shotTimer = 0;

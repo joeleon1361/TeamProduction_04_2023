@@ -31,6 +31,10 @@ bool BossPartsRing::Initialize()
 		return false;
 	}
 
+	// モデルのセット
+	modelBossPartsRing = ObjModel::CreateFromOBJ("bossPartsRing");
+	SetModel(modelBossPartsRing);
+
 	return true;
 }
 

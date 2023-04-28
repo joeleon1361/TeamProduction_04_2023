@@ -32,6 +32,10 @@ bool Boss::Initialize()
 		return false;
 	}
 
+	// モデルのセット
+	modelBoss = ObjModel::CreateFromOBJ("bullet2");
+	SetModel(modelBoss);
+
 	return true;
 }
 

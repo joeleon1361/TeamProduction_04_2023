@@ -31,6 +31,10 @@ bool BossCore::Initialize()
 		return false;
 	}
 
+	// モデルのセット
+	modelBossPartsSphere = ObjModel::CreateFromOBJ("bossPartsSphere");
+	SetModel(modelBossPartsSphere);
+
 	return true;
 }
 

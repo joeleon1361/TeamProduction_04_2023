@@ -13,9 +13,7 @@
 #include "FbxObject.h"
 #include "ParticleManager.h"
 #include "Camera.h"
-#include "ObjModel.h"
 #include "FbxLoader.h"
-#include "FbxObject.h"
 
 #include "Player.h"
 #include "Bullet.h"
@@ -100,10 +98,7 @@ private: // メンバ変数
 
 	Sprite* gameBG = nullptr;
 	
-	ObjModel* modelPlayer = nullptr;
 	ObjModel* modelSkydome = nullptr;
-	ObjModel* modelBoss = nullptr;
-	ObjModel* modelBossPartsRing = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;

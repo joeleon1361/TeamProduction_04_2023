@@ -21,6 +21,6 @@ public: // ƒƒ“ƒoŠÖ”
 	void Update() override;
 
 private: // ƒƒ“ƒo•Ï”
-
+	ObjModel* modelBossPartsSphere = nullptr;
 };
 
