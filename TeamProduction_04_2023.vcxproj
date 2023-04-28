@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BossCore.cpp" />
+    <ClCompile Include="BossPartsCoreBox.cpp" />
     <ClCompile Include="BossPartsRing.cpp" />
     <ClCompile Include="Boss\Boss.cpp" />
     <ClCompile Include="Bullet\TargetBullet.cpp" />
@@ -274,6 +275,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossCore.h" />
+    <ClInclude Include="BossPartsCoreBox.h" />
     <ClInclude Include="BossPartsRing.h" />
     <ClInclude Include="GameBase\AbstractSceneFactory.h" />
     <ClInclude Include="GameBase\BaseScene.h" />

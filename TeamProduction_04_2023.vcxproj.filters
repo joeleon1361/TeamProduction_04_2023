@@ -229,6 +229,9 @@
     <ClCompile Include="BossCore.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
+    <ClCompile Include="BossPartsCoreBox.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -416,6 +419,9 @@
       <Filter>Boss</Filter>
     </ClInclude>
     <ClInclude Include="BossCore.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossPartsCoreBox.h">
       <Filter>Boss</Filter>
     </ClInclude>
   </ItemGroup>

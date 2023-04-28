@@ -45,6 +45,10 @@ void GamePlay::Initialize()
 	bossCore_2 = BossCore::Create();
 	bossCore_3 = BossCore::Create();
 	bossCore_4 = BossCore::Create();
+	bossCoreBox_1 = BossPartsCoreBox::Create();
+	bossCoreBox_2 = BossPartsCoreBox::Create();
+	bossCoreBox_3 = BossPartsCoreBox::Create();
+	bossCoreBox_4 = BossPartsCoreBox::Create();
 
 	// モデルセット
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
@@ -64,24 +68,43 @@ void GamePlay::Initialize()
 	boss->SetRotation({ 0.0f, 0.0f, 0.0f });
 	boss->SetScale({ 1.0f, 1.0f, 1.0f });
 
-	bossPartsRing->SetScale({ 3.0f, 3.0f ,3.0f });
+	bossPartsRing->SetScale({ 4.0f, 4.0f, 4.0f });
 	bossPartsRing->SetParent(boss);
 
-	bossCore_1->SetPosition({ 0.0f , 0.0f, -1.0f });
-	bossCore_1->SetScale({0.3f, 0.3f, 0.3f });
+	bossCore_1->SetPosition({ 0.0f , 0.0f, -1.3f });
+	bossCore_1->SetScale({ 0.2f, 0.2f, 0.2f });
 	bossCore_1->SetParent(bossPartsRing);
 
-	bossCore_2->SetPosition({ 1.0f , 0.0f, 0.0f });
-	bossCore_2->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCore_2->SetPosition({ 1.3f , 0.0f, 0.0f });
+	bossCore_2->SetScale({ 0.2f, 0.2f, 0.2f });
 	bossCore_2->SetParent(bossPartsRing);
 
-	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.0f });
-	bossCore_3->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.3f });
+	bossCore_3->SetScale({ 0.2f, 0.2f, 0.2f });
 	bossCore_3->SetParent(bossPartsRing);
 
-	bossCore_4->SetPosition({ -1.0f , 0.0f, 0.0f });
-	bossCore_4->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCore_4->SetPosition({ -1.3f , 0.0f, 0.0f });
+	bossCore_4->SetScale({ 0.2f, 0.2f, 0.2f });
 	bossCore_4->SetParent(bossPartsRing);
+
+	bossCoreBox_1->SetPosition({ 0.0f , 0.0f, -1.0f });
+	bossCoreBox_1->SetRotation({0.0f, 180.0f, 0.0f});
+	bossCoreBox_1->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_1->SetParent(bossPartsRing);
+
+	bossCoreBox_2->SetPosition({ 1.0f , 0.0f, 0.0f });
+	bossCoreBox_2->SetRotation({ 0.0f, 90.0f, 0.0f });
+	bossCoreBox_2->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_2->SetParent(bossPartsRing);
+
+	bossCoreBox_3->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCoreBox_3->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_3->SetParent(bossPartsRing);
+
+	bossCoreBox_4->SetPosition({ -1.0f , 0.0f, 0.0f });
+	bossCoreBox_4->SetRotation({ 0.0f, 270.0f, 0.0f });
+	bossCoreBox_4->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_4->SetParent(bossPartsRing);
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -113,6 +136,10 @@ void GamePlay::Update()
 	bossCore_2->Update();
 	bossCore_3->Update();
 	bossCore_4->Update();
+	bossCoreBox_1->Update();
+	bossCoreBox_2->Update();
+	bossCoreBox_3->Update();
+	bossCoreBox_4->Update();
 
 	objSkydome->Update();
 }
@@ -147,6 +174,10 @@ void GamePlay::Draw()
 	bossCore_2->Draw();
 	bossCore_3->Draw();
 	bossCore_4->Draw();
+	bossCoreBox_1->Draw();
+	bossCoreBox_2->Draw();
+	bossCoreBox_3->Draw();
+	bossCoreBox_4->Draw();
 	objSkydome->Draw();
 
 	// 3Dオブジェクト描画後処理
