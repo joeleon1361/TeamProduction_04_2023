@@ -52,15 +52,11 @@ void Player::Update()
 {
 	ObjObject::Update();
 
-	//rotation.z = rollRotation.z;
-	//position.x += playerSpeed.x;
-	//position.y += playerSpeed.y;
-
 	// オブジェクト移動
 	Move();
 
 	// ローリング
-	//Rolling();
+	Rolling();
 
 	DebugTextUpdate();
 }
@@ -126,11 +122,19 @@ void Player::Move()
 		{
 			if (input->PushKey(DIK_A))
 			{
-				xAngle += 1.0f;
+				xAngle += 2.0f;
 			}
 			else if (input->PushKey(DIK_D))
 			{
-				xAngle -= 1.0f;
+				xAngle -= 2.0f;
+			}
+			if (xAngle > 360.0f)
+			{
+				xAngle -= 360.0f;
+			}
+			else if (xAngle < 0.0f)
+			{
+				xAngle += 360.0f;
 			}
 			axis.x = position.x + cosf(XMConvertToRadians(xAngle)) * 50.0f;
 			axis.z = position.z + sinf(XMConvertToRadians(xAngle)) * 50.0f;
@@ -159,6 +163,15 @@ void Player::Move()
 	position.y += 1.0f * (y / hypotenuse);
 	position.z += 1.0f * (z / hypotenuse);
 
+	if (axis.y > 45.0f)
+	{
+		axis.y = 45.0f;
+	}
+	else if (axis.y < -45.0f)
+	{
+		axis.y = -45.0f;
+	}
+
 	SetPosition(position);
 	SetRotation({ -axis.y, -degrees + 90.0f, rotation.z });
 }
@@ -167,33 +180,34 @@ void Player::Move()
 void Player::Rolling()
 {
 	Input* input = Input::GetInstance();
-
 	
-		// ロール
-		if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
+	// ロール
+	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
+	{
+		if (input->PushKey(DIK_A) && rollRotation.z <= +40.0f)
 		{
-			if (input->PushKey(DIK_A) && rollRotation.z <= +40.0f)
-			{
-				rollRotation.z += 5.0f;
-			}
-
-			if (input->PushKey(DIK_D) && rollRotation.z >= -40.0f)
-			{
-				rollRotation.z -= 5.0f;
-			}
+			rollRotation.z += 5.0f;
 		}
 
-		// 傾きを戻す
-		if (input->PushKey(DIK_A) == 0 && input->PushKey(DIK_D) == 0 && rollRotation.z != 0.0f)
+		if (input->PushKey(DIK_D) && rollRotation.z >= -40.0f)
 		{
-			if (rollRotation.z > 0.0f)
-			{
-				rollRotation.z -= 5.0f;
-			}
-
-			if (rollRotation.z < 0.0f)
-			{
-				rollRotation.z += 5.0f;
-			}
+			rollRotation.z -= 5.0f;
 		}
+	}
+
+	// 傾きを戻す
+	if (input->PushKey(DIK_A) == 0 && input->PushKey(DIK_D) == 0 && rollRotation.z != 0.0f)
+	{
+		if (rollRotation.z > 0.0f)
+		{
+			rollRotation.z -= 5.0f;
+		}
+
+		if (rollRotation.z < 0.0f)
+		{
+			rollRotation.z += 5.0f;
+		}
+	}
+
+	SetRotation({ rotation.x, rotation.y, rollRotation.z });
 }

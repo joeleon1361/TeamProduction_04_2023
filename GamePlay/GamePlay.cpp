@@ -50,7 +50,7 @@ void GamePlay::Initialize()
 	boss->SetModel(modelBoss);
 
 	// 座標のセット
-	player->SetPosition({ 0.0f,0.0f,0.0f });
+	player->SetPosition({ 0.0f,0.0f, -200.0f });
 	player->SetRotation({ 0.0f, 180.0f, 0.0f });
 	player->SetScale({ 1.0f, 1.0f, 1.0f });
 
