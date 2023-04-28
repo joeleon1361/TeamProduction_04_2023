@@ -32,6 +32,8 @@ public: // メンバ関数
 
 	HINSTANCE GetInstance() { return wndClass.hInstance; }
 
+	static WinApp* GetInst();
+
 private: // メンバ変数
 	// Window関連
 	HWND hwnd = nullptr;	// ウィンドウハンドル

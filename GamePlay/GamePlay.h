@@ -63,7 +63,8 @@ private: // 静的メンバ変数
 	static enum TextureNumber
 	{
 		debug_txt,
-		game_bg
+		game_bg,
+		reticle
 	};
 
 public: // メンバ関数
@@ -86,6 +87,12 @@ public: // メンバ関数
 	// 描画
 	void Draw() override;
 
+	//マウス情報取得
+	void GetMouse();
+
+	//デバッグテキスト用関数
+	void DrawDebugText();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	Input* input = Input::GetInstance();
@@ -95,6 +102,7 @@ private: // メンバ変数
 	Camera* camera = nullptr;
 
 	Sprite* gameBG = nullptr;
+	Sprite* Reticle = nullptr;
 	
 	ObjModel* modelPlayer = nullptr;
 	ObjModel* modelSkydome = nullptr;
@@ -103,4 +111,10 @@ private: // メンバ変数
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<Bullet>> playerBullets;
+
+	//レティクル座標
+	XMFLOAT2 ReticlePos = { 0.0f, 0.0f };
+
+	//マウス座標
+	POINT mousePosition;
 };

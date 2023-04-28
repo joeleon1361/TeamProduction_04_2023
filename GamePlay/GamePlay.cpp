@@ -33,7 +33,17 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	//レティクルテクスチャ
+	if (!Sprite::LoadTexture(TextureNumber::reticle, L"Resources/Reticle.png")) {
+		assert(0);
+		return;
+	}
+	// デバッグテキスト初期化
+	debugText.Initialize(0);
+
 	gameBG = Sprite::Create(TextureNumber::game_bg, { 0.0f,0.0f });
+
+	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
 	
 	player = Player::Create();
 	objSkydome = ObjObject::Create();
@@ -64,6 +74,17 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
+	//マウスの(スクリーン)座標を取得する
+	GetCursorPos(&mousePosition);
+
+	//クライアントエリア座標に変換する
+	HWND hwnd = WinApp::GetInst()->GetHwnd();
+	ScreenToClient(hwnd, &mousePosition);
+
+	//マウス座標を2Dレティクルのスプライトに代入
+	ReticlePos.x = (float)mousePosition.x;
+	ReticlePos.y = (float)mousePosition.y;
+
 	if (input->TriggerKey(DIK_SPACE))
 	{
 		//シーン切り替え
@@ -76,6 +97,10 @@ void GamePlay::Update()
 	// プレイヤーの更新
 	player->Update();
 	objSkydome->Update();
+	Reticle->SetAnchorPoint({ 0.5f, 0.5f });
+	Reticle->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
+
+	DrawDebugText();
 }
 
 void GamePlay::Draw()
@@ -113,8 +138,46 @@ void GamePlay::Draw()
 	Sprite::PreDraw(cmdList);
 
 	player->DebugTextDraw();
+	Reticle->Draw();
+	debugText.DrawAll(cmdList);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
 #pragma endregion
+}
+
+void GamePlay::GetMouse()
+{
+
+	//マウスの(スクリーン)座標を取得する
+	GetCursorPos(&mousePosition);
+
+	//クライアントエリア座標に変換する
+	HWND hwnd = WinApp::GetInst()->GetHwnd();
+	ScreenToClient(hwnd, &mousePosition);
+
+	//マウス座標を2Dレティクルのスプライトに代入
+	ReticlePos.x = (float)mousePosition.x;
+	ReticlePos.y = (float)mousePosition.y;
+}
+
+void GamePlay::DrawDebugText()
+{
+	//マウスの座標
+	std::ostringstream MousePosition;
+	MousePosition << "MousePosition("
+		<< std::fixed << std::setprecision(5)
+		<< mousePosition.x << ","
+		<< mousePosition.y << ")";
+
+	debugText.Print(MousePosition.str(), 0, 0, 2.0f);
+
+	//レティクルの座標
+	std::ostringstream ReticlePosition;
+	ReticlePosition << "ReticlePosition("
+		<< std::fixed << std::setprecision(5)
+		<< ReticlePos.x << ","
+		<< ReticlePos.y << ")";
+
+	debugText.Print(ReticlePosition.str(), 0, 30, 2.0f);
 }
