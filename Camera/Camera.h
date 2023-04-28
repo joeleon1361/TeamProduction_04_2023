@@ -116,8 +116,7 @@ protected: // メンバ変数
 	// アスペクト比
 	float aspectRatio = 1.0f;
 
-	float phi;
-	float theta;
+	
 	float nowTheta;
 
 	XMMATRIX matRot = DirectX::XMMatrixIdentity();
@@ -127,7 +126,10 @@ public:
 	// ビュー行列ダーティフラグ
 	XMFLOAT3 bossPos = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 playerPos = { 0.0f, 0.0f, 0.0f };
-
+	XMFLOAT3 playerRot = { 0.0f, 0.0f, 0.0f };
+	float phi;
+	float theta;
+	float debugDot = 0.0f;
 	bool viewDirty = false;
 	bool dirty = false;
 	XMFLOAT3 eyeTransfer = { 0, 10, 0 };

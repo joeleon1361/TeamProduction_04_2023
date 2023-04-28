@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 using namespace DirectX;
+#include <stdio.h>
 
 Camera::Camera( int window_width, int window_height )
 {
@@ -58,47 +59,116 @@ void Camera::Update()
 	}*/
 
 	{
-		// define the camera eye, target, and up vectors
-		XMFLOAT3 cameraEye = eye;
-		XMFLOAT3 cameraTarget = target;
-		XMFLOAT3 cameraUp = up;
+		//XMFLOAT3 cameraEye = eye;
 
-		// limit the pitch angle to prevent camera flipping
-		/*if (theta > 89.0f) {
-			theta = 89.0f;
-		}
-		if (theta < -89.0f) {
-			theta = -89.0f;
-		}*/
+		//// define the minimum and maximum distance between the camera and player
+		//float minDistance = 48.0f;
+		//float maxDistance = 48.0f;
 
-		// calculate the new camera front vector
-		XMFLOAT3 front;
-		front.x = cos(XMConvertToRadians(phi)) * cos(XMConvertToRadians(theta));
-		front.y = sin(XMConvertToRadians(theta));
-		front.z = sin(XMConvertToRadians(phi)) * cos(XMConvertToRadians(theta));
-		XMVECTOR newCameraFront = XMVector3Normalize(XMLoadFloat3(&front));
+		//// define the player rotation
+		//XMFLOAT3 playerRotation = playerRot;
 
-		// update the camera position to rotate around the boss
-		XMFLOAT3 cameraDirection = XMFLOAT3(cameraEye.x - bossPos.x, cameraEye.y - bossPos.y, cameraEye.z - bossPos.z);
-		XMVECTOR newCameraDirection = XMVector3Normalize(XMLoadFloat3(&cameraDirection));
-		XMFLOAT3 cameraRight;
-		XMStoreFloat3(&cameraRight, XMVector3Normalize(XMVector3Cross(XMLoadFloat3(&cameraUp), newCameraDirection)));
-		XMFLOAT3 cameraUpRotated;
-		XMStoreFloat3(&cameraUpRotated, XMVector3Normalize(XMVector3Cross(newCameraDirection, XMLoadFloat3(&cameraRight))));
-		XMFLOAT3 newCameraPos = XMFLOAT3(bossPos.x + XMVectorGetX(newCameraDirection) * distance, bossPos.y + XMVectorGetY(newCameraDirection) * distance, bossPos.z + XMVectorGetZ(newCameraDirection) * distance);
+		//// define the current distance between the camera and player
+		//float distanceBetweenPlayerAndCamera = maxDistance;
 
-		// adjust the camera position to keep the player in the center of the view
-		XMFLOAT3 playerDirection = XMFLOAT3(playerPos.x - newCameraPos.x, playerPos.y - newCameraPos.y, playerPos.z - newCameraPos.z);
-		XMVECTOR newPlayerDirection = XMVector3Normalize(XMLoadFloat3(&playerDirection));
-		float dotProduct = XMVectorGetX(XMVector3Dot(newCameraFront, newPlayerDirection));
-		if (dotProduct < 0.9f) {
-			newCameraPos = XMFLOAT3(playerPos.x - XMVectorGetX(newCameraFront) * distance, playerPos.y - XMVectorGetY(newCameraFront) * distance, playerPos.z - XMVectorGetZ(newCameraFront) * distance);
-		}
+		//// update the camera rotation based on the player rotation
+		//phi = playerRotation.x * XM_PI / 180.0f;
+		//theta = playerRotation.y * XM_PI / 180.0f;
 
-		// update the camera eye, target, and up vectors
-		eye = newCameraPos;
+		//float bossDistance = XMVectorGetX(XMVector3Length(XMLoadFloat3(&XMFLOAT3(bossPos.x - playerPos.x, bossPos.y - playerPos.y, bossPos.z - playerPos.z))));
+
+		//// calculate the angle between the boss and player
+		//float angle = atan2f(playerPos.z - bossPos.z, playerPos.x - bossPos.x);
+
+		//// calculate the new distance between the camera and player based on the boss distance
+		//distance = max(minDistance, min(maxDistance, bossDistance));
+
+		//// define the horizontal rotation limit in degrees
+		//float horizontalLimit = 60.0f;
+
+		//// update the camera rotation based on the player rotation and angle to the boss
+		//phi = playerRotation.x;
+		//theta = XMConvertToDegrees(angle);
+
+		//// wrap the theta angle between -180 and 180 degrees
+		//if (theta < -180.0f) {
+		//	theta += 360.0f;
+		//}
+		//else if (theta > 180.0f) {
+		//	theta -= 360.0f;
+		//}
+
+		//// limit the horizontal rotation angle
+		//theta = max(-horizontalLimit, min(horizontalLimit, theta));
+
+		//distanceBetweenPlayerAndCamera = max(minDistance, min(maxDistance, bossDistance));
+
+		//// convert the spherical coordinates to cartesian coordinates
+		////float radius = distance;
+		//float phiRadians = XMConvertToRadians(phi);
+		//float thetaRadians = XMConvertToRadians(theta);
+		//cameraEye.x = target.x + distance * cos(phiRadians) * cos(thetaRadians);
+		//cameraEye.y = target.y + distance * sin(phiRadians);
+		//cameraEye.z = target.z + distance * sin(phiRadians) * cos(thetaRadians);
+
+		//// adjust the camera eye to keep the player in the center of the view
+		///*XMVECTOR newCameraFront = XMVector3Normalize(XMVectorSet(-sin(thetaRadians), 0.0f, -cos(thetaRadians), 0.0f));
+		//float dotProduct = XMVectorGetX(XMVector3Dot(XMLoadFloat3(&cameraEye), newCameraFront));
+		//debugDot = dotProduct;
+		//cameraEye = XMFLOAT3(playerPos.x - XMVectorGetX(newCameraFront) * radius, playerPos.y - XMVectorGetY(newCameraFront) * radius, playerPos.z - XMVectorGetZ(newCameraFront) * radius);*/
+
+		//XMVECTOR newCameraFront = XMVector3Normalize(XMVectorSet(-sin(thetaRadians), 0.0f, -cos(thetaRadians), 0.0f));
+		//float dotProduct = XMVectorGetX(XMVector3Dot(XMLoadFloat3(&cameraEye), newCameraFront));
+		//if (dotProduct < 0.9f) {
+		//	cameraEye = XMFLOAT3(playerPos.x - XMVectorGetX(newCameraFront) * distance, playerPos.y - XMVectorGetY(newCameraFront) * distance, playerPos.z - XMVectorGetZ(newCameraFront) * distance);
+		//}
+
+		//// check if the camera is too close to the player, and move
+		//// it back along the camera's forward vector until it is at a safe distance
+		//if (XMVectorGetX(XMVector3Length(XMLoadFloat3(&XMFLOAT3(cameraEye.x - playerPos.x, cameraEye.y - playerPos.y, cameraEye.z - playerPos.z)))) < minDistance) {
+		//	cameraEye = XMFLOAT3(playerPos.x - XMVectorGetX(newCameraFront) * minDistance, playerPos.y - XMVectorGetY(newCameraFront) * minDistance, playerPos.z - XMVectorGetZ(newCameraFront) * minDistance);
+		//}
+
+		//// update the camera eye, target, and up vectors
+		//eye = cameraEye;
+		//target = bossPos;
+
+		// Calculate the view matrix
+		XMMATRIX view = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+		// Extract the cameraPos position from the view matrix
+		XMFLOAT3 cameraPos;
+		XMStoreFloat3(&cameraPos, XMVectorNegate(XMVector3TransformCoord(XMLoadFloat3(&target), XMMatrixInverse(nullptr, view))));
+
+		// Calculate the direction vector from the camera's position to the boss position
+		XMFLOAT3 directionVector = XMFLOAT3(bossPos.x - cameraPos.x, bossPos.y - cameraPos.y, bossPos.z - cameraPos.z);
+
+		// Normalize the direction vector
+		XMVECTOR directionVectorNormalized = XMVector3Normalize(XMLoadFloat3(&directionVector));
+
+		// Calculate the camera's new position based on the direction vector and camera speed
+		XMFLOAT3 newPosition = XMFLOAT3(playerPos.x + XMVectorGetX(directionVectorNormalized) * 48.0f, playerPos.y + XMVectorGetY(directionVectorNormalized) * 48.0f + 10.0f, playerPos.z + XMVectorGetZ(directionVectorNormalized) * 48.0f);
+
+		// Convert cameraPos to cameraEye
+		XMVECTOR posV = XMLoadFloat3(&newPosition);
+		XMVECTOR targetV = XMLoadFloat3(&target);
+		XMVECTOR upV = XMLoadFloat3(&up);
+
+		// Calculate the view matrix
+		view = XMMatrixLookAtLH(posV, targetV, upV);
+
+		// Extract the cameraEye position from the view matrix
+		XMVECTOR cameraEyeVec = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		cameraEyeVec = XMVector4Transform(cameraEyeVec, XMMatrixInverse(nullptr, view));
+
+		// Convert cameraEyeVec back to a XMFLOAT3
+		XMFLOAT3 cameraEye;
+		XMStoreFloat3(&cameraEye, cameraEyeVec);
+
+		// Update the camera's position, target, and up vectors
+		eye = cameraEye;
 		target = bossPos;
-		up = cameraUpRotated;
+		up = up;
 
 		viewDirty = true;
 	}
