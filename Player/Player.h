@@ -42,6 +42,10 @@ public: // ƒƒ“ƒoŠÖ”
 
 	void Rolling();
 
+	bool CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius);
+
+	void MoveTowards(float& current, float target, float speed, float elapsedTime);
+
 private: // ƒƒ“ƒo•Ï”
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	DebugText debugText;
@@ -60,6 +64,7 @@ private: // ƒƒ“ƒo•Ï”
 	float hypotenuse = 0.0f;
 	float radians = 0.0f;
 	float degrees = 90.0f;
+	float collisionSphereRadius = 3.0f;
 	
 public:
 	Vector3 direction = { 0, 0, 1 };

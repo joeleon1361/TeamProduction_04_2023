@@ -211,3 +211,28 @@ void Player::Rolling()
 
 	SetRotation({ rotation.x, rotation.y, rollRotation.z });
 }
+
+bool Player::CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius)
+{
+	float dx = bossPos.x - position.x;
+	float dy = bossPos.y - position.y;
+	float dz = bossPos.z - position.z;
+
+	float distance = sqrtf(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
+
+	return distance <= collisionSphereRadius + collisionRadius;
+}
+
+void Player::MoveTowards(float& current, float target, float speed, float elapsedTime)
+{
+	float delta = target - current;
+	float step = speed * elapsedTime;
+	if (step > abs(delta))
+	{
+		current = target;
+	}
+	else
+	{
+		current += step * (delta < 0 ? -1 : 1);
+	}
+}

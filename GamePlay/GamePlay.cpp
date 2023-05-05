@@ -56,7 +56,7 @@ void GamePlay::Initialize()
 
 	boss->SetPosition({ 0.0f,0.0f,0.0f });
 	boss->SetRotation({ 0.0f, 0.0f, 0.0f });
-	boss->SetScale({ 1.0f, 1.0f, 1.0f });
+	boss->SetScale({ 7.0f, 7.0f, 7.0f });
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -90,21 +90,40 @@ void GamePlay::Update()
 	// カメラの更新
 	camera->Update();
 
-	//Debug Start
-	/*char msgbuf[256];
-	char msgbuf2[256];
-	char msgbuf3[256];
-	sprintf_s(msgbuf, 256, "X: %f\n", newPosition.x);
-	sprintf_s(msgbuf2, 256, "Y: %f\n", newPosition.y);
-	sprintf_s(msgbuf3, 256, "Z: % f\n", newPosition.z);
-	OutputDebugStringA(msgbuf);
-	OutputDebugStringA(msgbuf2);
-	OutputDebugStringA(msgbuf3);*/
-	//Debug End
-
 	// プレイヤーの更新
 	player->Update();
 	boss->Update();
+
+	if (player->CheckCollisionWithBoss(boss->GetPosition(), 20.0f))
+	{
+		float dx = player->GetPosition().x - boss->GetPosition().x;
+		float dy = player->GetPosition().y - boss->GetPosition().y;
+		float dz = player->GetPosition().z - boss->GetPosition().z;
+
+		float length = sqrtf(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
+
+		if (length > 0.0f)
+		{
+			dx /= length;
+			dy /= length;
+			dz /= length;
+		}
+
+		float newX = player->GetPosition().x;
+		float newY = player->GetPosition().y;
+		float newZ = player->GetPosition().z;
+
+		float elapsedTime = 0.0f;
+
+		while (player->CheckCollisionWithBoss(boss->GetPosition(), 20.0f))
+		{
+			player->MoveTowards(newX, player->GetPosition().x + dx, 1.0f, elapsedTime);
+			player->MoveTowards(newY, player->GetPosition().y + dy, 1.0f, elapsedTime);
+			player->MoveTowards(newZ, player->GetPosition().z + dz, 1.0f, elapsedTime);
+			player->SetPosition({ newX, newY, newZ });
+			elapsedTime += 0.1f;
+		}
+	}
 
 	objSkydome->Update();
 }
