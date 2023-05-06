@@ -51,7 +51,6 @@ void GamePlay::Initialize()
 	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
 
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
-	
 
 	// パーティクル
 	bossHitParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -86,8 +85,8 @@ void GamePlay::Initialize()
 	camera->SetDistance(20.0f);
 
 	// プレイヤー
-	player->SetPosition({ 0.0f,0.0f,0.0f });
-	player->SetRotation({ 0.0f, 0.0f, 0.0f });
+	player->SetPosition({ 0.0f, 0.0f, -200.0f });
+	player->SetRotation({ 0.0f, 180.0f, 0.0f });
 	player->SetScale({ 1.0f, 1.0f, 1.0f });
 
 	// ボスのベース
@@ -246,7 +245,7 @@ void GamePlay::Update()
 	bossCore_3->Update();
 	bossCore_4->Update();
 
-	if (player->CheckCollisionWithBoss(boss->GetPosition(), 20.0f))
+	if (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
 	{
 		float dx = player->GetPosition().x - boss->GetPosition().x;
 		float dy = player->GetPosition().y - boss->GetPosition().y;
@@ -267,7 +266,7 @@ void GamePlay::Update()
 
 		float elapsedTime = 0.0f;
 
-		while (player->CheckCollisionWithBoss(boss->GetPosition(), 20.0f))
+		while (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
 		{
 			player->MoveTowards(newX, player->GetPosition().x + dx, 1.0f, elapsedTime);
 			player->MoveTowards(newY, player->GetPosition().y + dy, 1.0f, elapsedTime);
@@ -402,9 +401,6 @@ void GamePlay::DrawDebugText()
 		<< ReticlePos.y << ")";
 
 	debugText.Print(ReticlePosition.str(), 0, 60, 2.0f);
-
-
-}
 }
 
 void GamePlay::CreateBossHitParticles(XMFLOAT3 position)
