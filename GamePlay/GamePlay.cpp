@@ -38,12 +38,15 @@ void GamePlay::Initialize()
 		assert(0);
 		return;
 	}
+
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
 	gameBG = Sprite::Create(TextureNumber::game_bg, { 0.0f,0.0f });
 
 	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
+
+	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 	
 	player = Player::Create();
 	objSkydome = ObjObject::Create();
@@ -74,11 +77,20 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
+	//ウィンドウハンドル(借りてくる)
+	HWND hwnd = WinApp::GetInst()->GetHwnd();
+
+	//RECT構造体へのポインタ
+	RECT rect;
+
+	//ウィンドウの外側のサイズを取得
+	GetWindowRect(hwnd, &rect);
+
 	//マウスの(スクリーン)座標を取得する
 	GetCursorPos(&mousePosition);
 
 	//クライアントエリア座標に変換する
-	HWND hwnd = WinApp::GetInst()->GetHwnd();
+	hwnd = WinApp::GetInst()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
 
 	//マウス座標を2Dレティクルのスプライトに代入
@@ -98,7 +110,9 @@ void GamePlay::Update()
 	player->Update();
 	objSkydome->Update();
 	Reticle->SetAnchorPoint({ 0.5f, 0.5f });
-	Reticle->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
+	Reticle->SetPosition(ReticlePos);
+
+	test->SetPosition( { (float)mousePosition.x, (float)mousePosition.y } );
 
 	DrawDebugText();
 }
@@ -139,6 +153,7 @@ void GamePlay::Draw()
 
 	player->DebugTextDraw();
 	Reticle->Draw();
+	//test->Draw();
 	debugText.DrawAll(cmdList);
 
 	// スプライト描画後処理
@@ -179,5 +194,7 @@ void GamePlay::DrawDebugText()
 		<< ReticlePos.x << ","
 		<< ReticlePos.y << ")";
 
-	debugText.Print(ReticlePosition.str(), 0, 30, 2.0f);
+	debugText.Print(ReticlePosition.str(), 0, 60, 2.0f);
+
+
 }

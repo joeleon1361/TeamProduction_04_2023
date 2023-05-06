@@ -103,6 +103,7 @@ private: // メンバ変数
 
 	Sprite* gameBG = nullptr;
 	Sprite* Reticle = nullptr;
+	Sprite* test = nullptr;
 	
 	ObjModel* modelPlayer = nullptr;
 	ObjModel* modelSkydome = nullptr;

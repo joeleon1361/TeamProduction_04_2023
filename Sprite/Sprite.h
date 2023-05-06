@@ -134,7 +134,7 @@ protected: // メンバ変数
 	// 座標
 	XMFLOAT2 position{};
 	// スプライト幅、高さ
-	XMFLOAT2 size = { 100.0f, 100.0f };
+	XMFLOAT2 size = { 0.0f, 0.0f };
 	// アンカーポイント
 	XMFLOAT2 anchorpoint = { 0, 0 };
 	// ワールド行列
@@ -148,7 +148,7 @@ protected: // メンバ変数
 	// テクスチャ始点
 	XMFLOAT2 texBase = { 0, 0 };
 	// テクスチャ幅、高さ
-	XMFLOAT2 texSize = { 100.0f, 100.0f };
+	XMFLOAT2 texSize = { 0.0f, 0.0f };
 
 private: // メンバ関数
 	// 頂点データ転送
