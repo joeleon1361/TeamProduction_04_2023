@@ -1,5 +1,7 @@
 #include "FrameWork.h"
 
+extern HWND hwnd = nullptr;
+
 void FrameWork::Run()
 {
 	// ゲームの初期化
@@ -29,6 +31,7 @@ void FrameWork::Initialize()
 	// ゲームウィンドウの作成
 	win = new WinApp();
 	win->CreateGameWindow();
+	hwnd = win->GetHwnd();
 
 	//DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
@@ -85,6 +88,8 @@ void FrameWork::Update()
 		isEndRequest = true;
 		return;
 	}
+
+	hwnd = win->GetHwnd();
 
 	// 入力関連の毎フレーム処理
 	input->Update();

@@ -1,6 +1,7 @@
 ﻿#include "GamePlay.h"
 
 using namespace DirectX;
+extern HWND hwnd;
 
 GamePlay::GamePlay()
 {
@@ -35,8 +36,22 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	//レティクルテクスチャ
+	if (!Sprite::LoadTexture(TextureNumber::reticle, L"Resources/Reticle.png")) {
+		assert(0);
+		return;
+	}
+
+	// デバッグテキスト初期化
+	debugText.Initialize(0);
+
 	// スプライト
 	gameBG = Sprite::Create(TextureNumber::game_bg, { 0.0f,0.0f });
+
+	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
+
+	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
+	
 
 	// パーティクル
 	bossHitParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -150,6 +165,25 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
+	//RECT構造体へのポインタ
+	RECT rect;
+
+	//ウィンドウの外側のサイズを取得
+	GetClientRect(hwnd, &rect);
+
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
+
+	//マウスの(スクリーン)座標を取得する
+	GetCursorPos(&mousePosition);
+
+	//クライアントエリア座標に変換する
+	ScreenToClient(hwnd, &mousePosition);
+
+	//マウス座標を2Dレティクルのスプライトに代入
+	ReticlePos.x = ((float)(mousePosition.x) / (float)width) * WinApp::window_width;
+	ReticlePos.y = ((float)(mousePosition.y) / (float)height) * WinApp::window_height;
+
 	if (input->TriggerKey(DIK_SPACE))
 	{
 		//シーン切り替え
@@ -225,6 +259,12 @@ void GamePlay::Update()
 	bossCore_4->Update();
 
 	objSkydome->Update();
+	Reticle->SetAnchorPoint({ 0.5f, 0.5f });
+	Reticle->SetPosition(ReticlePos);
+
+	test->SetPosition( { (float)mousePosition.x, (float)mousePosition.y } );
+
+	DrawDebugText();
 
 	// パーティクル更新
 	bossHitParticle->Update();
@@ -300,10 +340,52 @@ void GamePlay::Draw()
 	Sprite::PreDraw(cmdList);
 
 	player->DebugTextDraw();
+	Reticle->Draw();
+	//test->Draw();
+	debugText.DrawAll(cmdList);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
 #pragma endregion
+}
+
+void GamePlay::GetMouse()
+{
+
+	//マウスの(スクリーン)座標を取得する
+	GetCursorPos(&mousePosition);
+
+	//クライアントエリア座標に変換する
+	HWND hwnd = WinApp::GetInst()->GetHwnd();
+	ScreenToClient(hwnd, &mousePosition);
+
+	//マウス座標を2Dレティクルのスプライトに代入
+	ReticlePos.x = (float)mousePosition.x;
+	ReticlePos.y = (float)mousePosition.y;
+}
+
+void GamePlay::DrawDebugText()
+{
+	//マウスの座標
+	std::ostringstream MousePosition;
+	MousePosition << "MousePosition("
+		<< std::fixed << std::setprecision(5)
+		<< mousePosition.x << ","
+		<< mousePosition.y << ")";
+
+	debugText.Print(MousePosition.str(), 0, 0, 2.0f);
+
+	//レティクルの座標
+	std::ostringstream ReticlePosition;
+	ReticlePosition << "ReticlePosition("
+		<< std::fixed << std::setprecision(5)
+		<< ReticlePos.x << ","
+		<< ReticlePos.y << ")";
+
+	debugText.Print(ReticlePosition.str(), 0, 60, 2.0f);
+
+
+}
 }
 
 void GamePlay::CreateBossHitParticles(XMFLOAT3 position)

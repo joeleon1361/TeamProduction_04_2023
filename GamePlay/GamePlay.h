@@ -14,6 +14,8 @@
 #include "ParticleManager.h"
 #include "Camera.h"
 #include "FbxLoader.h"
+#include "FbxObject.h"
+#include "WinApp.h"
 
 #include "Player.h"
 #include "Bullet.h"
@@ -69,7 +71,8 @@ private: // 静的メンバ変数
 	static enum TextureNumber
 	{
 		debug_txt,
-		game_bg
+		game_bg,
+		reticle
 	};
 
 public: // メンバ関数
@@ -95,6 +98,12 @@ public: // メンバ関数
 	// 弾が当たった際のパーティクル生成
 	void CreateBossHitParticles(XMFLOAT3 position);
 
+	//マウス情報取得
+	void GetMouse();
+
+	//デバッグテキスト用関数
+	void DrawDebugText();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	Input* input = Input::GetInstance();
@@ -106,6 +115,8 @@ private: // メンバ変数
 	ParticleManager* bossHitParticle = nullptr;
 
 	Sprite* gameBG = nullptr;
+	Sprite* Reticle = nullptr;
+	Sprite* test = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 
@@ -124,4 +135,10 @@ private: // メンバ変数
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<Bullet>> playerBullets;
+
+	//レティクル座標
+	XMFLOAT2 ReticlePos = { 0.0f, 0.0f };
+
+	//マウス座標
+	POINT mousePosition;
 };
