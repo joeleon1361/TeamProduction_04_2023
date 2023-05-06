@@ -1,6 +1,7 @@
 ﻿#include "GamePlay.h"
 
 using namespace DirectX;
+extern HWND hwnd;
 
 GamePlay::GamePlay()
 {
@@ -77,25 +78,24 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
-	//ウィンドウハンドル(借りてくる)
-	HWND hwnd = WinApp::GetInst()->GetHwnd();
-
 	//RECT構造体へのポインタ
 	RECT rect;
 
 	//ウィンドウの外側のサイズを取得
-	GetWindowRect(hwnd, &rect);
+	GetClientRect(hwnd, &rect);
+
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
 
 	//マウスの(スクリーン)座標を取得する
 	GetCursorPos(&mousePosition);
 
 	//クライアントエリア座標に変換する
-	hwnd = WinApp::GetInst()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
 
 	//マウス座標を2Dレティクルのスプライトに代入
-	ReticlePos.x = (float)mousePosition.x;
-	ReticlePos.y = (float)mousePosition.y;
+	ReticlePos.x = ((float)(mousePosition.x) / (float)width) * WinApp::window_width;
+	ReticlePos.y = ((float)(mousePosition.y) / (float)height) * WinApp::window_height;
 
 	if (input->TriggerKey(DIK_SPACE))
 	{

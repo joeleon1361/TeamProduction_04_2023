@@ -16,6 +16,7 @@
 #include "ObjModel.h"
 #include "FbxLoader.h"
 #include "FbxObject.h"
+#include "WinApp.h"
 
 #include "Player.h"
 #include "Bullet.h"
