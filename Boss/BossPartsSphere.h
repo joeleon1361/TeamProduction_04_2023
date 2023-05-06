@@ -1,6 +1,6 @@
 #pragma once
 #include "ObjObject.h"
-class BossCore :
+class BossPartsSphere :
 	public ObjObject
 {
 private:
@@ -9,7 +9,7 @@ private:
 
 public: // 静的メンバ関数
 // 3Dオブジェクト生成
-	static BossCore* Create(ObjModel* model = nullptr);
+	static BossPartsSphere* Create(ObjModel* model = nullptr);
 
 private: // 静的メンバ変数
 
@@ -22,8 +22,5 @@ public: // メンバ関数
 
 private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
-
-	float lifeMax = 10.0f;
-	float life = lifeMax;
 };
 

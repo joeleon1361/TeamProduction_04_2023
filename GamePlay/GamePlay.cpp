@@ -35,12 +35,22 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	// スプライト
 	gameBG = Sprite::Create(TextureNumber::game_bg, { 0.0f,0.0f });
 
+	// パーティクル
+	bossHitParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
+
+	// プレイヤー
 	player = Player::Create();
+
+	// スカイドーム
 	objSkydome = ObjObject::Create();
+
+	// ボス
 	boss = Boss::Create();
 	bossPartsRing = BossPartsRing::Create();
+	bossPartsSphere = BossPartsSphere::Create();
 	bossCore_1 = BossCore::Create();
 	bossCore_2 = BossCore::Create();
 	bossCore_3 = BossCore::Create();
@@ -60,51 +70,67 @@ void GamePlay::Initialize()
 	camera->SetUp({ 0, 1, 0 });
 	camera->SetDistance(20.0f);
 
+	// プレイヤー
 	player->SetPosition({ 0.0f,0.0f,0.0f });
 	player->SetRotation({ 0.0f, 0.0f, 0.0f });
 	player->SetScale({ 1.0f, 1.0f, 1.0f });
 
+	// ボスのベース
 	boss->SetPosition({ 0.0f,0.0f,0.0f });
 	boss->SetRotation({ 0.0f, 0.0f, 0.0f });
 	boss->SetScale({ 1.0f, 1.0f, 1.0f });
 
+	// ボスのリングパーツ
 	bossPartsRing->SetScale({ 4.0f, 4.0f, 4.0f });
 	bossPartsRing->SetParent(boss);
 
-	bossCore_1->SetPosition({ 0.0f , 0.0f, -1.3f });
-	bossCore_1->SetScale({ 0.2f, 0.2f, 0.2f });
-	bossCore_1->SetParent(bossPartsRing);
+	// ボスの球パーツ
+	bossPartsSphere->SetScale({ 4.2f, 4.2f, 4.2f });
+	bossPartsSphere->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+	bossPartsSphere->SetParent(boss);
 
-	bossCore_2->SetPosition({ 1.3f , 0.0f, 0.0f });
-	bossCore_2->SetScale({ 0.2f, 0.2f, 0.2f });
-	bossCore_2->SetParent(bossPartsRing);
-
-	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.3f });
-	bossCore_3->SetScale({ 0.2f, 0.2f, 0.2f });
-	bossCore_3->SetParent(bossPartsRing);
-
-	bossCore_4->SetPosition({ -1.3f , 0.0f, 0.0f });
-	bossCore_4->SetScale({ 0.2f, 0.2f, 0.2f });
-	bossCore_4->SetParent(bossPartsRing);
-
-	bossCoreBox_1->SetPosition({ 0.0f , 0.0f, -1.0f });
-	bossCoreBox_1->SetRotation({0.0f, 180.0f, 0.0f});
+	// ボスのコアボックス1
+	bossCoreBox_1->SetPosition({ 0.0f , 0.0f, -1.2f });
+	bossCoreBox_1->SetRotation({ 0.0f, 180.0f, 0.0f });
 	bossCoreBox_1->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_1->SetParent(bossPartsRing);
 
-	bossCoreBox_2->SetPosition({ 1.0f , 0.0f, 0.0f });
+	// ボスのコアボックス2
+	bossCoreBox_2->SetPosition({ 1.2f , 0.0f, 0.0f });
 	bossCoreBox_2->SetRotation({ 0.0f, 90.0f, 0.0f });
 	bossCoreBox_2->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_2->SetParent(bossPartsRing);
 
-	bossCoreBox_3->SetPosition({ 0.0f , 0.0f, 1.0f });
+	// ボスのコアボックス3
+	bossCoreBox_3->SetPosition({ 0.0f , 0.0f, 1.2f });
 	bossCoreBox_3->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_3->SetParent(bossPartsRing);
 
-	bossCoreBox_4->SetPosition({ -1.0f , 0.0f, 0.0f });
+	// ボスのコアボックス4
+	bossCoreBox_4->SetPosition({ -1.2f , 0.0f, 0.0f });
 	bossCoreBox_4->SetRotation({ 0.0f, 270.0f, 0.0f });
 	bossCoreBox_4->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_4->SetParent(bossPartsRing);
+
+	// ボスのコア1
+	bossCore_1->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_1->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_1->SetParent(bossCoreBox_1);
+
+	// ボスのコア2
+	bossCore_2->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_2->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_2->SetParent(bossCoreBox_2);
+
+	// ボスのコア3
+	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_3->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_3->SetParent(bossCoreBox_3);
+
+	// ボスのコア4
+	bossCore_4->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_4->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_4->SetParent(bossCoreBox_4);
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -123,6 +149,39 @@ void GamePlay::Update()
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 
+	// コア1の疑似ヒット処理
+	if (input->TriggerKey(DIK_U))
+	{
+		CreateBossHitParticles(boss->GetPosition());
+		bossCore_1->colorTimeRate = 0.0f;
+		bossCore_1->life--;
+	}
+
+	// コア2の疑似ヒット処理
+	if (input->TriggerKey(DIK_I))
+	{
+		CreateBossHitParticles(boss->GetPosition());
+		bossCore_2->colorTimeRate = 0.0f;
+		bossCore_2->life--;
+	}
+
+	// コア3の疑似ヒット処理
+	if (input->TriggerKey(DIK_O))
+	{
+		CreateBossHitParticles(boss->GetPosition());
+		bossCore_3->colorTimeRate = 0.0f;
+		bossCore_3->life--;
+	}
+
+	// コア4の疑似ヒット処理
+	if (input->TriggerKey(DIK_P))
+	{
+		CreateBossHitParticles(boss->GetPosition());
+		bossCore_4->colorTimeRate = 0.0f;
+		bossCore_4->life--;
+	}
+
+	// カメラターゲットのセット
 	camera->SetTarget(boss->GetPosition());
 
 	// カメラの更新
@@ -132,16 +191,20 @@ void GamePlay::Update()
 	player->Update();
 	boss->Update();
 	bossPartsRing->Update();
-	bossCore_1->Update();
-	bossCore_2->Update();
-	bossCore_3->Update();
-	bossCore_4->Update();
+	bossPartsSphere->Update();
 	bossCoreBox_1->Update();
 	bossCoreBox_2->Update();
 	bossCoreBox_3->Update();
 	bossCoreBox_4->Update();
+	bossCore_1->Update();
+	bossCore_2->Update();
+	bossCore_3->Update();
+	bossCore_4->Update();
 
 	objSkydome->Update();
+
+	// パーティクル更新
+	bossHitParticle->Update();
 }
 
 void GamePlay::Draw()
@@ -169,16 +232,41 @@ void GamePlay::Draw()
 
 	player->Draw();
 	boss->Draw();
-	bossPartsRing->Draw();
-	bossCore_1->Draw();
-	bossCore_2->Draw();
-	bossCore_3->Draw();
-	bossCore_4->Draw();
-	bossCoreBox_1->Draw();
-	bossCoreBox_2->Draw();
-	bossCoreBox_3->Draw();
-	bossCoreBox_4->Draw();
+
+	if (bossCore_1->isAlive || bossCore_2->isAlive || bossCore_3->isAlive || bossCore_4->isAlive)
+	{
+		bossPartsRing->Draw();
+		bossPartsSphere->Draw();
+		bossCoreBox_1->Draw();
+		bossCoreBox_2->Draw();
+		bossCoreBox_3->Draw();
+		bossCoreBox_4->Draw();
+	}
+
+	if (bossCore_1->isAlive)
+	{
+		bossCore_1->Draw();
+	}
+
+	if (bossCore_2->isAlive)
+	{
+		bossCore_2->Draw();
+	}
+
+	if (bossCore_3->isAlive)
+	{
+		bossCore_3->Draw();
+	}
+
+	if (bossCore_4->isAlive)
+	{
+		bossCore_4->Draw();
+	}
+
 	objSkydome->Draw();
+
+	// パーティクルの描画
+	bossHitParticle->Draw(cmdList);
 
 	// 3Dオブジェクト描画後処理
 	ObjObject::PostDraw();
@@ -193,4 +281,27 @@ void GamePlay::Draw()
 	// スプライト描画後処理
 	Sprite::PostDraw();
 #pragma endregion
+}
+
+void GamePlay::CreateBossHitParticles(XMFLOAT3 position)
+{
+	for (int i = 0; i < 10; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
+		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
+
+		const float rnd_vel = 0.5f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+
+		// 追加
+		bossHitParticle->Add(40, pos, vel, acc, { 1.0f,0.1f, 0.1f, 1.0f }, { 1.0f,0.1f, 0.1f, 1.0f }, 2.0f, 0.0f);
+	}
 }

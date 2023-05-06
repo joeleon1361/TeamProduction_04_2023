@@ -19,6 +19,7 @@
 #include "Bullet.h"
 #include "Boss.h"
 #include "BossPartsRing.h"
+#include "BossPartsSphere.h"
 #include "BossCore.h"
 #include "BossPartsCoreBox.h"
 #include "TargetBullet.h"
@@ -47,6 +48,7 @@ class BossBullet;
 class TargetBullet;
 class StageObject;
 class BossPartsRing;
+class BossPartsSphere;
 class BossCore;
 class BossPartsCoreBox;
 
@@ -90,6 +92,9 @@ public: // メンバ関数
 	// 描画
 	void Draw() override;
 
+	// 弾が当たった際のパーティクル生成
+	void CreateBossHitParticles(XMFLOAT3 position);
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	Input* input = Input::GetInstance();
@@ -98,6 +103,8 @@ private: // メンバ変数
 	
 	Camera* camera = nullptr;
 
+	ParticleManager* bossHitParticle = nullptr;
+
 	Sprite* gameBG = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
@@ -105,6 +112,7 @@ private: // メンバ変数
 	Player* player = nullptr;
 	Boss* boss = nullptr;
 	BossPartsRing* bossPartsRing = nullptr;
+	BossPartsSphere* bossPartsSphere = nullptr;
 	BossCore* bossCore_1 = nullptr;
 	BossCore* bossCore_2 = nullptr;
 	BossCore* bossCore_3 = nullptr;

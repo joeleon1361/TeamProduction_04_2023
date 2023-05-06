@@ -33,8 +33,10 @@ bool Boss::Initialize()
 	}
 
 	// モデルのセット
-	modelBoss = ObjModel::CreateFromOBJ("bullet2");
+	modelBoss = ObjModel::CreateFromOBJ("bossPartsSphere");
 	SetModel(modelBoss);
+
+	SetColor({ 0.9f, 0.2f, 0.2f, 1.0f });
 
 	return true;
 }
