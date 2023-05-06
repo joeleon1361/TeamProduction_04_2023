@@ -32,10 +32,52 @@ bool Boss::Initialize()
 		return false;
 	}
 
+	// モデルのセット
+	modelBoss = ObjModel::CreateFromOBJ("bossPartsSphere");
+	SetModel(modelBoss);
+
+	SetColor({ 0.9f, 0.2f, 0.2f, 1.0f });
+
 	return true;
 }
 
 void Boss::Update()
 {
 	ObjObject::Update();
+
+	// 回転(モデル確認用)
+	if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)
+	{
+		rotation.x += 1.0f;
+	}
+	if (input->PushKey(DIK_DOWN) && input->PushKey(DIK_LCONTROL) == 0)
+	{
+		rotation.x -= 1.0f;
+	}
+	if (input->PushKey(DIK_RIGHT) && input->PushKey(DIK_LCONTROL) == 0)
+	{
+		rotation.y -= 1.0f;
+	}
+	if (input->PushKey(DIK_LEFT) && input->PushKey(DIK_LCONTROL) == 0)
+	{
+		rotation.y += 1.0f;
+	}
+
+	// 移動(モデル確認用)
+	if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL))
+	{
+		position.y += 1.0f;
+	}
+	if (input->PushKey(DIK_DOWN) && input->PushKey(DIK_LCONTROL))
+	{
+		position.y -= 1.0f;
+	}
+	if (input->PushKey(DIK_RIGHT) && input->PushKey(DIK_LCONTROL))
+	{
+		position.x += 1.0f;
+	}
+	if (input->PushKey(DIK_LEFT) && input->PushKey(DIK_LCONTROL))
+	{
+		position.x -= 1.0f;
+	}
 }

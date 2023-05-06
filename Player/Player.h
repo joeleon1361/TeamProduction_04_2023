@@ -46,6 +46,8 @@ private: // ƒƒ“ƒo•Ï”
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	DebugText debugText;
 
+	ObjModel* modelPlayer = nullptr;
+
 	float rotationSpeed = 30.0f;
 	float speed = 0.25f;
 

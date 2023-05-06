@@ -157,6 +157,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boss\BossCore.cpp" />
+    <ClCompile Include="Boss\BossPartsCoreBox.cpp" />
+    <ClCompile Include="Boss\BossPartsRing.cpp" />
+    <ClCompile Include="Boss\BossPartsSphere.cpp" />
     <ClCompile Include="Boss\Boss.cpp" />
     <ClCompile Include="Bullet\TargetBullet.cpp" />
     <ClCompile Include="Bullet\Bullet.cpp" />
@@ -271,6 +275,10 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss\BossCore.h" />
+    <ClInclude Include="Boss\BossPartsCoreBox.h" />
+    <ClInclude Include="Boss\BossPartsRing.h" />
+    <ClInclude Include="Boss\BossPartsSphere.h" />
     <ClInclude Include="GameBase\AbstractSceneFactory.h" />
     <ClInclude Include="GameBase\BaseScene.h" />
     <ClInclude Include="Boss\Boss.h" />
