@@ -251,7 +251,7 @@ void GamePlay::Update()
 		float dy = player->GetPosition().y - boss->GetPosition().y;
 		float dz = player->GetPosition().z - boss->GetPosition().z;
 
-		float length = sqrtf(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
+		float length = sqrtf(powf(dx, 2) + powf(dy, 2) + powf(dz, 2));
 
 		if (length > 0.0f)
 		{
