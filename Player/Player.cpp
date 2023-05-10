@@ -149,11 +149,11 @@ void Player::Move()
 		{
 			if (input->PushKey(DIK_S))
 			{
-				axis.y -= 1.0f;
+				axis.y -= 3.0f;
 			}
 			else if (input->PushKey(DIK_W))
 			{
-				axis.y += 1.0f;
+				axis.y += 3.0f;
 			}
 			y = (axis.y - position.y);
 		}

@@ -77,6 +77,7 @@ void GamePlay::Initialize()
 	// モデルセット
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
 	objSkydome->SetModel(modelSkydome);
+	modelBullet = ObjModel::CreateFromOBJ("bullet2");
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
@@ -156,6 +157,8 @@ void GamePlay::Initialize()
 	//camera->SetDistance(48.0f);
 	camera->bossPos = boss->GetPosition();
 	camera->playerPos = player->GetPosition();
+
+	ShowCursor(false);
 }
 
 void GamePlay::Finalize()
@@ -183,7 +186,7 @@ void GamePlay::Update()
 	ReticlePos.x = ((float)(mousePosition.x) / (float)width) * WinApp::window_width;
 	ReticlePos.y = ((float)(mousePosition.y) / (float)height) * WinApp::window_height;
 
-	if (input->TriggerKey(DIK_SPACE))
+	if (input->TriggerKey(DIK_C))
 	{
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
@@ -221,9 +224,24 @@ void GamePlay::Update()
 		bossCore_4->life--;
 	}
 
+	Shoot();
+
+	// プレイヤーの狙い弾を更新
+	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
+	{
+		bullet->Update();
+	}
+
+	// プレイヤーの狙い弾を消去
+	playerBullets.remove_if([](std::unique_ptr<TargetBullet>& bullet)
+		{
+			return bullet->GetDeathFlag();
+		}
+	);
+
 	// カメラターゲットのセット
-	camera->SetTarget(boss->GetPosition());
-	//camera->SetDistance(sqrtf(pow(boss->GetPosition().x - player->GetPosition().x, 2) + pow(boss->GetPosition().y - player->GetPosition().y, 2) + pow(boss->GetPosition().z - player->GetPosition().z, 2)) + 48.0f);
+	// camera->SetTarget(boss->GetPosition());
+	// camera->SetDistance(sqrtf(pow(boss->GetPosition().x - player->GetPosition().x, 2) + pow(boss->GetPosition().y - player->GetPosition().y, 2) + pow(boss->GetPosition().z - player->GetPosition().z, 2)) + 48.0f);
 	camera->bossPos = boss->GetPosition();
 	camera->playerPos = player->GetPosition();
 	camera->playerRot = player->GetRotation();
@@ -314,6 +332,11 @@ void GamePlay::Draw()
 	player->Draw();
 	boss->Draw();
 
+	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
+	{
+		bullet->Draw();
+	}
+
 	if (bossCore_1->isAlive || bossCore_2->isAlive || bossCore_3->isAlive || bossCore_4->isAlive)
 	{
 		bossPartsRing->Draw();
@@ -401,6 +424,35 @@ void GamePlay::DrawDebugText()
 		<< ReticlePos.y << ")";
 
 	debugText.Print(ReticlePosition.str(), 0, 60, 2.0f);
+}
+
+void GamePlay::Shoot()
+{
+	shotRate -= 0.1f;
+
+	XMVECTOR bulletVelocity = { 0,0,1.0f };
+
+	if (Input::GetInstance()->PushKey(DIK_SPACE) || Input::GetInstance()->PushKey(DIK_Z))
+	{
+		if (shotRate <= 0)
+		{
+			shotFlag = true;
+		}
+
+		if (shotFlag == true)
+		{
+			std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
+			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f);
+			newBullet->eyePosition = camera->GetEye();
+			//newBullet->eyePosition.y += 10.0f;
+			newBullet->targetPosition = camera->GetTarget();
+			newBullet->upVector = camera->GetUp();
+			playerBullets.push_back(std::move(newBullet));
+
+			shotFlag = false;
+			shotRate = 1.5f;
+		}
+	}
 }
 
 void GamePlay::CreateBossHitParticles(XMFLOAT3 position)

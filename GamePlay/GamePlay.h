@@ -104,6 +104,8 @@ public: // メンバ関数
 	//デバッグテキスト用関数
 	void DrawDebugText();
 
+	void Shoot();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	Input* input = Input::GetInstance();
@@ -119,6 +121,7 @@ private: // メンバ変数
 	Sprite* test = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
+	ObjModel* modelBullet = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
@@ -134,7 +137,10 @@ private: // メンバ変数
 	BossPartsCoreBox* bossCoreBox_4 = nullptr;
 	ObjObject* objSkydome = nullptr;
 
-	std::list<std::unique_ptr<Bullet>> playerBullets;
+	std::list<std::unique_ptr<TargetBullet>> playerBullets;
+
+	float shotRate = 0.0f;
+	bool shotFlag = true;
 
 	//レティクル座標
 	XMFLOAT2 ReticlePos = { 0.0f, 0.0f };

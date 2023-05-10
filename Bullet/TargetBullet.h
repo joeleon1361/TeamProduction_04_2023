@@ -1,6 +1,8 @@
 #pragma once
 #include "ObjObject.h"
-#include <math.h>
+#include "WinApp.h"
+#include <DirectXMath.h>
+
 class TargetBullet :
 	public ObjObject
 {
@@ -11,6 +13,7 @@ private:
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public: // 静的メンバ関数
@@ -19,7 +22,7 @@ public: // 静的メンバ関数
 
 private: // 静的メンバ変数
 // 消えるまでの時間
-	static const int32_t LifeTime = 30;
+	static const int32_t LifeTime = 180;
 
 public: // メンバ関数
 // 初期化
@@ -40,8 +43,16 @@ private: // メンバ変数
 	// デスタイマー 
 	int32_t deathTimer = LifeTime;
 
+	int width = 0;
+	int height = 0;
+
+	POINT cursorPos;
+
 public:
 	// デスフラグ
 	bool deathFlag = false;
+	XMFLOAT3 eyePosition = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 targetPosition = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 upVector = { 0.0f, 0.0f, 0.0f };
 };
 
