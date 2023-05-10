@@ -22,6 +22,9 @@ public: // メンバ関数
 	// 毎フレーム処理
 	void Update() override;
 
+	// ヒット時のカラー変更
+	void HitChangeColor();
+
 private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
 

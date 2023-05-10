@@ -29,6 +29,7 @@
 #include "Spline.h"
 #include "Lerp.h"
 #include "Easing.h"
+#include "Transform.h"
 
 #include "SceneManager.h"
 

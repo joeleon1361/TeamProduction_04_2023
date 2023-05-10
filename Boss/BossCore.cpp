@@ -52,16 +52,22 @@ void BossCore::Update()
 	ObjObject::Update();
 
 	// ヒット時のカラー変更
-	colorTimeRate += 0.1;
-	if (colorTimeRate > 1.0f)
-	{
-		colorTimeRate = 1.0f;
-	}
-	color = Lerp::LerpFloat4(hitColor, baseColor, colorTimeRate);
+	HitChangeColor();
 
 	// HPが0になったら撃破
 	if (life <= 0.0f)
 	{
 		isAlive = false;
 	}
+}
+
+// ヒット時のカラー変更
+void BossCore::HitChangeColor()
+{
+	colorTimeRate += 0.1;
+	if (colorTimeRate > 1.0f)
+	{
+		colorTimeRate = 1.0f;
+	}
+	color = Lerp::LerpFloat4(hitColor, baseColor, colorTimeRate);
 }
