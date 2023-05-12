@@ -98,9 +98,13 @@ public: // メンバ関数
 
 	//---パーティクル関数---//
 	//基本パーティクル
-	void DefaultParticle(XMFLOAT3 position);
+	void DefaultParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
-	void CreateBossHitParticles(XMFLOAT3 position);
+	void BlastPart_1(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	void BlastPart_2(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	void BlastPart_3(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	void BlastPart_4(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+
 
 	//マウス情報取得
 	void GetMouse();
@@ -146,5 +150,10 @@ private: // メンバ変数
 	//マウス座標
 	POINT mousePosition;
 
-	XMFLOAT3 worldPos;
+	XMFLOAT3 BossCoreWorld_1 = {};
+	XMFLOAT3 BossCoreWorld_2 = {};
+	XMFLOAT3 BossCoreWorld_3 = {};
+	XMFLOAT3 BossCoreWorld_4 = {};
+
+	
 };

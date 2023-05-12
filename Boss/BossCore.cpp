@@ -21,6 +21,7 @@ BossCore* BossCore::Create(ObjModel* model)
 		instance->SetModel(model);
 	}
 
+
 	return instance;
 }
 
@@ -44,6 +45,9 @@ bool BossCore::Initialize()
 	// カラー変更タイムレートの初期化
 	colorTimeRate = 1.0f;
 
+	//破壊タイマーのリセット
+	DestroyPartTime = DestroyDefault;
+
 	return true;
 }
 
@@ -57,8 +61,14 @@ void BossCore::Update()
 	// HPが0になったら撃破
 	if (life <= 0.0f)
 	{
+		if (DestroyPartTime > 0)
+		{
+			DestroyPartTime--;
+		}
+
 		isAlive = false;
 	}
+
 }
 
 // ヒット時のカラー変更
@@ -70,4 +80,9 @@ void BossCore::HitChangeColor()
 		colorTimeRate = 1.0f;
 	}
 	color = Lerp::LerpFloat4(hitColor, baseColor, colorTimeRate);
+}
+
+void BossCore::TimerReset(int Timer, int ResetValue)
+{
+	Timer = ResetValue;
 }
