@@ -35,13 +35,15 @@ bool Player::Initialize()
 	}
 
 	// モデルのセット
-	modelPlayer = ObjModel::CreateFromOBJ("bullet");
+	modelPlayer = ObjModel::CreateFromOBJ("player2");
 	SetModel(modelPlayer);
 
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
+
+	SetScale({ 10.0f, 10.0f, 10.0f });
 
 	axis = { position.x + cosf(XMConvertToRadians(xAngle)) * 50.0f, 0.0f, position.z + sinf(XMConvertToRadians(xAngle)) * 50.0f };
 	x = (axis.x - position.x);
@@ -184,7 +186,7 @@ void Player::Move()
 void Player::Rolling()
 {
 	Input* input = Input::GetInstance();
-	
+
 	// ロール
 	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{
