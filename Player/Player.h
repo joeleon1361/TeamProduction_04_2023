@@ -72,4 +72,3 @@ public:
 	Vector3 direction = { 0, 0, 1 };
 	Vector3 moveDirection = {};
 };
-

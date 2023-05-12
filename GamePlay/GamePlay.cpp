@@ -261,6 +261,26 @@ void GamePlay::Update()
 			bossCore_4->life--;
 			bullet->deathFlag = true;
 		}
+
+		// Turret 1 collision detection
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_1, 8.0f))
+		{
+			CreateBossHitParticles(bossTurretWorldPosition_1);
+			// 必要なときはいつでも、次の2行を自由に復元してください。
+			// bossTurret_1->colorTimeRate = 0.0f;
+			// bossTurret_1->life--;
+			bullet->deathFlag = true;
+		}
+
+		// Turret 2 collision detection
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_2, 8.0f))
+		{
+			CreateBossHitParticles(bossTurretWorldPosition_2);
+			// 必要なときはいつでも、次の2行を自由に復元してください。
+			//bossTurret_2->colorTimeRate = 0.0f;
+			//bossTurret_2->life--;
+			bullet->deathFlag = true;
+		}
 	}
 
 	Shoot();
@@ -292,6 +312,14 @@ void GamePlay::Update()
 	{
 		BossTargetShoot(bossTurretWorldPosition_2, player->GetPosition(), 10.0f);
 		bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
+	}
+
+	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
+	{
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, player->GetPosition(), 3.0f))
+		{
+			bullet->deathFlag = true;
+		}
 	}
 
 	// ボスの狙い弾を更新
