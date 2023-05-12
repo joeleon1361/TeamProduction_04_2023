@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjObject.h"
+#include "ParticleManager.h"
 #include "Lerp.h"
 class BossCore :
 	public ObjObject
@@ -21,6 +22,13 @@ public: // メンバ関数
 
 	// 毎フレーム処理
 	void Update() override;
+
+	// ヒット時のカラー変更
+	void HitChangeColor();
+
+
+	//ゲッター
+	const int& GetLife() { return life; }
 
 private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;

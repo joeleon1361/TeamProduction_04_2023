@@ -235,6 +235,9 @@
     <ClCompile Include="Boss\BossPartsSphere.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -429,6 +432,9 @@
     </ClInclude>
     <ClInclude Include="Boss\BossPartsSphere.h">
       <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

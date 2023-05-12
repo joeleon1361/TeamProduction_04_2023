@@ -167,6 +167,8 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
+	worldPos = Transform::TransformWorldPosition(bossCore_1->GetPosition(), bossCoreBox_1->GetMatWorld());
+
 	//RECT構造体へのポインタ
 	RECT rect;
 
@@ -195,7 +197,11 @@ void GamePlay::Update()
 	// コア1の疑似ヒット処理
 	if (input->TriggerKey(DIK_U))
 	{
-		CreateBossHitParticles(boss->GetPosition());
+		//ライフが0になった時にオブジェクトの位置から撃破パーティクルを発生
+		if (bossCore_1->GetLife() <= 1)
+		{
+			CreateBossHitParticles(worldPos);
+		}
 		bossCore_1->colorTimeRate = 0.0f;
 		bossCore_1->life--;
 	}
@@ -203,7 +209,7 @@ void GamePlay::Update()
 	// コア2の疑似ヒット処理
 	if (input->TriggerKey(DIK_I))
 	{
-		CreateBossHitParticles(boss->GetPosition());
+		//CreateBossHitParticles(boss->GetPosition());
 		bossCore_2->colorTimeRate = 0.0f;
 		bossCore_2->life--;
 	}
@@ -211,7 +217,7 @@ void GamePlay::Update()
 	// コア3の疑似ヒット処理
 	if (input->TriggerKey(DIK_O))
 	{
-		CreateBossHitParticles(boss->GetPosition());
+		//CreateBossHitParticles(boss->GetPosition());
 		bossCore_3->colorTimeRate = 0.0f;
 		bossCore_3->life--;
 	}
@@ -219,7 +225,7 @@ void GamePlay::Update()
 	// コア4の疑似ヒット処理
 	if (input->TriggerKey(DIK_P))
 	{
-		CreateBossHitParticles(boss->GetPosition());
+		//CreateBossHitParticles(boss->GetPosition());
 		bossCore_4->colorTimeRate = 0.0f;
 		bossCore_4->life--;
 	}
@@ -461,19 +467,19 @@ void GamePlay::CreateBossHitParticles(XMFLOAT3 position)
 		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
 		const float rnd_pos = 1.0f;
 		XMFLOAT3 pos{};
-		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
-		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
+		pos.x = position.x/*((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x*/;
+		pos.y = position.y/*((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y*/;
 		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
 
 		const float rnd_vel = 0.5f;
 		XMFLOAT3 vel{};
 		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = -10 / 5.0f;
 
 		XMFLOAT3 acc{};
 
 		// 追加
-		bossHitParticle->Add(40, pos, vel, acc, { 1.0f,0.1f, 0.1f, 1.0f }, { 1.0f,0.1f, 0.1f, 1.0f }, 2.0f, 0.0f);
+		bossHitParticle->Add(40, pos, vel, acc, { 1.0f,0.1f, 0.1f, 1.0f }, { 1.0f,0.1f, 0.1f, 1.0f }, 20.0f, 0.0f);
 	}
 }
