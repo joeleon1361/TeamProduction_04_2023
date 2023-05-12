@@ -163,9 +163,9 @@ void Player::Move()
 		degrees = XMConvertToDegrees(radians);
 	}
 
-	position.x += 1.0f * (x / hypotenuse);
-	position.y += 1.0f * (y / hypotenuse);
-	position.z += 1.0f * (z / hypotenuse);
+	position.x += 2.0f * (x / hypotenuse);
+	position.y += 2.0f * (y / hypotenuse);
+	position.z += 2.0f * (z / hypotenuse);
 
 	if (axis.y > 45.0f)
 	{

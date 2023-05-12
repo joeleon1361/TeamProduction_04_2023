@@ -200,7 +200,7 @@ void GamePlay::Update()
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		// コア1の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos, 12.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos, 8.0f))
 		{
 			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
 			{
@@ -212,7 +212,7 @@ void GamePlay::Update()
 		}
 
 		// コア2の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos2, 12.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos2, 8.0f))
 		{
 			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
 			{
@@ -224,7 +224,7 @@ void GamePlay::Update()
 		}
 
 		// コア3の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos3, 12.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos3, 8.0f))
 		{
 			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
 			{
@@ -236,7 +236,7 @@ void GamePlay::Update()
 		}
 
 		// コア4の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos4, 12.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos4, 8.0f))
 		{
 			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
 			{
