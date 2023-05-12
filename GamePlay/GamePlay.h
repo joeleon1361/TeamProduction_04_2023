@@ -110,6 +110,8 @@ public: // メンバ関数
 
 	void Shoot();
 
+	bool BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize);
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	Input* input = Input::GetInstance();
@@ -153,4 +155,7 @@ private: // メンバ変数
 	POINT mousePosition;
 
 	XMFLOAT3 worldPos;
+	XMFLOAT3 worldPos2;
+	XMFLOAT3 worldPos3;
+	XMFLOAT3 worldPos4;
 };

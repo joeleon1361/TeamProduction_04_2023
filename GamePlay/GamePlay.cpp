@@ -168,6 +168,9 @@ void GamePlay::Finalize()
 void GamePlay::Update()
 {
 	worldPos = Transform::TransformWorldPosition(bossCore_1->GetPosition(), bossCoreBox_1->GetMatWorld());
+	worldPos2 = Transform::TransformWorldPosition(bossCore_2->GetPosition(), bossCoreBox_2->GetMatWorld());
+	worldPos3 = Transform::TransformWorldPosition(bossCore_3->GetPosition(), bossCoreBox_3->GetMatWorld());
+	worldPos4 = Transform::TransformWorldPosition(bossCore_4->GetPosition(), bossCoreBox_4->GetMatWorld());
 
 	//RECT構造体へのポインタ
 	RECT rect;
@@ -194,40 +197,55 @@ void GamePlay::Update()
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 
-	// コア1の疑似ヒット処理
-	if (input->TriggerKey(DIK_U))
+	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
-		//ライフが0になった時にオブジェクトの位置から撃破パーティクルを発生
-		if (bossCore_1->GetLife() <= 1)
+		// コア1の疑似ヒット処理
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos, 12.0f))
 		{
-			CreateBossHitParticles(worldPos);
+			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
+			{
+				CreateBossHitParticles(worldPos);
+			}
+			bossCore_1->colorTimeRate = 0.0f;
+			bossCore_1->life--;
+			bullet->deathFlag = true;
 		}
-		bossCore_1->colorTimeRate = 0.0f;
-		bossCore_1->life--;
-	}
 
-	// コア2の疑似ヒット処理
-	if (input->TriggerKey(DIK_I))
-	{
-		//CreateBossHitParticles(boss->GetPosition());
-		bossCore_2->colorTimeRate = 0.0f;
-		bossCore_2->life--;
-	}
+		// コア2の疑似ヒット処理
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos2, 12.0f))
+		{
+			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
+			{
+				CreateBossHitParticles(worldPos2);
+			}
+			bossCore_2->colorTimeRate = 0.0f;
+			bossCore_2->life--;
+			bullet->deathFlag = true;
+		}
 
-	// コア3の疑似ヒット処理
-	if (input->TriggerKey(DIK_O))
-	{
-		//CreateBossHitParticles(boss->GetPosition());
-		bossCore_3->colorTimeRate = 0.0f;
-		bossCore_3->life--;
-	}
+		// コア3の疑似ヒット処理
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos3, 12.0f))
+		{
+			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
+			{
+				CreateBossHitParticles(worldPos3);
+			}
+			bossCore_3->colorTimeRate = 0.0f;
+			bossCore_3->life--;
+			bullet->deathFlag = true;
+		}
 
-	// コア4の疑似ヒット処理
-	if (input->TriggerKey(DIK_P))
-	{
-		//CreateBossHitParticles(boss->GetPosition());
-		bossCore_4->colorTimeRate = 0.0f;
-		bossCore_4->life--;
+		// コア4の疑似ヒット処理
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos4, 12.0f))
+		{
+			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
+			{
+				CreateBossHitParticles(worldPos3);
+			}
+			bossCore_4->colorTimeRate = 0.0f;
+			bossCore_4->life--;
+			bullet->deathFlag = true;
+		}
 	}
 
 	Shoot();
@@ -459,6 +477,16 @@ void GamePlay::Shoot()
 			shotRate = 1.5f;
 		}
 	}
+}
+
+bool GamePlay::BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize)
+{
+	XMVECTOR s1Pos = XMLoadFloat3(&bulletPos);
+	XMVECTOR s2Pos = XMLoadFloat3(&bossPos);
+	float distance = XMVectorGetX(XMVector3Length(s1Pos - s2Pos));
+	float radiusSum = bulletSize + bossSize;
+
+	return distance <= radiusSum;
 }
 
 void GamePlay::CreateBossHitParticles(XMFLOAT3 position)
