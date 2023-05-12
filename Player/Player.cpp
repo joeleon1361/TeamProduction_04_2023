@@ -35,7 +35,7 @@ bool Player::Initialize()
 	}
 
 	// モデルのセット
-	modelPlayer = ObjModel::CreateFromOBJ("bullet");
+	modelPlayer = ObjModel::CreateFromOBJ("player2");
 	SetModel(modelPlayer);
 
 	// デバッグテキスト用テクスチャ読み込み
