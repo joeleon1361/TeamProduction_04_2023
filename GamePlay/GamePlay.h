@@ -22,6 +22,7 @@
 #include "Boss.h"
 #include "BossPartsRing.h"
 #include "BossPartsSphere.h"
+#include "BossTurret.h"
 #include "BossCore.h"
 #include "BossPartsCoreBox.h"
 #include "TargetBullet.h"
@@ -54,6 +55,7 @@ class BossPartsRing;
 class BossPartsSphere;
 class BossCore;
 class BossPartsCoreBox;
+class BossTurret;
 
 // ゲームシーン
 class GamePlay : public BaseScene
@@ -133,6 +135,8 @@ private: // メンバ変数
 	BossPartsCoreBox* bossCoreBox_2 = nullptr;
 	BossPartsCoreBox* bossCoreBox_3 = nullptr;
 	BossPartsCoreBox* bossCoreBox_4 = nullptr;
+	BossTurret* bossTurret_1 = nullptr;
+	BossTurret* bossTurret_2 = nullptr;
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<Bullet>> playerBullets;

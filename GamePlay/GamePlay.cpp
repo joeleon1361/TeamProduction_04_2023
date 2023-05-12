@@ -73,6 +73,8 @@ void GamePlay::Initialize()
 	bossCoreBox_2 = BossPartsCoreBox::Create();
 	bossCoreBox_3 = BossPartsCoreBox::Create();
 	bossCoreBox_4 = BossPartsCoreBox::Create();
+	bossTurret_1 = BossTurret::Create();
+	bossTurret_2 = BossTurret::Create();
 
 	// モデルセット
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
@@ -145,6 +147,16 @@ void GamePlay::Initialize()
 	bossCore_4->SetPosition({ 0.0f , 0.0f, 1.0f });
 	bossCore_4->SetScale({ 0.7f, 0.7f, 0.7f });
 	bossCore_4->SetParent(bossCoreBox_4);
+
+	// ボスの砲台1
+	bossTurret_1->SetPosition({ 0.0f, 1.0f, 0.0f });
+	bossTurret_1->SetScale({ 0.4f, 0.4f, 0.4f });
+	bossTurret_1->SetParent({ bossPartsSphere });
+
+	// ボスの砲台2
+	bossTurret_2->SetPosition({ 0.0f, -1.0, 0.0f });
+	bossTurret_2->SetScale({ 0.4f, 0.4f, 0.4f });
+	bossTurret_2->SetParent({ bossPartsSphere });
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -244,6 +256,8 @@ void GamePlay::Update()
 	bossCore_2->Update();
 	bossCore_3->Update();
 	bossCore_4->Update();
+	bossTurret_1->Update();
+	bossTurret_2->Update();
 
 	if (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
 	{
@@ -280,7 +294,7 @@ void GamePlay::Update()
 	Reticle->SetAnchorPoint({ 0.5f, 0.5f });
 	Reticle->SetPosition(ReticlePos);
 
-	test->SetPosition( { (float)mousePosition.x, (float)mousePosition.y } );
+	test->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
 
 	DrawDebugText();
 
@@ -322,6 +336,8 @@ void GamePlay::Draw()
 		bossCoreBox_2->Draw();
 		bossCoreBox_3->Draw();
 		bossCoreBox_4->Draw();
+		bossTurret_1->Draw();
+		bossTurret_2->Draw();
 	}
 
 	if (bossCore_1->isAlive)
