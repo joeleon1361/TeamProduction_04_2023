@@ -184,6 +184,9 @@ void GamePlay::Update()
 	worldPos3 = Transform::TransformWorldPosition(bossCore_3->GetPosition(), bossCoreBox_3->GetMatWorld());
 	worldPos4 = Transform::TransformWorldPosition(bossCore_4->GetPosition(), bossCoreBox_4->GetMatWorld());
 
+	bossTurretWorldPosition_1 = Transform::TransformWorldPosition(bossTurret_1->GetPosition(), bossPartsSphere->GetMatWorld());
+	bossTurretWorldPosition_2 = Transform::TransformWorldPosition(bossTurret_2->GetPosition(), bossPartsSphere->GetMatWorld());
+
 	//RECT構造体へのポインタ
 	RECT rect;
 
@@ -270,6 +273,35 @@ void GamePlay::Update()
 
 	// プレイヤーの狙い弾を消去
 	playerBullets.remove_if([](std::unique_ptr<TargetBullet>& bullet)
+		{
+			return bullet->GetDeathFlag();
+		}
+	);
+
+	// ボスの砲台1を一定間隔で発射
+	bossTurret_1->shotTimer--;
+	if (bossTurret_1->shotTimer <= 0)
+	{
+		BossTargetShoot(bossTurretWorldPosition_1, player->GetPosition(), 10.0f);
+		bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
+	}
+
+	// ボスの砲台2を一定間隔で発射
+	bossTurret_2->shotTimer--;
+	if (bossTurret_2->shotTimer <= 0)
+	{
+		BossTargetShoot(bossTurretWorldPosition_2, player->GetPosition(), 10.0f);
+		bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
+	}
+
+	// ボスの狙い弾を更新
+	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
+	{
+		bullet->Update();
+	}
+
+	// ボスの狙い弾を消去
+	bossTargetBullets.remove_if([](std::unique_ptr<Bullet>& bullet)
 		{
 			return bullet->GetDeathFlag();
 		}
@@ -371,6 +403,11 @@ void GamePlay::Draw()
 	boss->Draw();
 
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
+	{
+		bullet->Draw();
+	}
+
+	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{
 		bullet->Draw();
 	}
@@ -493,6 +530,14 @@ void GamePlay::Shoot()
 			shotRate = 1.5f;
 		}
 	}
+}
+
+void GamePlay::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed)
+{
+	std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
+	newBullet = Bullet::Create(modelBullet, startPosition, { 1.0f, 1.0f, 1.0f }, endPosition, bulletSpeed);
+
+	bossTargetBullets.push_back(std::move(newBullet));
 }
 
 bool GamePlay::BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize)

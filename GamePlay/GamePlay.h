@@ -110,7 +110,11 @@ public: // メンバ関数
 	//デバッグテキスト用関数
 	void DrawDebugText();
 
+	// プレイヤーの弾を発射
 	void Shoot();
+
+	// ボスの弾を発射
+	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
 	bool BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize);
 
@@ -149,6 +153,8 @@ private: // メンバ変数
 
 	std::list<std::unique_ptr<TargetBullet>> playerBullets;
 
+	std::list<std::unique_ptr<Bullet>>bossTargetBullets;
+
 	float shotRate = 0.0f;
 	bool shotFlag = true;
 
@@ -158,8 +164,13 @@ private: // メンバ変数
 	//マウス座標
 	POINT mousePosition;
 
+	// コアのワールド座標
 	XMFLOAT3 worldPos;
 	XMFLOAT3 worldPos2;
 	XMFLOAT3 worldPos3;
 	XMFLOAT3 worldPos4;
+
+	// ボスの砲台のワールド座標
+	XMFLOAT3 bossTurretWorldPosition_1;
+	XMFLOAT3 bossTurretWorldPosition_2;
 };
