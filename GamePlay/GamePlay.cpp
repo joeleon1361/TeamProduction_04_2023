@@ -273,8 +273,8 @@ void GamePlay::Update()
 		// Turret 1 collision detection
 		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_1, 8.0f))
 		{
-			CreateBossHitParticles(bossTurretWorldPosition_1);
-			// 必要なときはいつでも、次の2行を自由に復元してください。
+			// 必要なときはいつでも、次の3行を自由に復元してください。
+			//CreateBossHitParticles(bossTurretWorldPosition_1);
 			// bossTurret_1->colorTimeRate = 0.0f;
 			// bossTurret_1->life--;
 			bullet->deathFlag = true;
@@ -283,8 +283,8 @@ void GamePlay::Update()
 		// Turret 2 collision detection
 		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_2, 8.0f))
 		{
-			CreateBossHitParticles(bossTurretWorldPosition_2);
-			// 必要なときはいつでも、次の2行を自由に復元してください。
+			// 必要なときはいつでも、次の3行を自由に復元してください。
+			//CreateBossHitParticles(bossTurretWorldPosition_2);
 			//bossTurret_2->colorTimeRate = 0.0f;
 			//bossTurret_2->life--;
 			bullet->deathFlag = true;
