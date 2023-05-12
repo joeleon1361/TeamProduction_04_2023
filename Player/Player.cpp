@@ -43,6 +43,8 @@ bool Player::Initialize()
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
+	SetScale({ 10.0f, 10.0f, 10.0f });
+
 	axis = { position.x + cosf(XMConvertToRadians(xAngle)) * 50.0f, 0.0f, position.z + sinf(XMConvertToRadians(xAngle)) * 50.0f };
 	x = (axis.x - position.x);
 	z = (axis.z - position.z);
@@ -184,7 +186,7 @@ void Player::Move()
 void Player::Rolling()
 {
 	Input* input = Input::GetInstance();
-	
+
 	// ロール
 	if (input->PushKey(DIK_A) || input->PushKey(DIK_D))
 	{

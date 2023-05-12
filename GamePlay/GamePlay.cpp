@@ -87,7 +87,7 @@ void GamePlay::Initialize()
 	// プレイヤー
 	player->SetPosition({ 0.0f, 0.0f, -200.0f });
 	player->SetRotation({ 0.0f, 180.0f, 0.0f });
-	player->SetScale({ 1.0f, 1.0f, 1.0f });
+	player->SetScale({ 2.0f, 2.0f, 2.0f });
 
 	// ボスのベース
 	boss->SetPosition({ 0.0f,0.0f,0.0f });
