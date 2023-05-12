@@ -2,7 +2,7 @@
 
 using namespace DirectX;
 
-std::unique_ptr<Bullet> Bullet::Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const float velocity)
+std::unique_ptr<Bullet> Bullet::Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	Bullet* instance = new Bullet();
@@ -11,7 +11,7 @@ std::unique_ptr<Bullet> Bullet::Create(ObjModel* model, const XMFLOAT3 position,
 	}
 
 	// 初期化
-	if (!instance->Initialize(position, scale, velocity)) {
+	if (!instance->Initialize(position, scale, target, speed)) {
 		delete instance;
 		assert(0);
 	}
@@ -24,7 +24,7 @@ std::unique_ptr<Bullet> Bullet::Create(ObjModel* model, const XMFLOAT3 position,
 	return std::unique_ptr<Bullet>(instance);
 }
 
-bool Bullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, const float velocity)
+bool Bullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed)
 {
 	if (!ObjObject::Initialize())
 	{
@@ -32,7 +32,15 @@ bool Bullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, const flo
 	}
 	this->position = position;
 	this->scale = scale;
-	this->velocity = velocity;
+	this->target = target;
+	this->speed = speed;
+
+	float magnitude = (float)sqrt((target.x - position.x) * (target.x - position.x) + (target.y - position.y) * (target.y - position.y) + (target.z - position.z) * (target.z - position.z));
+
+	velocity.x = (target.x - position.x) / magnitude;
+	velocity.y = (target.y - position.y) / magnitude;
+	velocity.z = (target.z - position.z) / magnitude;
+
 	return true;
 }
 
@@ -40,8 +48,10 @@ void Bullet::Update()
 {
 	ObjObject::Update();
 
-	position.z += velocity;
-	
+	position.x += velocity.x * speed;
+	position.y += velocity.y * speed;
+	position.z += velocity.z * speed;
+
 	if (--deathTimer <= 0)
 	{
 		deathFlag = true;
