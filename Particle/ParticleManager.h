@@ -140,6 +140,7 @@ private: // メンバ変数
 		add,
 		sub
 	};
+
 private:
 	// コンストラクタ
 	ParticleManager(ID3D12Device* device, Camera* camera);
