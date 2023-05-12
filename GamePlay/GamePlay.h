@@ -96,7 +96,10 @@ public: // メンバ関数
 	// 描画
 	void Draw() override;
 
-	// 弾が当たった際のパーティクル生成
+	//---パーティクル関数---//
+	//基本パーティクル
+	void DefaultParticle(XMFLOAT3 position);
+
 	void CreateBossHitParticles(XMFLOAT3 position);
 
 	//マウス情報取得
@@ -142,4 +145,6 @@ private: // メンバ変数
 
 	//マウス座標
 	POINT mousePosition;
+
+	XMFLOAT3 worldPos;
 };
