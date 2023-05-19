@@ -77,6 +77,7 @@ private: // ƒƒ“ƒo•Ï”
 	float collisionSphereRadius = 3.0f;
 
 	XMFLOAT3 Vel = {};
+	float yVel = 0.0f;
 	
 public:
 	Vector3 direction = { 0, 0, 1 };

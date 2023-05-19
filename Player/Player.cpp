@@ -151,22 +151,41 @@ void Player::Move()
 		{
 			if (input->PushKey(DIK_S))
 			{
-				axis.y -= 2.0f;
+				yVel -= 0.05f;
 			}
 			else if (input->PushKey(DIK_W))
 			{
-				axis.y += 2.0f;
+				yVel += 0.05f;
 			}
-
-			y = (axis.y - position.y);
+			if (yVel > 1.0f)
+			{
+				yVel = 1.0f;
+			}
+			else if (yVel < -1.0f)
+			{
+				yVel = -1.0f;
+			}
 		}
 
 		hypotenuse = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 		radians = atan2(z, x);
-		radians2 = asin(y / hypotenuse);
 		degrees = XMConvertToDegrees(radians);
-		degrees2 = XMConvertToDegrees(radians2);
 	}
+
+	axis.y += yVel;
+	if (axis.y > 220.0f)
+	{
+		axis.y = 220.0f;
+		yVel = 0.0f;
+	}
+	else if (axis.y < -220.0f)
+	{
+		axis.y = -220.0f;
+		yVel = 0.0f;
+	}
+	y = (axis.y - position.y);
+	radians2 = asin(y / hypotenuse);
+	degrees2 = XMConvertToDegrees(radians2);
 
 	Vel.x = (x / hypotenuse);
 	Vel.y = (y / hypotenuse);
@@ -176,14 +195,10 @@ void Player::Move()
 	position.y += 2.0f * Vel.y;
 	position.z += 2.0f * Vel.z;
 
-	if (axis.y > 180.0f)
+	/*if (!input->PushKey(DIK_S) && !input->PushKey(DIK_W))
 	{
-		axis.y = 180.0f;
-	}
-	else if (axis.y < -180.0f)
-	{
-		axis.y = -180.0f;
-	}
+		axis.y = position.y + rotation.x;
+	}*/
 
 	SetPosition(position);
 	SetRotation({ -degrees2, -degrees + 90.0f, rotation.z });
