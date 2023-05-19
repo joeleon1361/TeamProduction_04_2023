@@ -151,18 +151,21 @@ void Player::Move()
 		{
 			if (input->PushKey(DIK_S))
 			{
-				axis.y -= 3.0f;
+				axis.y -= 2.0f;
 			}
 			else if (input->PushKey(DIK_W))
 			{
-				axis.y += 3.0f;
+				axis.y += 2.0f;
 			}
+
 			y = (axis.y - position.y);
 		}
 
 		hypotenuse = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 		radians = atan2(z, x);
+		radians2 = asin(y / hypotenuse);
 		degrees = XMConvertToDegrees(radians);
+		degrees2 = XMConvertToDegrees(radians2);
 	}
 
 	Vel.x = (x / hypotenuse);
@@ -173,17 +176,17 @@ void Player::Move()
 	position.y += 2.0f * Vel.y;
 	position.z += 2.0f * Vel.z;
 
-	if (axis.y > 45.0f)
+	if (axis.y > 180.0f)
 	{
-		axis.y = 45.0f;
+		axis.y = 180.0f;
 	}
-	else if (axis.y < -45.0f)
+	else if (axis.y < -180.0f)
 	{
-		axis.y = -45.0f;
+		axis.y = -180.0f;
 	}
 
 	SetPosition(position);
-	SetRotation({ -axis.y, -degrees + 90.0f, rotation.z });
+	SetRotation({ -degrees2, -degrees + 90.0f, rotation.z });
 }
 
 // ‘O•ûŒüŽž‚ÌŽ©‹@‚ÌŒX‚«

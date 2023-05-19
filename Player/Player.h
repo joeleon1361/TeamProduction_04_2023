@@ -70,7 +70,10 @@ private: // ƒƒ“ƒo•Ï”
 	float z = 0.0f;
 	float hypotenuse = 0.0f;
 	float radians = 0.0f;
+	float radians2 = 0.0f;
 	float degrees = 90.0f;
+	float degrees2 = 0.0f;
+	float yChange = 0.0f;
 	float collisionSphereRadius = 3.0f;
 
 	XMFLOAT3 Vel = {};
