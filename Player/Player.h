@@ -46,6 +46,11 @@ public: // メンバ関数
 
 	void MoveTowards(float& current, float target, float speed, float elapsedTime);
 
+	//ゲッター
+	const XMFLOAT3& GetPosition() { return position; }
+
+	const XMFLOAT3& GetVel() { return Vel; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	DebugText debugText;
@@ -67,6 +72,8 @@ private: // メンバ変数
 	float radians = 0.0f;
 	float degrees = 90.0f;
 	float collisionSphereRadius = 3.0f;
+
+	XMFLOAT3 Vel = {};
 	
 public:
 	Vector3 direction = { 0, 0, 1 };
