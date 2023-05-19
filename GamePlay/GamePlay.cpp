@@ -37,7 +37,7 @@ void GamePlay::Initialize()
 	}
 
 	//レティクルテクスチャ
-	if (!Sprite::LoadTexture(TextureNumber::reticle, L"Resources/Reticle.png")) {
+	if (!Sprite::LoadTexture(TextureNumber::reticle, L"Resources/Re.png")) {
 		assert(0);
 		return;
 	}
@@ -441,7 +441,7 @@ void GamePlay::Update()
 
 	DrawDebugText();
 
-	JettParticle(5, 10, player->GetPosition(), 1.0f, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
+	JettParticle(5, 10, player->GetPosition(), 1.0f, 0.0f, { 0.941f, 0.231f, 0.156f, 1.0f }, { 0.941f, 0.862f, 0.156f, 1.0f });
 
 	// パーティクル更新
 	bossHitParticle->Update();
