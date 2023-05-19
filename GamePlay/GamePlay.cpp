@@ -441,7 +441,7 @@ void GamePlay::Update()
 
 	DrawDebugText();
 
-	JettParticle(5, 10, player->GetPosition(), 2.0f, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
+	JettParticle(5, 10, player->GetPosition(), 1.0f, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 	// パーティクル更新
 	bossHitParticle->Update();
@@ -735,9 +735,9 @@ void GamePlay::JettParticle(int PartNum, int Life, XMFLOAT3 position, int StartS
 		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
 		const float rnd_pos = 1.0f;
 		XMFLOAT3 pos{};
-		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().x;
-		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().y;
-		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().z;
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().x - 6.0f * player->GetVel().x;
+		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().y - 6.0f * player->GetVel().y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().z - 6.0f * player->GetVel().z;
 
 		const float rnd_vel = 10.0f;
 		XMFLOAT3 vel{};
