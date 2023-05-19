@@ -63,23 +63,36 @@ void GamePlay::Initialize()
 
 	// ボス
 	boss = Boss::Create();
-	bossPartsRing = BossPartsRing::Create();
-	bossPartsSphere = BossPartsSphere::Create();
+	bossPartsRing = BossParts::Create();
+	bossPartsSphere = BossParts::Create();
 	bossCore_1 = BossCore::Create();
 	bossCore_2 = BossCore::Create();
 	bossCore_3 = BossCore::Create();
 	bossCore_4 = BossCore::Create();
-	bossCoreBox_1 = BossPartsCoreBox::Create();
-	bossCoreBox_2 = BossPartsCoreBox::Create();
-	bossCoreBox_3 = BossPartsCoreBox::Create();
-	bossCoreBox_4 = BossPartsCoreBox::Create();
+	bossCoreBox_1 = BossParts::Create();
+	bossCoreBox_2 = BossParts::Create();
+	bossCoreBox_3 = BossParts::Create();
+	bossCoreBox_4 = BossParts::Create();
 	bossTurret_1 = BossTurret::Create();
 	bossTurret_2 = BossTurret::Create();
 
 	// モデルセット
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
 	objSkydome->SetModel(modelSkydome);
+
 	modelBullet = ObjModel::CreateFromOBJ("bullet2");
+
+	modelBossPartsCoreBox = ObjModel::CreateFromOBJ("bossPartsCoreBox");
+	bossCoreBox_1->SetModel(modelBossPartsCoreBox);
+	bossCoreBox_2->SetModel(modelBossPartsCoreBox);
+	bossCoreBox_3->SetModel(modelBossPartsCoreBox);
+	bossCoreBox_4->SetModel(modelBossPartsCoreBox);
+
+	modelBossPartsRing = ObjModel::CreateFromOBJ("bossPartsRing");
+	bossPartsRing->SetModel(modelBossPartsRing);
+
+	modelBossPartsSphere = ObjModel::CreateFromOBJ("bossPartsSphere");
+	bossPartsSphere->SetModel(modelBossPartsSphere);
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });

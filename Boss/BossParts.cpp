@@ -1,11 +1,9 @@
-#include "BossPartsRing.h"
+#include "BossParts.h"
 
-using namespace DirectX;
-
-BossPartsRing* BossPartsRing::Create(ObjModel* model)
+BossParts* BossParts::Create(ObjModel* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
-	BossPartsRing* instance = new BossPartsRing();
+	BossParts* instance = new BossParts();
 	if (instance == nullptr) {
 		return nullptr;
 	}
@@ -24,21 +22,17 @@ BossPartsRing* BossPartsRing::Create(ObjModel* model)
 	return instance;
 }
 
-bool BossPartsRing::Initialize()
+bool BossParts::Initialize()
 {
 	if (!ObjObject::Initialize())
 	{
 		return false;
 	}
 
-	// モデルのセット
-	modelBossPartsRing = ObjModel::CreateFromOBJ("bossPartsRing");
-	SetModel(modelBossPartsRing);
-
 	return true;
 }
 
-void BossPartsRing::Update()
+void BossParts::Update()
 {
 	ObjObject::Update();
 }

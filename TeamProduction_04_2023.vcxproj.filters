@@ -223,16 +223,10 @@
     <ClCompile Include="Math\Vector.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Boss\BossPartsRing.cpp">
-      <Filter>Boss</Filter>
-    </ClCompile>
     <ClCompile Include="Boss\BossCore.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Boss\BossPartsCoreBox.cpp">
-      <Filter>Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="Boss\BossPartsSphere.cpp">
+    <ClCompile Include="Boss\BossParts.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
@@ -424,16 +418,10 @@
     <ClInclude Include="Math\Vector.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Boss\BossPartsRing.h">
-      <Filter>Boss</Filter>
-    </ClInclude>
     <ClInclude Include="Boss\BossCore.h">
       <Filter>Boss</Filter>
     </ClInclude>
-    <ClInclude Include="Boss\BossPartsCoreBox.h">
-      <Filter>Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="Boss\BossPartsSphere.h">
+    <ClInclude Include="Boss\BossParts.h">
       <Filter>Boss</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">

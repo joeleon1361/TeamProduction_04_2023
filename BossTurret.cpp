@@ -30,7 +30,7 @@ bool BossTurret::Initialize()
 	}
 
 	// モデルのセット
-	modelBossTurret = ObjModel::CreateFromOBJ("bossPartsSphere");
+	modelBossTurret = ObjModel::CreateFromOBJ("Turret");
 	SetModel(modelBossTurret);
 
 	SetColor({ 0.2f, 0.9f, 0.2f, 1.0f });
