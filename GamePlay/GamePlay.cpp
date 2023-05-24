@@ -73,6 +73,8 @@ void GamePlay::Initialize()
 	bossCoreBox_2 = BossParts::Create();
 	bossCoreBox_3 = BossParts::Create();
 	bossCoreBox_4 = BossParts::Create();
+	bossTurretStand_1 = BossParts::Create();
+	bossTurretStand_2 = BossParts::Create();
 	bossTurret_1 = BossTurret::Create();
 	bossTurret_2 = BossTurret::Create();
 
@@ -93,6 +95,10 @@ void GamePlay::Initialize()
 
 	modelBossPartsSphere = ObjModel::CreateFromOBJ("bossPartsSphere");
 	bossPartsSphere->SetModel(modelBossPartsSphere);
+
+	modelBossPartsTurretStand = ObjModel::CreateFromOBJ("TurretStand");
+	bossTurretStand_1->SetModel(modelBossPartsTurretStand);
+	bossTurretStand_2->SetModel(modelBossPartsTurretStand);
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
@@ -163,14 +169,23 @@ void GamePlay::Initialize()
 	bossCore_4->SetParent(bossCoreBox_4);
 
 	// ボスの砲台1
-	bossTurret_1->SetPosition({ 0.0f, 1.0f, 0.0f });
-	bossTurret_1->SetScale({ 0.4f, 0.4f, 0.4f });
-	bossTurret_1->SetParent({ bossPartsSphere });
+	bossTurretStand_1->SetPosition({ 0.0f, 0.9f, 0.0f });
+	bossTurretStand_1->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossTurretStand_1->SetParent({ bossPartsSphere });
+
+	bossTurret_1->SetPosition({ 0.0f, 2.5, 0.0f });
+	bossTurret_1->SetScale({ 1.0f, 1.0f, 1.0f });
+	bossTurret_1->SetParent({ bossTurretStand_1 });
 
 	// ボスの砲台2
-	bossTurret_2->SetPosition({ 0.0f, -1.0, 0.0f });
-	bossTurret_2->SetScale({ 0.4f, 0.4f, 0.4f });
-	bossTurret_2->SetParent({ bossPartsSphere });
+	bossTurretStand_2->SetPosition({ 0.0f, -0.9f, 0.0f });
+	bossTurretStand_2->SetRotation({0.0f, 0.0f, 180.0f});
+	bossTurretStand_2->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossTurretStand_2->SetParent({ bossPartsSphere });
+
+	bossTurret_2->SetPosition({ 0.0f, 2.5, 0.0f });
+	bossTurret_2->SetScale({ 1.0f, 1.0f, 1.0f });
+	bossTurret_2->SetParent({ bossTurretStand_2 });
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -197,8 +212,8 @@ void GamePlay::Update()
 	worldPos3 = Transform::TransformWorldPosition(bossCore_3->GetPosition(), bossCoreBox_3->GetMatWorld());
 	worldPos4 = Transform::TransformWorldPosition(bossCore_4->GetPosition(), bossCoreBox_4->GetMatWorld());
 
-	bossTurretWorldPosition_1 = Transform::TransformWorldPosition(bossTurret_1->GetPosition(), bossPartsSphere->GetMatWorld());
-	bossTurretWorldPosition_2 = Transform::TransformWorldPosition(bossTurret_2->GetPosition(), bossPartsSphere->GetMatWorld());
+	bossTurretWorldPosition_1 = Transform::TransformWorldPosition(bossTurret_1->GetPosition(), bossTurretStand_1->GetMatWorld());
+	bossTurretWorldPosition_2 = Transform::TransformWorldPosition(bossTurret_2->GetPosition(), bossTurretStand_2->GetMatWorld());
 
 	//RECT構造体へのポインタ
 	RECT rect;
@@ -414,6 +429,8 @@ void GamePlay::Update()
 	bossCore_4->Update();
 	bossTurret_1->Update();
 	bossTurret_2->Update();
+	bossTurretStand_1->Update();
+	bossTurretStand_2->Update();
 
 	if (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
 	{
@@ -504,6 +521,8 @@ void GamePlay::Draw()
 		bossCoreBox_4->Draw();
 		bossTurret_1->Draw();
 		bossTurret_2->Draw();
+		bossTurretStand_1->Draw();
+		bossTurretStand_2->Draw();
 	}
 
 	if (bossCore_1->isAlive)

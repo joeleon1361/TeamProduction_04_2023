@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjObject.h"
+
 class BossTurret :
 	public ObjObject
 {
@@ -24,6 +25,8 @@ private: // ƒƒ“ƒo•Ï”
 	Input* input = Input::GetInstance();
 
 	ObjModel* modelBossTurret = nullptr;
+
+	float limitRot = 30.0f;
 
 public:
 	// ’e‚Ì”­ËŠÔŠu

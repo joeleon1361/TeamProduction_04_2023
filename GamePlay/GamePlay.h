@@ -137,19 +137,27 @@ private: // メンバ変数
 	ObjModel* modelBossPartsRing = nullptr;
 	ObjModel* modelBossPartsCoreBox = nullptr;
 	ObjModel* modelBossPartsSphere = nullptr;
+	ObjModel* modelBossPartsTurretStand = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
+
 	BossParts* bossPartsRing = nullptr;
 	BossParts* bossPartsSphere = nullptr;
+
 	BossCore* bossCore_1 = nullptr;
 	BossCore* bossCore_2 = nullptr;
 	BossCore* bossCore_3 = nullptr;
 	BossCore* bossCore_4 = nullptr;
+
 	BossParts* bossCoreBox_1 = nullptr;
 	BossParts* bossCoreBox_2 = nullptr;
 	BossParts* bossCoreBox_3 = nullptr;
 	BossParts* bossCoreBox_4 = nullptr;
+
+	BossParts* bossTurretStand_1 = nullptr;
+	BossParts* bossTurretStand_2 = nullptr;
+
 	BossTurret* bossTurret_1 = nullptr;
 	BossTurret* bossTurret_2 = nullptr;
 	ObjObject* objSkydome = nullptr;

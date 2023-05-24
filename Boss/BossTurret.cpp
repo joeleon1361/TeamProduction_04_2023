@@ -1,5 +1,8 @@
 #include "BossTurret.h"
 
+using namespace DirectX;
+
+
 BossTurret* BossTurret::Create(ObjModel* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
@@ -33,12 +36,26 @@ bool BossTurret::Initialize()
 	modelBossTurret = ObjModel::CreateFromOBJ("Turret");
 	SetModel(modelBossTurret);
 
-	SetColor({ 0.2f, 0.9f, 0.2f, 1.0f });
+	// グレー
+	SetColor({ 0.3f, 0.3f, 0.3f, 1.0f });
 
 	return true;
 }
 
 void BossTurret::Update()
 {
+	if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)
+	{
+		rotation.x -= 1.0f;
+	}
+	if (input->PushKey(DIK_DOWN) && input->PushKey(DIK_LCONTROL) == 0)
+	{
+		rotation.x += 1.0f;
+	}
+
+	// X軸を制限
+	rotation.x = max(rotation.x, -limitRot);
+	rotation.x = min(rotation.x, +limitRot);
+
 	ObjObject::Update();
 }
