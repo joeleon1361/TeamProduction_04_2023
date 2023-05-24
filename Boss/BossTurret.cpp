@@ -39,11 +39,25 @@ bool BossTurret::Initialize()
 	// グレー
 	SetColor({ 0.3f, 0.3f, 0.3f, 1.0f });
 
+	// 生存フラグの初期化
+	isAlive = true;
+
+	// 体力の初期化
+	life = lifeMax;
+
+	// カラー変更タイムレートの初期化
+	colorTimeRate = 1.0f;
+
 	return true;
 }
 
 void BossTurret::Update()
 {
+	ObjObject::Update();
+
+	// ヒット時のカラー変更
+	HitChangeColor();
+
 	if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)
 	{
 		rotation.x -= 1.0f;
@@ -53,9 +67,23 @@ void BossTurret::Update()
 		rotation.x += 1.0f;
 	}
 
+	// HPが0になったら撃破
+	if (life <= 0.0f)
+	{
+		isAlive = false;
+	}
+
 	// X軸を制限
 	rotation.x = max(rotation.x, -limitRot);
 	rotation.x = min(rotation.x, +limitRot);
+}
 
-	ObjObject::Update();
+void BossTurret::HitChangeColor()
+{
+	colorTimeRate += 0.1;
+	if (colorTimeRate > 1.0f)
+	{
+		colorTimeRate = 1.0f;
+	}
+	color = Lerp::LerpFloat4(hitColor, baseColor, colorTimeRate);
 }

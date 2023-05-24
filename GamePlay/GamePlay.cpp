@@ -302,9 +302,8 @@ void GamePlay::Update()
 		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_1, 8.0f))
 		{
 			// 必要なときはいつでも、次の3行を自由に復元してください。
-			//CreateBossHitParticles(bossTurretWorldPosition_1);
-			// bossTurret_1->colorTimeRate = 0.0f;
-			// bossTurret_1->life--;
+			bossTurret_1->colorTimeRate = 0.0f;
+			bossTurret_1->life--;
 			bullet->deathFlag = true;
 		}
 
@@ -312,13 +311,13 @@ void GamePlay::Update()
 		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_2, 8.0f))
 		{
 			// 必要なときはいつでも、次の3行を自由に復元してください。
-			//CreateBossHitParticles(bossTurretWorldPosition_2);
-			//bossTurret_2->colorTimeRate = 0.0f;
-			//bossTurret_2->life--;
+			bossTurret_2->colorTimeRate = 0.0f;
+			bossTurret_2->life--;
 			bullet->deathFlag = true;
 		}
 	}
 
+	// プレイヤーの球発射処理
 	Shoot();
 
 	// プレイヤーの狙い弾を更新
@@ -335,19 +334,27 @@ void GamePlay::Update()
 	);
 
 	// ボスの砲台1を一定間隔で発射
-	bossTurret_1->shotTimer--;
-	if (bossTurret_1->shotTimer <= 0)
+	if (bossTurret_1->isAlive == true)
 	{
-		BossTargetShoot(bossTurretWorldPosition_1, player->GetPosition(), 10.0f);
-		bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
+		bossTurret_1->shotTimer--;
+		if (bossTurret_1->shotTimer <= 0)
+		{
+			BossTargetShoot(bossTurretWorldPosition_1, player->GetPosition(), 10.0f);
+			bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
+		}
 	}
+	
 	// ボスの砲台2を一定間隔で発射
-	bossTurret_2->shotTimer--;
-	if (bossTurret_2->shotTimer <= 0)
+	if (bossTurret_2->isAlive == true)
 	{
-		BossTargetShoot(bossTurretWorldPosition_2, player->GetPosition(), 10.0f);
-		bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
+		bossTurret_2->shotTimer--;
+		if (bossTurret_2->shotTimer <= 0)
+		{
+			BossTargetShoot(bossTurretWorldPosition_2, player->GetPosition(), 10.0f);
+			bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
+		}
 	}
+	
 
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{

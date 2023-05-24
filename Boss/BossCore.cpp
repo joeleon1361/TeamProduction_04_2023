@@ -68,7 +68,6 @@ void BossCore::Update()
 
 		isAlive = false;
 	}
-
 }
 
 // ヒット時のカラー変更
