@@ -13,6 +13,7 @@ class Player :
 {
 private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public: // 静的メンバ関数
@@ -42,6 +43,8 @@ public: // メンバ関数
 
 	void Rolling();
 
+	void Boost();
+
 	bool CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius);
 
 	void MoveTowards(float& current, float target, float speed, float elapsedTime);
@@ -50,6 +53,10 @@ public: // メンバ関数
 	const XMFLOAT3& GetPosition() { return position; }
 
 	const XMFLOAT3& GetVel() { return Vel; }
+
+	const bool& GetBoostFlag() { return BoostFlag; }
+
+	const XMFLOAT4& GetBoostPartColor() { return BoostPartColor; }
 
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
@@ -76,9 +83,24 @@ private: // メンバ変数
 	float yChange = 0.0f;
 	float collisionSphereRadius = 3.0f;
 
+	//プレイヤースピード
+	float Speed = 2.0f;
+
 	XMFLOAT3 Vel = {};
 	float yVel = 0.0f;
-	
+
+	//重力加速度
+	float Gravity = 9.8f;
+
+	//ブースト体力
+	int BoostPow = 100;
+
+	//ブーストフラグ
+	bool BoostFlag = false;
+
+	//ブーストパーティクルカラー
+	XMFLOAT4 BoostPartColor = {};
+
 public:
 	Vector3 direction = { 0, 0, 1 };
 	Vector3 moveDirection = {};

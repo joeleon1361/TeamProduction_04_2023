@@ -65,6 +65,9 @@ void Player::Update()
 	Rolling();
 
 	DebugTextUpdate();
+
+	//ブースト
+	Boost();
 }
 
 void Player::Draw()
@@ -107,6 +110,18 @@ void Player::DebugTextUpdate()
 	//	<< rollRotation.y << "," // y
 	//	<< rollRotation.z << ")"; // z
 	//debugText.Print(RollRotation.str(), 10, 170, 1.0f);
+
+	std::ostringstream BoostPow_;
+	BoostPow_ << "BoostPow:("
+		<< std::fixed << std::setprecision(2)
+		<< BoostPow << ")"; // z
+	debugText.Print(BoostPow_.str(), 10, 150, 1.0f);
+
+	std::ostringstream BoostFlag_;
+	BoostFlag_ << "BoostFlag:("
+		<< std::fixed << std::setprecision(2)
+		<< BoostFlag << ")"; // z
+	debugText.Print(BoostFlag_.str(), 10, 170, 1.0f);
 }
 
 void Player::DebugTextDraw()
@@ -151,11 +166,11 @@ void Player::Move()
 		{
 			if (input->PushKey(DIK_S))
 			{
-				yVel -= 0.05f;
+				yVel -= 0.4f;
 			}
 			else if (input->PushKey(DIK_W))
 			{
-				yVel += 0.05f;
+				yVel += 0.4f;
 			}
 			if (yVel > 1.0f)
 			{
@@ -191,9 +206,9 @@ void Player::Move()
 	Vel.y = (y / hypotenuse);
 	Vel.z = (z / hypotenuse);
 
-	position.x += 2.0f * Vel.x;
-	position.y += 2.0f * Vel.y;
-	position.z += 2.0f * Vel.z;
+	position.x += Speed * Vel.x;
+	position.y += Speed * Vel.y;
+	position.z += Speed * Vel.z;
 
 	/*if (!input->PushKey(DIK_S) && !input->PushKey(DIK_W))
 	{
@@ -238,6 +253,44 @@ void Player::Rolling()
 	}
 
 	SetRotation({ rotation.x, rotation.y, rollRotation.z });
+}
+
+void Player::Boost()
+{
+	BoostPartColor = { (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , 1.0f };
+	if(Input::GetInstance()->PushMouseRight() == true)
+	{
+		BoostFlag = true;
+	}
+
+	if(Input::GetInstance()->PushMouseRight() == false)
+	{
+		BoostFlag = false;
+	}
+
+	if (BoostFlag == true)
+	{
+		if (BoostPow > 0)
+		{
+			BoostPow--;
+			Speed = 3.0f;
+		}
+
+		if (BoostPow <= 0)
+		{
+			BoostFlag = false;
+		}
+	}
+
+	if (BoostFlag == false)
+	{
+		Speed = 2.0f;
+		if (BoostPow < 100)
+		{
+			BoostPow++;
+		}
+	}
+
 }
 
 bool Player::CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius)

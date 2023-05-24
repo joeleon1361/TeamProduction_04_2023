@@ -443,6 +443,10 @@ void GamePlay::Update()
 
 	JettParticle(5, 10, player->GetPosition(), 1.0f, 0.0f, { 0.941f, 0.231f, 0.156f, 1.0f }, { 0.941f, 0.862f, 0.156f, 1.0f });
 
+	if (player->GetBoostFlag() == true)
+	{
+		BoostParticle(5, 50, player->GetPosition(), 1.0f, 0.0f, player->GetBoostPartColor(), player->GetBoostPartColor());
+	}
 	// パーティクル更新
 	bossHitParticle->Update();
 }
@@ -579,7 +583,7 @@ void GamePlay::Shoot()
 
 	XMVECTOR bulletVelocity = { 0,0,1.0f };
 
-	if (Input::GetInstance()->PushKey(DIK_SPACE) || Input::GetInstance()->PushKey(DIK_Z))
+	if (Input::GetInstance()->PushKey(DIK_SPACE) || Input::GetInstance()->PushMouseLeft())
 	{
 		if (shotRate <= 0)
 		{
@@ -744,6 +748,31 @@ void GamePlay::JettParticle(int PartNum, int Life, XMFLOAT3 position, int StartS
 		vel.x = player->GetVel().x;
 		vel.y = player->GetVel().y;
 		vel.z = player->GetVel().z;
+
+		XMFLOAT3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
+}
+
+void GamePlay::BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < PartNum; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 5.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
+		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
+
+		const float rnd_vel = 0.5f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 
 		XMFLOAT3 acc{};
 		const float md_acc = 0.001f;

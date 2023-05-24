@@ -111,6 +111,8 @@ public: // メンバ関数
 	//プレイヤージェットパーティクル
 	void JettParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
+	//ブーストパーティクル
+	void BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
 	//マウス情報取得
 	void GetMouse();

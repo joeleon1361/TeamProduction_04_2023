@@ -113,6 +113,16 @@ bool Input::PushMouseRight()
 	return false;
 }
 
+bool Input::PushMouseLeft()
+{
+	// 0でなければ押している
+	if (mouseState.rgbButtons[0]) {
+		return true;
+	}
+
+	return false;
+}
+
 Input::MouseMove Input::GetMouseMove()
 {
 	MouseMove tmp;

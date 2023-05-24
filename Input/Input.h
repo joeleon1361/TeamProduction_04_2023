@@ -35,6 +35,9 @@ public: // メンバ関数
 
 	bool PushMouseRight();
 
+	bool PushMouseLeft();
+
+
 	MouseMove GetMouseMove();
 
 	// キーのトリガーをチェック
