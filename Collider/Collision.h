@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CollisionPrimitive.h"
+#include "Vector.h"
+#include <d3dx12.h>
 
 // 当たり判定ヘルパークラス
 class Collision
@@ -26,4 +28,12 @@ public:
 
 	// レイと球の当たり判定
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
+	
+	// Ray to OBB
+	static bool CheckRay2OBB(const Ray& ray, const Box& obb, float* distance, DirectX::XMVECTOR* inter);
+	
+	// OBB - OBB
+	static bool CheckOBBOBB(const Box& box1, const Box& box2, DirectX::XMVECTOR* inter, DirectX::XMVECTOR* reject);
+
+	static float LenSegOnSeparateAxis(const Vector3& Sep, const Vector3& e1, const Vector3& e2, const Vector3& e3 = Vector3{ 0,0,0 });
 };
