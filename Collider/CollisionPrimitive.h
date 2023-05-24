@@ -2,6 +2,8 @@
 
 // 当たり判定プリミティブ
 #include <DirectXMath.h>
+#include "Vector.h"
+#include <array>
 
 // 球
 struct Sphere
@@ -43,4 +45,18 @@ struct Ray
 	DirectX::XMVECTOR start = { 0,0,0,1 };
 	// 方向
 	DirectX::XMVECTOR dir = { 1,0,0,0 };
+};
+
+// 四角形
+struct Box
+{
+	//中心座標
+	DirectX::XMVECTOR center = {};
+	std::array<DirectX::XMVECTOR, 3> normalDirect;
+	//float fLength[3] = {};
+	//大きさ
+	Vector3 scale = { 1,1,1 };
+	Vector3 minPosition = {};
+	Vector3 maxPosition = {};
+	Vector3 rotation = {};
 };
