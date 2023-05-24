@@ -1,10 +1,13 @@
 #pragma once
 #include "ObjObject.h"
+#include "Lerp.h"
+
 class BossTurret :
 	public ObjObject
 {
 private:
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public: // 静的メンバ関数
@@ -20,12 +23,34 @@ public: // メンバ関数
 	// 毎フレーム処理
 	void Update() override;
 
+	// ヒット時のカラー変更
+	void HitChangeColor();
+
 private: // メンバ変数
 	Input* input = Input::GetInstance();
 
 	ObjModel* modelBossTurret = nullptr;
 
+	float limitRot = 30.0f;
+
+	// 最大の体力
+	float lifeMax = 10.0f;
+
+	// 基本のカラー
+	XMFLOAT4 baseColor = { 0.3f, 0.3f, 0.3f, 1.0f };
+	// ヒット時のカラー
+	XMFLOAT4 hitColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+
 public:
+	// 生存フラグ
+	bool isAlive = true;
+
+	// 現在の体力
+	float life = lifeMax;
+
+	// カラー変更タイムレート
+	float colorTimeRate = 1.0f;
+
 	// 弾の発射間隔
 	static const int32_t ShotInterval = 60;
 

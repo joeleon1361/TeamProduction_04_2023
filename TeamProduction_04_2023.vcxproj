@@ -157,11 +157,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BossTurret.cpp" />
+    <ClCompile Include="Boss\BossTurret.cpp" />
     <ClCompile Include="Boss\BossCore.cpp" />
-    <ClCompile Include="Boss\BossPartsCoreBox.cpp" />
-    <ClCompile Include="Boss\BossPartsRing.cpp" />
-    <ClCompile Include="Boss\BossPartsSphere.cpp" />
+    <ClCompile Include="Boss\BossParts.cpp" />
     <ClCompile Include="Boss\Boss.cpp" />
     <ClCompile Include="Bullet\TargetBullet.cpp" />
     <ClCompile Include="Bullet\Bullet.cpp" />
@@ -199,7 +197,7 @@
     <ClCompile Include="Math\Spline.cpp" />
     <ClCompile Include="Sprite\Sprite.cpp" />
     <ClCompile Include="Title\Title.cpp" />
-    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli" />
@@ -277,11 +275,9 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BossTurret.h" />
+    <ClInclude Include="Boss\BossTurret.h" />
     <ClInclude Include="Boss\BossCore.h" />
-    <ClInclude Include="Boss\BossPartsCoreBox.h" />
-    <ClInclude Include="Boss\BossPartsRing.h" />
-    <ClInclude Include="Boss\BossPartsSphere.h" />
+    <ClInclude Include="Boss\BossParts.h" />
     <ClInclude Include="GameBase\AbstractSceneFactory.h" />
     <ClInclude Include="GameBase\BaseScene.h" />
     <ClInclude Include="Boss\Boss.h" />
@@ -325,7 +321,7 @@
     <ClInclude Include="Math\Spline.h" />
     <ClInclude Include="Sprite\Sprite.h" />
     <ClInclude Include="Title\Title.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Math\Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

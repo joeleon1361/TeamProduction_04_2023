@@ -2,6 +2,7 @@
 #include "ObjObject.h"
 #include "ParticleManager.h"
 #include "Lerp.h"
+
 class BossCore :
 	public ObjObject
 {

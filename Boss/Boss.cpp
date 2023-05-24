@@ -46,14 +46,14 @@ void Boss::Update()
 	ObjObject::Update();
 
 	// 回転(モデル確認用)
-	if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)
+	/*if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)
 	{
 		rotation.x += 1.0f;
 	}
 	if (input->PushKey(DIK_DOWN) && input->PushKey(DIK_LCONTROL) == 0)
 	{
 		rotation.x -= 1.0f;
-	}
+	}*/
 	if (input->PushKey(DIK_RIGHT) && input->PushKey(DIK_LCONTROL) == 0)
 	{
 		rotation.y -= 1.0f;

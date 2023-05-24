@@ -20,11 +20,9 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Boss.h"
-#include "BossPartsRing.h"
-#include "BossPartsSphere.h"
 #include "BossTurret.h"
 #include "BossCore.h"
-#include "BossPartsCoreBox.h"
+#include "BossParts.h"
 #include "TargetBullet.h"
 
 #include "Spline.h"
@@ -51,10 +49,8 @@ class Boss;
 class BossBullet;
 class TargetBullet;
 class StageObject;
-class BossPartsRing;
-class BossPartsSphere;
 class BossCore;
-class BossPartsCoreBox;
+class BossParts;
 class BossTurret;
 
 // ゲームシーン
@@ -144,19 +140,30 @@ private: // メンバ変数
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
+	ObjModel* modelBossPartsRing = nullptr;
+	ObjModel* modelBossPartsCoreBox = nullptr;
+	ObjModel* modelBossPartsSphere = nullptr;
+	ObjModel* modelBossPartsTurretStand = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
-	BossPartsRing* bossPartsRing = nullptr;
-	BossPartsSphere* bossPartsSphere = nullptr;
+
+	BossParts* bossPartsRing = nullptr;
+	BossParts* bossPartsSphere = nullptr;
+
 	BossCore* bossCore_1 = nullptr;
 	BossCore* bossCore_2 = nullptr;
 	BossCore* bossCore_3 = nullptr;
 	BossCore* bossCore_4 = nullptr;
-	BossPartsCoreBox* bossCoreBox_1 = nullptr;
-	BossPartsCoreBox* bossCoreBox_2 = nullptr;
-	BossPartsCoreBox* bossCoreBox_3 = nullptr;
-	BossPartsCoreBox* bossCoreBox_4 = nullptr;
+
+	BossParts* bossCoreBox_1 = nullptr;
+	BossParts* bossCoreBox_2 = nullptr;
+	BossParts* bossCoreBox_3 = nullptr;
+	BossParts* bossCoreBox_4 = nullptr;
+
+	BossParts* bossTurretStand_1 = nullptr;
+	BossParts* bossTurretStand_2 = nullptr;
+
 	BossTurret* bossTurret_1 = nullptr;
 	BossTurret* bossTurret_2 = nullptr;
 	ObjObject* objSkydome = nullptr;
