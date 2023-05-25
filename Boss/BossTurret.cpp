@@ -36,9 +36,6 @@ bool BossTurret::Initialize()
 	modelBossTurret = ObjModel::CreateFromOBJ("Turret");
 	SetModel(modelBossTurret);
 
-	// グレー
-	SetColor({ 0.3f, 0.3f, 0.3f, 1.0f });
-
 	// 生存フラグの初期化
 	isAlive = true;
 
@@ -73,11 +70,23 @@ void BossTurret::Update()
 		isAlive = false;
 	}
 
+	// 撃破時にタレットを下に向ける
+	if (isAlive == false)
+	{
+		rotationTimeRate += 0.001;
+		if (rotationTimeRate > 1.0f)
+		{
+			rotationTimeRate = 1.0f;
+		}
+		rotation = Lerp::LerpFloat3(GetRotation(), breakRotation, rotationTimeRate);
+	}
+
 	// X軸を制限
 	rotation.x = max(rotation.x, -limitRot);
 	rotation.x = min(rotation.x, +limitRot);
 }
 
+// ヒット時のカラー変更
 void BossTurret::HitChangeColor()
 {
 	colorTimeRate += 0.1;

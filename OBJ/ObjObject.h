@@ -24,6 +24,7 @@ private: // エイリアス
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
+	using XMVECTOR = DirectX::XMVECTOR;
 
 public: // サブクラス	
 
@@ -108,6 +109,17 @@ public: // メンバ関数
 	// 色の取得
 	const XMFLOAT4& GetColor() { return color; }
 
+	// ワールド座標の習得
+	const XMFLOAT3 GetWorldPosition()
+	{
+		XMVECTOR positionV;
+		XMFLOAT3 worldPosition;
+		positionV = DirectX::XMLoadFloat3(&position);
+		positionV.m128_f32[3] = 1.0f;
+		positionV = DirectX::XMVector3Transform(positionV, parent->matWorld);
+		DirectX::XMStoreFloat3(&worldPosition, positionV);
+		return worldPosition;
+	}
 
 	// 座標の設定
 	void SetPosition(XMFLOAT3 position) { this->position = position; }

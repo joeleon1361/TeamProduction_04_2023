@@ -243,13 +243,13 @@ void GamePlay::Update()
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		// コア1の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos, 8.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 8.0f))
 		{
 			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, worldPos, 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-				DefaultParticle(10, 50, worldPos, 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-				DefaultParticle(10, 50, worldPos, 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+				DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+				DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+				DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
 			}
 			bossCore_1->colorTimeRate = 0.0f;
 			bossCore_1->life--;
@@ -257,13 +257,13 @@ void GamePlay::Update()
 		}
 
 		// コア2の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos2, 8.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 8.0f))
 		{
 			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, worldPos2, 50.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
-				DefaultParticle(10, 50, worldPos2, 25.0f, 0.0f, bossCore_2->GetColorYellow(), bossCore_2->GetColorYellow());
-				DefaultParticle(10, 50, worldPos2, 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
+				DefaultParticle(20, 50, bossCore_2->GetWorldPosition(), 50.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
+				DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorYellow(), bossCore_2->GetColorYellow());
+				DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
 			}
 			bossCore_2->colorTimeRate = 0.0f;
 			bossCore_2->life--;
@@ -271,13 +271,13 @@ void GamePlay::Update()
 		}
 
 		// コア3の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos3, 8.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 8.0f))
 		{
 			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, worldPos3, 50.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
-				DefaultParticle(10, 50, worldPos3, 25.0f, 0.0f, bossCore_3->GetColorYellow(), bossCore_3->GetColorYellow());
-				DefaultParticle(10, 50, worldPos3, 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
+				DefaultParticle(20, 50, bossCore_3->GetWorldPosition(), 50.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
+				DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorYellow(), bossCore_3->GetColorYellow());
+				DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
 			}
 			bossCore_3->colorTimeRate = 0.0f;
 			bossCore_3->life--;
@@ -285,13 +285,13 @@ void GamePlay::Update()
 		}
 
 		// コア4の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos4, 8.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 8.0f))
 		{
 			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, worldPos4, 50.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
-				DefaultParticle(10, 50, worldPos4, 25.0f, 0.0f, bossCore_4->GetColorYellow(), bossCore_4->GetColorYellow());
-				DefaultParticle(10, 50, worldPos4, 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
+				DefaultParticle(20, 50, bossCore_4->GetWorldPosition(), 50.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
+				DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorYellow(), bossCore_4->GetColorYellow());
+				DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
 			}
 			bossCore_4->colorTimeRate = 0.0f;
 			bossCore_4->life--;
@@ -382,7 +382,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_1->GetDestroyPartTime() > 0)
 		{
-			BlastPart_1(20, worldPos, 20.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+			BlastPart_1(20, bossCore_1->GetWorldPosition(), 20.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
 		}
 	}
 
@@ -390,7 +390,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_2->GetDestroyPartTime() > 0)
 		{
-			BlastPart_2(20, worldPos2, 20.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
+			BlastPart_2(20, bossCore_2->GetWorldPosition(), 20.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
 		}
 	}
 
@@ -399,7 +399,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_3->GetDestroyPartTime() > 0)
 		{
-			BlastPart_3(20, worldPos3, 20.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
+			BlastPart_3(20, bossCore_3->GetWorldPosition(), 20.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
 		}
 	}
 
@@ -407,7 +407,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_4->GetDestroyPartTime() > 0)
 		{
-			BlastPart_4(20, worldPos4, 20.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
+			BlastPart_4(20, bossCore_4->GetWorldPosition(), 20.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
 		}
 	}
 

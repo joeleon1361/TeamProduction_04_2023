@@ -41,6 +41,9 @@ private: // メンバ変数
 	// ヒット時のカラー
 	XMFLOAT4 hitColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 
+	// 撃破時の角度
+	XMFLOAT3 breakRotation = { 30.0f, 0.0f, 0.0f };
+
 public:
 	// 生存フラグ
 	bool isAlive = true;
@@ -50,6 +53,9 @@ public:
 
 	// カラー変更タイムレート
 	float colorTimeRate = 1.0f;
+
+	// 角度変更タイムレート
+	float rotationTimeRate = 0.0f;
 
 	// 弾の発射間隔
 	static const int32_t ShotInterval = 60;
