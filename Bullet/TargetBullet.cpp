@@ -84,7 +84,7 @@ void TargetBullet::Update()
 	XMVECTOR RayDirection = XMVector3Normalize(XMLoadFloat3(&rayDirection));
 
 	// Scale the Y component of the bullet direction vector
-	RayDirection *= XMVectorSet(1.0f + (0.0003125 * (1536 - width)), 1.0f, 1.0f, 0.0f); // The x-component accounts for screen width size changes
+	RayDirection *= XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f); // The x-component accounts for screen width size changes
 
 	// Set the bullet direction to the ray direction
 	XMFLOAT3 bulletDirection = XMFLOAT3(RayDirection.m128_f32[0], RayDirection.m128_f32[1], RayDirection.m128_f32[2]);
