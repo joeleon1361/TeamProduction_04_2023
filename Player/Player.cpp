@@ -59,7 +59,7 @@ void Player::Update()
 	ObjObject::Update();
 
 	// オブジェクト移動
-	//Move();
+	Move();
 
 	// ローリング
 	Rolling();
