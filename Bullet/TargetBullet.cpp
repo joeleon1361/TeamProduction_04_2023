@@ -65,7 +65,7 @@ void TargetBullet::Update()
 	// Calculate the ray direction in world space
 	XMFLOAT3 rayDirection;
 	XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	XMVECTOR nearPoint = XMVectorSet(cursorPos.x, cursorPos.y, 0.0f, 1.0f);
+	XMVECTOR nearPoint = XMVectorSet(cursorPos.x, cursorPos.y, 0.01f, 1.0f);
 	XMVECTOR farPoint = XMVectorSet(cursorPos.x, cursorPos.y, 1.0f, 1.0f);
 
 	// Create the view matrix based on the camera's position and orientation
@@ -81,10 +81,11 @@ void TargetBullet::Update()
 
 	// Calculate the ray direction in world space based on the camera's position and orientation
 	rayDirection = XMFLOAT3(XMVectorGetX(farPoint) - XMVectorGetX(nearPoint), XMVectorGetY(farPoint) - XMVectorGetY(nearPoint), XMVectorGetZ(farPoint) - XMVectorGetZ(nearPoint));
+	rayDirection.y += 3.0f; // Offset for camera being ABOVE the player, not lined up on the Y-axis
 	XMVECTOR RayDirection = XMVector3Normalize(XMLoadFloat3(&rayDirection));
 
 	// Scale the Y component of the bullet direction vector
-	RayDirection *= XMVectorSet(1.0f, 1.0f, 1.0f, 0.0f);
+	RayDirection *= XMVectorSet(1.0f + (0.0003125 * (1536 - width)), 1.08f, 0.7f, 0.0f); // The x-component accounts for screen width size changes
 
 	// Set the bullet direction to the ray direction
 	XMFLOAT3 bulletDirection = XMFLOAT3(RayDirection.m128_f32[0], RayDirection.m128_f32[1], RayDirection.m128_f32[2]);
@@ -93,10 +94,6 @@ void TargetBullet::Update()
 	position.x += bulletDirection.x * speed;
 	position.y += bulletDirection.y * speed;
 	position.z += bulletDirection.z * speed;
-
-	//position.x += velocity.x * speed;
-	//position.y += velocity.y * speed;
-	//position.z += velocity.z * speed;
 
 	if (--deathTimer <= 0)
 	{
