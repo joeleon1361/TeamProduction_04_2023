@@ -229,9 +229,6 @@
     <ClCompile Include="Boss\BossParts.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Math\Transform.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="Boss\BossTurret.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
@@ -423,9 +420,6 @@
     </ClInclude>
     <ClInclude Include="Boss\BossParts.h">
       <Filter>Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Transform.h">
-      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Boss\BossTurret.h">
       <Filter>Boss</Filter>
