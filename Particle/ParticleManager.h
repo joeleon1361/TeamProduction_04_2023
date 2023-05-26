@@ -82,6 +82,9 @@ public: // 静的メンバ関数
 	static ParticleManager* Create(ID3D12Device* device, Camera* camera,int blensType, const wchar_t* filename);
 
 public: // メンバ関数	
+	// コンストラクタ
+	ParticleManager(ID3D12Device* device, Camera* camera);
+
 	// 初期化
 	void Initialize(int blendType, const wchar_t* filename );
 
@@ -105,6 +108,22 @@ public: // メンバ関数
 
 	// モデル作成
 	void CreateModel();
+
+	//---パーティクル関数---//
+	//基本パーティクル
+	void DefaultParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	 
+	//ボス部位破壊パーティクル
+	void BlastPart_1(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	void BlastPart_2(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	void BlastPart_3(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	void BlastPart_4(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+
+	//プレイヤージェットパーティクル
+	void JettParticle(int PartNum, int Life, XMFLOAT3 position, XMFLOAT3 velosity,  int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+
+	//ブーストパーティクル
+	void BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
 private: // メンバ変数
 	// デバイス
@@ -140,9 +159,5 @@ private: // メンバ変数
 		add,
 		sub
 	};
-
-private:
-	// コンストラクタ
-	ParticleManager(ID3D12Device* device, Camera* camera);
 };
 

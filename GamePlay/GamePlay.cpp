@@ -53,7 +53,7 @@ void GamePlay::Initialize()
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 
 	// パーティクル
-	bossHitParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
+	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
 
 	// プレイヤー
 	player = Player::Create();
@@ -207,14 +207,6 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
-	worldPos = Transform::TransformWorldPosition(bossCore_1->GetPosition(), bossCoreBox_1->GetMatWorld());
-	worldPos2 = Transform::TransformWorldPosition(bossCore_2->GetPosition(), bossCoreBox_2->GetMatWorld());
-	worldPos3 = Transform::TransformWorldPosition(bossCore_3->GetPosition(), bossCoreBox_3->GetMatWorld());
-	worldPos4 = Transform::TransformWorldPosition(bossCore_4->GetPosition(), bossCoreBox_4->GetMatWorld());
-
-	bossTurretWorldPosition_1 = Transform::TransformWorldPosition(bossTurret_1->GetPosition(), bossTurretStand_1->GetMatWorld());
-	bossTurretWorldPosition_2 = Transform::TransformWorldPosition(bossTurret_2->GetPosition(), bossTurretStand_2->GetMatWorld());
-
 	//RECT構造体へのポインタ
 	RECT rect;
 
@@ -247,9 +239,9 @@ void GamePlay::Update()
 		{
 			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-				DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-				DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+				circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
 			}
 			bossCore_1->colorTimeRate = 0.0f;
 			bossCore_1->life--;
@@ -261,9 +253,9 @@ void GamePlay::Update()
 		{
 			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, bossCore_2->GetWorldPosition(), 50.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
-				DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorYellow(), bossCore_2->GetColorYellow());
-				DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
+				circleParticle->DefaultParticle(20, 50, bossCore_2->GetWorldPosition(), 50.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorYellow(), bossCore_2->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
 			}
 			bossCore_2->colorTimeRate = 0.0f;
 			bossCore_2->life--;
@@ -275,9 +267,9 @@ void GamePlay::Update()
 		{
 			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, bossCore_3->GetWorldPosition(), 50.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
-				DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorYellow(), bossCore_3->GetColorYellow());
-				DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
+				circleParticle->DefaultParticle(20, 50, bossCore_3->GetWorldPosition(), 50.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorYellow(), bossCore_3->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
 			}
 			bossCore_3->colorTimeRate = 0.0f;
 			bossCore_3->life--;
@@ -289,9 +281,9 @@ void GamePlay::Update()
 		{
 			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
 			{
-				DefaultParticle(20, 50, bossCore_4->GetWorldPosition(), 50.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
-				DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorYellow(), bossCore_4->GetColorYellow());
-				DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
+				circleParticle->DefaultParticle(20, 50, bossCore_4->GetWorldPosition(), 50.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorYellow(), bossCore_4->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
 			}
 			bossCore_4->colorTimeRate = 0.0f;
 			bossCore_4->life--;
@@ -299,7 +291,7 @@ void GamePlay::Update()
 		}
 
 		// Turret 1 collision detection
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_1, 8.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_1->GetWorldPosition(), 8.0f))
 		{
 			// 必要なときはいつでも、次の3行を自由に復元してください。
 			bossTurret_1->colorTimeRate = 0.0f;
@@ -308,7 +300,7 @@ void GamePlay::Update()
 		}
 
 		// Turret 2 collision detection
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_2, 8.0f))
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 8.0f))
 		{
 			// 必要なときはいつでも、次の3行を自由に復元してください。
 			bossTurret_2->colorTimeRate = 0.0f;
@@ -339,7 +331,7 @@ void GamePlay::Update()
 		bossTurret_1->shotTimer--;
 		if (bossTurret_1->shotTimer <= 0)
 		{
-			BossTargetShoot(bossTurretWorldPosition_1, player->GetPosition(), 10.0f);
+			BossTargetShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 10.0f);
 			bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
 		}
 	}
@@ -350,7 +342,7 @@ void GamePlay::Update()
 		bossTurret_2->shotTimer--;
 		if (bossTurret_2->shotTimer <= 0)
 		{
-			BossTargetShoot(bossTurretWorldPosition_2, player->GetPosition(), 10.0f);
+			BossTargetShoot(bossTurret_2->GetWorldPosition(), player->GetPosition(), 10.0f);
 			bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
 		}
 	}
@@ -382,7 +374,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_1->GetDestroyPartTime() > 0)
 		{
-			BlastPart_1(20, bossCore_1->GetWorldPosition(), 20.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+			circleParticle->BlastPart_1(20, bossCore_1->GetWorldPosition(), 20.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
 		}
 	}
 
@@ -390,7 +382,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_2->GetDestroyPartTime() > 0)
 		{
-			BlastPart_2(20, bossCore_2->GetWorldPosition(), 20.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
+			circleParticle->BlastPart_2(20, bossCore_2->GetWorldPosition(), 20.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
 		}
 	}
 
@@ -399,7 +391,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_3->GetDestroyPartTime() > 0)
 		{
-			BlastPart_3(20, bossCore_3->GetWorldPosition(), 20.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
+			circleParticle->BlastPart_3(20, bossCore_3->GetWorldPosition(), 20.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
 		}
 	}
 
@@ -407,7 +399,7 @@ void GamePlay::Update()
 	{
 		if (bossCore_4->GetDestroyPartTime() > 0)
 		{
-			BlastPart_4(20, bossCore_4->GetWorldPosition(), 20.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
+			circleParticle->BlastPart_4(20, bossCore_4->GetWorldPosition(), 20.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
 		}
 	}
 
@@ -478,14 +470,14 @@ void GamePlay::Update()
 
 	DrawDebugText();
 
-	JettParticle(5, 10, player->GetPosition(), 1.0f, 0.0f, { 0.941f, 0.231f, 0.156f, 1.0f }, { 0.941f, 0.862f, 0.156f, 1.0f });
+	circleParticle->JettParticle(5, 10, player->GetPosition(), player->GetVel(), 1.0f, 0.0f, { 0.941f, 0.231f, 0.156f, 1.0f }, { 0.941f, 0.862f, 0.156f, 1.0f });
 
 	if (player->GetBoostFlag() == true)
 	{
-		BoostParticle(5, 50, player->GetPosition(), 1.0f, 0.0f, player->GetBoostPartColor(), player->GetBoostPartColor());
+		circleParticle->BoostParticle(5, 50, player->GetPosition(), 1.0f, 0.0f, player->GetBoostPartColor(), player->GetBoostPartColor());
 	}
 	// パーティクル更新
-	bossHitParticle->Update();
+	circleParticle->Update();
 }
 
 void GamePlay::Draw()
@@ -561,7 +553,7 @@ void GamePlay::Draw()
 	objSkydome->Draw();
 
 	// パーティクルの描画
-	bossHitParticle->Draw(cmdList);
+	circleParticle->Draw(cmdList);
 
 	// 3Dオブジェクト描画後処理
 	ObjObject::PostDraw();
@@ -661,163 +653,4 @@ bool GamePlay::BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMF
 	float radiusSum = bulletSize + bossSize;
 
 	return distance <= radiusSum;
-}
-
-void GamePlay::DefaultParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
-{
-	for (int i = 0; i < PartNum; i++) {
-		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
-		const float rnd_pos = 1.0f;
-		XMFLOAT3 pos{};
-		pos.x =((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
-		pos.y =((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
-		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
-
-		const float rnd_vel = 10.0f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-
-		XMFLOAT3 acc{};
-		const float md_acc = 0.001f;
-		acc.y = -(float)rand() / RAND_MAX * md_acc;
-
-		// 追加
-		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
-	}
-}
-
-void GamePlay::BlastPart_1(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
-{
-	for (int i = 0; i < 20; i++) {
-		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
-		const float rnd_pos = 1.0f;
-		XMFLOAT3 pos{};
-		pos.x = position.x;
-		pos.y = position.y;
-		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
-
-		const float rnd_vel = -10.0f;
-		XMFLOAT3 vel{};
-		vel.z = (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
-
-		XMFLOAT3 acc{};
-
-		// 追加
-		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale,EndScale);
-	}
-}
-
-void GamePlay::BlastPart_2(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
-{
-	for (int i = 0; i < 20; i++) {
-		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
-		const float rnd_pos = 1.0f;
-		XMFLOAT3 pos{};
-		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
-		pos.y = position.y;
-		pos.z = position.z;
-
-		const float rnd_vel = 10.0f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-
-		XMFLOAT3 acc{};
-
-		// 追加
-		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
-	}
-}
-
-void GamePlay::BlastPart_3(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
-{
-	for (int i = 0; i < 20; i++) {
-		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
-		const float rnd_pos = 1.0f;
-		XMFLOAT3 pos{};
-		pos.x = position.x;
-		pos.y = position.y;
-		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
-
-		const float rnd_vel = 10.0f;
-		XMFLOAT3 vel{};
-		vel.z = (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
-
-		XMFLOAT3 acc{};
-
-		// 追加
-		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
-	}
-}
-
-void GamePlay::BlastPart_4(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
-{
-	for (int i = 0; i < 20; i++) {
-		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
-		const float rnd_pos = 1.0f;
-		XMFLOAT3 pos{};
-		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
-		pos.y = position.y;
-		pos.z = position.z;;
-
-		const float rnd_vel = -10.0f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
-
-		XMFLOAT3 acc{};
-
-		// 追加
-		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
-	}
-}
-
-void GamePlay::JettParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
-{
-	for (int i = 0; i < PartNum; i++) {
-		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
-		const float rnd_pos = 1.0f;
-		XMFLOAT3 pos{};
-		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().x - 6.0f * player->GetVel().x;
-		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().y - 6.0f * player->GetVel().y;
-		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + player->GetPosition().z - 6.0f * player->GetVel().z;
-
-		const float rnd_vel = 10.0f;
-		XMFLOAT3 vel{};
-		vel.x = player->GetVel().x;
-		vel.y = player->GetVel().y;
-		vel.z = player->GetVel().z;
-
-		XMFLOAT3 acc{};
-		const float md_acc = 0.001f;
-		acc.y = -(float)rand() / RAND_MAX * md_acc;
-
-		// 追加
-		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
-	}
-}
-
-void GamePlay::BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
-{
-	for (int i = 0; i < PartNum; i++) {
-		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
-		const float rnd_pos = 5.0f;
-		XMFLOAT3 pos{};
-		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
-		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
-		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
-
-		const float rnd_vel = 0.5f;
-		XMFLOAT3 vel{};
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-
-		XMFLOAT3 acc{};
-		const float md_acc = 0.001f;
-		acc.y = -(float)rand() / RAND_MAX * md_acc;
-
-		// 追加
-		bossHitParticle->Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
-	}
 }

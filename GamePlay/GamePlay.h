@@ -28,7 +28,6 @@
 #include "Spline.h"
 #include "Lerp.h"
 #include "Easing.h"
-#include "Transform.h"
 
 #include "SceneManager.h"
 
@@ -94,22 +93,6 @@ public: // メンバ関数
 	// 描画
 	void Draw() override;
 
-	//---パーティクル関数---//
-	//基本パーティクル
-	void DefaultParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-
-	//ボス部位破壊パーティクル
-	void BlastPart_1(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-	void BlastPart_2(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-	void BlastPart_3(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-	void BlastPart_4(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-
-	//プレイヤージェットパーティクル
-	void JettParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-
-	//ブーストパーティクル
-	void BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-
 	//マウス情報取得
 	void GetMouse();
 
@@ -132,7 +115,7 @@ private: // メンバ変数
 	
 	Camera* camera = nullptr;
 
-	ParticleManager* bossHitParticle = nullptr;
+	ParticleManager* circleParticle = nullptr;
 
 	Sprite* gameBG = nullptr;
 	Sprite* Reticle = nullptr;
@@ -180,14 +163,4 @@ private: // メンバ変数
 
 	//マウス座標
 	POINT mousePosition;
-
-	// コアのワールド座標
-	XMFLOAT3 worldPos;
-	XMFLOAT3 worldPos2;
-	XMFLOAT3 worldPos3;
-	XMFLOAT3 worldPos4;
-
-	// ボスの砲台のワールド座標
-	XMFLOAT3 bossTurretWorldPosition_1;
-	XMFLOAT3 bossTurretWorldPosition_2;
 };

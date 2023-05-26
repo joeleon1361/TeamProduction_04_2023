@@ -7,6 +7,12 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
+ParticleManager::ParticleManager(ID3D12Device* device, Camera* camera)
+{
+	this->device = device;
+	this->camera = camera;
+}
+
 static const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3& rhs)
 {
 	XMFLOAT3 result;
@@ -516,8 +522,166 @@ void ParticleManager::CreateModel()
 	vbView.StrideInBytes = sizeof(VertexPos);
 }
 
-ParticleManager::ParticleManager(ID3D12Device* device, Camera* camera)
+//---パーティクル関数---//
+//基本パーティクル
+void ParticleManager::DefaultParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
 {
-	this->device = device;
-	this->camera = camera;
+	for (int i = 0; i < PartNum; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
+		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
+
+		const float rnd_vel = 10.0f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
+}
+
+//ボス部位破壊パーティクル
+void ParticleManager::BlastPart_1(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < 20; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = position.x;
+		pos.y = position.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
+
+		const float rnd_vel = -10.0f;
+		XMFLOAT3 vel{};
+		vel.z = (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
+}
+
+void ParticleManager::BlastPart_2(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < 20; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
+		pos.y = position.y;
+		pos.z = position.z;
+
+		const float rnd_vel = 10.0f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
+}
+
+void ParticleManager::BlastPart_3(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < 20; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = position.x;
+		pos.y = position.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
+
+		const float rnd_vel = 10.0f;
+		XMFLOAT3 vel{};
+		vel.z = (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
+}
+
+void ParticleManager::BlastPart_4(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < 20; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
+		pos.y = position.y;
+		pos.z = position.z;;
+
+		const float rnd_vel = -10.0f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
+}
+
+//プレイヤージェットパーティクル
+void ParticleManager::JettParticle(int PartNum, int Life, XMFLOAT3 position, XMFLOAT3 velosity, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < PartNum; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x - 6.0f * velosity.x;
+		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y - 6.0f * velosity.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z - 6.0f * velosity.z;
+
+		const float rnd_vel = 10.0f;
+		XMFLOAT3 vel{};
+		vel.x = velosity.x;
+		vel.y = velosity.y;
+		vel.z = velosity.z;
+
+		XMFLOAT3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
+}
+
+//ブーストパーティクル
+void ParticleManager::BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < PartNum; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 5.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
+		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
+
+		const float rnd_vel = 0.5f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+	}
 }
