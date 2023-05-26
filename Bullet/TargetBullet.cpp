@@ -95,10 +95,6 @@ void TargetBullet::Update()
 	position.y += bulletDirection.y * speed;
 	position.z += bulletDirection.z * speed;
 
-	//position.x += velocity.x * speed;
-	//position.y += velocity.y * speed;
-	//position.z += velocity.z * speed;
-
 	if (--deathTimer <= 0)
 	{
 		deathFlag = true;
