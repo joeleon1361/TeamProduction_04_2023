@@ -685,3 +685,20 @@ void ParticleManager::BoostParticle(int PartNum, int Life, XMFLOAT3 position, in
 		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
 	}
 }
+
+void ParticleManager::BulletParticle(int PartNum, int Life, XMFLOAT3 position, XMFLOAT4 start_color, XMFLOAT4 end_color, float start_scale)
+{
+	for (int i = 0; i < PartNum; i++) {
+		XMFLOAT3 pos{};
+		pos.x = position.x;
+		pos.y = position.y;
+		pos.z = position.z;
+
+		XMFLOAT3 vel{};
+
+		XMFLOAT3 acc{};
+
+		// 追加
+		Add(Life, pos, vel, acc, start_color, end_color, start_scale, 0.0f);
+	}
+}

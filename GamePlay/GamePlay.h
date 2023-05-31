@@ -105,6 +105,16 @@ public: // メンバ関数
 	// ボスの弾を発射
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
+	// コア撃破エフェクト
+	void CoreBreakEffect();
+
+	// コアヒットエフェクト
+	void CoreHitEffect();
+
+	// ボスパーツヒットエフェクト
+	void BossPartsHitEffect();
+
+	// 当たり判定
 	bool BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize);
 
 private: // メンバ変数
@@ -127,12 +137,14 @@ private: // メンバ変数
 	ObjModel* modelBossPartsCoreBox = nullptr;
 	ObjModel* modelBossPartsSphere = nullptr;
 	ObjModel* modelBossPartsTurretStand = nullptr;
+	ObjModel* modelBossPartsBody = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
 
 	BossParts* bossPartsRing = nullptr;
 	BossParts* bossPartsSphere = nullptr;
+	BossParts* bossPartsBody = nullptr;
 
 	BossCore* bossCore_1 = nullptr;
 	BossCore* bossCore_2 = nullptr;
