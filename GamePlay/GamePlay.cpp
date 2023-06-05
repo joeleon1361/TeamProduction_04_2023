@@ -315,6 +315,17 @@ void GamePlay::Update()
 			bossTurret_2->life--;
 			bullet->deathFlag = true;
 		}
+
+		if (!BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos, 8.0f) &&
+			!BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos2, 8.0f) &&
+			!BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos3, 8.0f) &&
+			!BasicCollisionDetection(bullet->GetPosition(), 3.0f, worldPos4, 8.0f) &&
+			!BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_1, 8.0f) &&
+			!BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurretWorldPosition_2, 8.0f) &&
+			BasicCollisionDetection(bullet->GetPosition(), 3.0f, boss->GetPosition(), 32.0f))
+		{
+			bullet->deathFlag = true;
+		}
 	}
 
 	// プレイヤーの球発射処理
