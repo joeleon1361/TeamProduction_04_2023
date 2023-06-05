@@ -55,6 +55,8 @@ void BossMainCore::Update()
 {
 	ObjObject::Update();
 
+	ChangePosition();
+
 	if (isAlive)
 	{
 		// ¶‘¶Žž‚ÌƒJƒ‰[•ÏX
@@ -78,6 +80,29 @@ void BossMainCore::Update()
 
 		isAlive = false;
 	}
+}
+
+void BossMainCore::ChangePosition()
+{
+	if (isAlive)
+	{
+		positionTimeRate += 0.01f;
+		if (positionTimeRate > 1.0f)
+		{
+			positionTimeRate = 1.0f;
+		}
+	}
+
+	if (!isAlive)
+	{
+		positionTimeRate -= 0.01f;
+		if (positionTimeRate < 0.0f)
+		{
+			positionTimeRate = 0.0f;
+		}
+	}
+
+	position = Lerp::LerpFloat3(OffPosition, OnPosition, positionTimeRate);
 }
 
 void BossMainCore::HitChangeColor()

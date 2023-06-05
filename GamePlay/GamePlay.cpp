@@ -179,7 +179,8 @@ void GamePlay::Initialize()
 	bossCore_4->SetScale({ 0.7f, 0.7f, 0.7f });
 	bossCore_4->SetParent(bossCoreBox_4);
 
-	bossMainCore->SetPosition({0.0f, 0.75f, 0.0f});
+	// ボスのメインコア
+	bossMainCore->SetPosition({0.0f, 0.0f, 0.0f});
 	bossMainCore->SetScale({ 0.75f, 0.75f, 0.75f });
 	bossMainCore->SetParent(bossPartsCoreStand);
 
@@ -690,6 +691,21 @@ void GamePlay::CoreHitEffect()
 			bossCore_4->colorTimeRate = 0.0f;
 			bossCore_4->colorTimeRate2 = 0.0f;
 			bossCore_4->life--;
+			bullet->deathFlag = true;
+		}
+
+		// メインコアの疑似ヒット処理
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossMainCore->GetWorldPosition(), 8.0f))
+		{
+			if (bossMainCore->GetLife() <= 1 && bossMainCore->GetLife() >= 0)
+			{
+				circleParticle->DefaultParticle(20, 50, bossMainCore->GetWorldPosition(), 50.0f, 0.0f, bossMainCore->GetColorRed(), bossMainCore->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossMainCore->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossMainCore->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());
+			}
+			bossMainCore->colorTimeRate = 0.0f;
+			bossMainCore->colorTimeRate2 = 0.0f;
+			bossMainCore->life--;
 			bullet->deathFlag = true;
 		}
 	}

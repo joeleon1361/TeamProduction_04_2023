@@ -24,6 +24,9 @@ public: // メンバ関数
 	// 毎フレーム処理
 	void Update() override;
 
+	// 座標移動
+	void ChangePosition();
+
 	// ヒット時のカラー変更
 	void HitChangeColor();
 
@@ -49,6 +52,12 @@ private: // メンバ変数
 	// 最大の体力
 	float lifeMax = 10.0f;
 
+	// コア解放時の座標
+	XMFLOAT3 OnPosition = { 0.0f, 0.75f, 0.0f };
+
+	// コア閉鎖時の座標
+	XMFLOAT3 OffPosition = { 0.0f, 0.0f, 0.0f };
+
 	// 基本のカラー
 	XMFLOAT4 baseColor = { 0.9f, 0.2f, 0.2f, 1.0f };
 	// ヒット時のカラー
@@ -67,6 +76,9 @@ private: // メンバ変数
 	int DestroyPartTime = 20;
 	//デフォルト値
 	int DestroyDefault = 20;
+
+	// 座標移動タイムレート
+	float positionTimeRate = 0.0f;
 
 public:
 	// 生存フラグ
