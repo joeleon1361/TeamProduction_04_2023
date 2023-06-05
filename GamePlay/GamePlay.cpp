@@ -469,6 +469,36 @@ void GamePlay::Update()
 			elapsedTime += 0.1f;
 		}
 	}
+	if (!player->CheckCollisionWithBoss(boss->GetPosition(), 440.0f))
+	{
+		float dx = player->GetPosition().x - boss->GetPosition().x;
+		float dy = player->GetPosition().y - boss->GetPosition().y;
+		float dz = player->GetPosition().z - boss->GetPosition().z;
+
+		float length = sqrtf(powf(dx, 2) + powf(dy, 2) + powf(dz, 2));
+
+		if (length > 0.0f)
+		{
+			dx /= length;
+			dy /= length;
+			dz /= length;
+		}
+
+		float newX = player->GetPosition().x;
+		float newY = player->GetPosition().y;
+		float newZ = player->GetPosition().z;
+
+		float elapsedTime = 0.0f;
+
+		while (!player->CheckCollisionWithBoss(boss->GetPosition(), 440.0f))
+		{
+			player->MoveTowards(newX, player->GetPosition().x - dx, 1.0f, elapsedTime);
+			player->MoveTowards(newY, player->GetPosition().y - dy, 1.0f, elapsedTime);
+			player->MoveTowards(newZ, player->GetPosition().z - dz, 1.0f, elapsedTime);
+			player->SetPosition({ newX, newY, newZ });
+			elapsedTime += 0.1f;
+		}
+	}
 
 	objSkydome->Update();
 	Reticle->SetAnchorPoint({ 0.5f, 0.5f });
