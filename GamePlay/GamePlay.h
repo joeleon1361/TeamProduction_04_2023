@@ -22,6 +22,7 @@
 #include "Boss.h"
 #include "BossTurret.h"
 #include "BossCore.h"
+#include "BossMainCore.h"
 #include "BossParts.h"
 #include "TargetBullet.h"
 
@@ -49,6 +50,7 @@ class BossBullet;
 class TargetBullet;
 class StageObject;
 class BossCore;
+class BossMainCore;
 class BossParts;
 class BossTurret;
 
@@ -138,10 +140,12 @@ private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
 	ObjModel* modelBossPartsTurretStand = nullptr;
 	ObjModel* modelBossPartsBody = nullptr;
+	ObjModel* modelBossPartsCoreStand = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
 
+	BossParts* bossPartsCoreStand = nullptr;
 	BossParts* bossPartsRing = nullptr;
 	BossParts* bossPartsSphere = nullptr;
 	BossParts* bossPartsBody = nullptr;
@@ -151,16 +155,18 @@ private: // メンバ変数
 	BossCore* bossCore_3 = nullptr;
 	BossCore* bossCore_4 = nullptr;
 
+	BossMainCore* bossMainCore = nullptr;
+
 	BossParts* bossCoreBox_1 = nullptr;
 	BossParts* bossCoreBox_2 = nullptr;
 	BossParts* bossCoreBox_3 = nullptr;
 	BossParts* bossCoreBox_4 = nullptr;
 
 	BossParts* bossTurretStand_1 = nullptr;
-	BossParts* bossTurretStand_2 = nullptr;
+	//BossParts* bossTurretStand_2 = nullptr;
 
 	BossTurret* bossTurret_1 = nullptr;
-	BossTurret* bossTurret_2 = nullptr;
+	//BossTurret* bossTurret_2 = nullptr;
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<TargetBullet>> playerBullets;

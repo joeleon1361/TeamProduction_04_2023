@@ -1,11 +1,11 @@
-#include "BossCore.h"
+#include "BossMainCore.h"
 
 using namespace DirectX;
 
-BossCore* BossCore::Create(ObjModel* model)
+BossMainCore* BossMainCore::Create(ObjModel* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
-	BossCore* instance = new BossCore();
+	BossMainCore* instance = new BossMainCore();
 	if (instance == nullptr) {
 		return nullptr;
 	}
@@ -25,7 +25,7 @@ BossCore* BossCore::Create(ObjModel* model)
 	return instance;
 }
 
-bool BossCore::Initialize()
+bool BossMainCore::Initialize()
 {
 	if (!ObjObject::Initialize())
 	{
@@ -51,7 +51,7 @@ bool BossCore::Initialize()
 	return true;
 }
 
-void BossCore::Update()
+void BossMainCore::Update()
 {
 	ObjObject::Update();
 
@@ -62,7 +62,7 @@ void BossCore::Update()
 		// ヒット時のカラー変更
 		HitChangeColor();
 	}
-	
+
 	if (!isAlive)
 	{
 		color = breakColor;
@@ -80,8 +80,7 @@ void BossCore::Update()
 	}
 }
 
-// ヒット時のカラー変更
-void BossCore::HitChangeColor()
+void BossMainCore::HitChangeColor()
 {
 	colorTimeRate += 0.1;
 	if (colorTimeRate > 1.0f)
@@ -91,8 +90,7 @@ void BossCore::HitChangeColor()
 	color = Lerp::LerpFloat4(hitColor, aliveColor, colorTimeRate);
 }
 
-// 生存時のカラー変更
-void BossCore::AliveChangeColor()
+void BossMainCore::AliveChangeColor()
 {
 	colorTimeRate2 += 0.02;
 	if (colorTimeRate2 > 1.0f)
@@ -102,7 +100,7 @@ void BossCore::AliveChangeColor()
 	aliveColor = Lerp::LerpFloat4(baseColor, breakColor, colorTimeRate2);
 }
 
-void BossCore::TimerReset(int Timer, int ResetValue)
+void BossMainCore::TimerReset(int Timer, int ResetValue)
 {
 	Timer = ResetValue;
 }

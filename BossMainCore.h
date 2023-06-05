@@ -3,7 +3,7 @@
 #include "ParticleManager.h"
 #include "Lerp.h"
 
-class BossCore :
+class BossMainCore :
 	public ObjObject
 {
 private:
@@ -13,7 +13,7 @@ private:
 
 public: // 静的メンバ関数
 // 3Dオブジェクト生成
-	static BossCore* Create(ObjModel* model = nullptr);
+	static BossMainCore* Create(ObjModel* model = nullptr);
 
 private: // 静的メンバ変数
 

@@ -74,9 +74,11 @@ void GamePlay::Initialize()
 	bossCoreBox_3 = BossParts::Create();
 	bossCoreBox_4 = BossParts::Create();
 	bossTurretStand_1 = BossParts::Create();
-	bossTurretStand_2 = BossParts::Create();
+	//bossTurretStand_2 = BossParts::Create();
 	bossTurret_1 = BossTurret::Create();
-	bossTurret_2 = BossTurret::Create();
+	//bossTurret_2 = BossTurret::Create();
+	bossPartsCoreStand = BossParts::Create();
+	bossMainCore = BossMainCore::Create();
 
 	// モデルセット
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
@@ -98,7 +100,10 @@ void GamePlay::Initialize()
 
 	modelBossPartsTurretStand = ObjModel::CreateFromOBJ("TurretStand");
 	bossTurretStand_1->SetModel(modelBossPartsTurretStand);
-	bossTurretStand_2->SetModel(modelBossPartsTurretStand);
+	//bossTurretStand_2->SetModel(modelBossPartsTurretStand);
+
+	modelBossPartsCoreStand = ObjModel::CreateFromOBJ("bossPartsCoreStand");
+	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
@@ -124,6 +129,12 @@ void GamePlay::Initialize()
 	bossPartsSphere->SetScale({ 4.2f, 4.2f, 4.2f });
 	bossPartsSphere->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 	bossPartsSphere->SetParent(boss);
+
+	bossPartsCoreStand->SetPosition({ 0.0f, -3.5f, 0.0f });
+	bossPartsCoreStand->SetRotation({ 180.0f, 0.0f, 0.0f });
+	bossPartsCoreStand->SetScale({ 2.0f, 2.0f, 2.0f });
+	bossPartsCoreStand->SetColor({ 0.647f, 0.619f, 0.658f, 1.0f });
+	bossPartsCoreStand->SetParent(boss);
 
 	// ボスのコアボックス1
 	bossCoreBox_1->SetPosition({ 0.0f , 0.0f, -1.2f });
@@ -168,6 +179,10 @@ void GamePlay::Initialize()
 	bossCore_4->SetScale({ 0.7f, 0.7f, 0.7f });
 	bossCore_4->SetParent(bossCoreBox_4);
 
+	bossMainCore->SetPosition({0.0f, 0.75f, 0.0f});
+	bossMainCore->SetScale({ 0.75f, 0.75f, 0.75f });
+	bossMainCore->SetParent(bossPartsCoreStand);
+
 	// ボスの砲台1
 	bossTurretStand_1->SetPosition({ 0.0f, 0.9f, 0.0f });
 	bossTurretStand_1->SetScale({ 0.3f, 0.3f, 0.3f });
@@ -178,14 +193,14 @@ void GamePlay::Initialize()
 	bossTurret_1->SetParent({ bossTurretStand_1 });
 
 	// ボスの砲台2
-	bossTurretStand_2->SetPosition({ 0.0f, -0.9f, 0.0f });
+	/*bossTurretStand_2->SetPosition({ 0.0f, -0.9f, 0.0f });
 	bossTurretStand_2->SetRotation({ 0.0f, 0.0f, 180.0f });
 	bossTurretStand_2->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossTurretStand_2->SetParent({ bossPartsSphere });
 
 	bossTurret_2->SetPosition({ 0.0f, 2.5, 0.0f });
 	bossTurret_2->SetScale({ 1.0f, 1.0f, 1.0f });
-	bossTurret_2->SetParent({ bossTurretStand_2 });
+	bossTurret_2->SetParent({ bossTurretStand_2 });*/
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -267,7 +282,7 @@ void GamePlay::Update()
 	}
 
 	// ボスの砲台2を一定間隔で発射
-	if (bossTurret_2->isAlive == true)
+	/*if (bossTurret_2->isAlive == true)
 	{
 		bossTurret_2->shotTimer--;
 		if (bossTurret_2->shotTimer <= 0)
@@ -275,7 +290,7 @@ void GamePlay::Update()
 			BossTargetShoot(bossTurret_2->GetWorldPosition(), player->GetPosition(), 10.0f);
 			bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
 		}
-	}
+	}*/
 
 
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
@@ -327,9 +342,11 @@ void GamePlay::Update()
 	bossCore_3->Update();
 	bossCore_4->Update();
 	bossTurret_1->Update();
-	bossTurret_2->Update();
+	//bossTurret_2->Update();
 	bossTurretStand_1->Update();
-	bossTurretStand_2->Update();
+	//bossTurretStand_2->Update();
+	bossPartsCoreStand->Update();
+	bossMainCore->Update();
 
 	if (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
 	{
@@ -416,7 +433,27 @@ void GamePlay::Draw()
 		//bullet->Draw();
 	}
 
-	if (bossCore_1->isAlive || bossCore_2->isAlive || bossCore_3->isAlive || bossCore_4->isAlive)
+	bossPartsRing->Draw();
+	bossPartsSphere->Draw();
+	bossCoreBox_1->Draw();
+	bossCoreBox_2->Draw();
+	bossCoreBox_3->Draw();
+	bossCoreBox_4->Draw();
+	bossTurret_1->Draw();
+	//bossTurret_2->Draw();
+	bossTurretStand_1->Draw();
+	//bossTurretStand_2->Draw();
+	bossPartsCoreStand->Draw();
+
+	bossCore_1->Draw();
+	bossCore_2->Draw();
+	bossCore_3->Draw();
+	bossCore_4->Draw();
+
+	bossMainCore->Draw();
+
+#pragma region 部位破壊処理を一時コメントアウト
+	/*if (bossCore_1->isAlive || bossCore_2->isAlive || bossCore_3->isAlive || bossCore_4->isAlive)
 	{
 		bossPartsRing->Draw();
 		bossPartsSphere->Draw();
@@ -448,7 +485,8 @@ void GamePlay::Draw()
 	if (bossCore_4->isAlive)
 	{
 		bossCore_4->Draw();
-	}
+	}*/
+#pragma endregion
 
 	objSkydome->Draw();
 
@@ -605,6 +643,7 @@ void GamePlay::CoreHitEffect()
 				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
 			}
 			bossCore_1->colorTimeRate = 0.0f;
+			bossCore_1->colorTimeRate2 = 0.0f;
 			bossCore_1->life--;
 			bullet->deathFlag = true;
 		}
@@ -619,6 +658,7 @@ void GamePlay::CoreHitEffect()
 				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
 			}
 			bossCore_2->colorTimeRate = 0.0f;
+			bossCore_2->colorTimeRate2 = 0.0f;
 			bossCore_2->life--;
 			bullet->deathFlag = true;
 		}
@@ -633,6 +673,7 @@ void GamePlay::CoreHitEffect()
 				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
 			}
 			bossCore_3->colorTimeRate = 0.0f;
+			bossCore_3->colorTimeRate2 = 0.0f;
 			bossCore_3->life--;
 			bullet->deathFlag = true;
 		}
@@ -647,6 +688,7 @@ void GamePlay::CoreHitEffect()
 				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
 			}
 			bossCore_4->colorTimeRate = 0.0f;
+			bossCore_4->colorTimeRate2 = 0.0f;
 			bossCore_4->life--;
 			bullet->deathFlag = true;
 		}
@@ -672,19 +714,18 @@ void GamePlay::BossPartsHitEffect()
 
 
 		// Turret 2 collision detection
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 8.0f))
-		{
-			// 必要なときはいつでも、次の3行を自由に復元してください。
-			if (bossTurret_2->isAlive == true)
-			{
-				bossTurret_2->colorTimeRate = 0.0f;
-				bossTurret_2->life--;
-			}
-			bullet->deathFlag = true;
-		}
+		//if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 8.0f))
+		//{
+		//	// 必要なときはいつでも、次の3行を自由に復元してください。
+		//	if (bossTurret_2->isAlive == true)
+		//	{
+		//		bossTurret_2->colorTimeRate = 0.0f;
+		//		bossTurret_2->life--;
+		//	}
+		//	bullet->deathFlag = true;
+		//}
 	}
 }
-
 
 // 当たり判定
 bool GamePlay::BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize)
