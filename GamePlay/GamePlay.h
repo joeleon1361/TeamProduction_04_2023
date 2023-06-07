@@ -119,6 +119,8 @@ public: // メンバ関数
 	// プレイヤーの弾を発射
 	void Shoot();
 
+	void ShotDetection();
+
 	// ボスの弾を発射
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
