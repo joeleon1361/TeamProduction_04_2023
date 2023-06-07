@@ -72,7 +72,12 @@ private: // 静的メンバ変数
 	{
 		debug_txt,
 		game_bg,
-		reticle
+		reticle,
+
+		// ボス
+		game_boss_frame_1,
+		game_boss_frame_2,
+		game_boss_gauge
 	};
 
 public: // メンバ関数
@@ -135,6 +140,12 @@ private: // メンバ変数
 	Sprite* gameBG = nullptr;
 	Sprite* Reticle = nullptr;
 	Sprite* test = nullptr;
+
+	// ボスのHPUI
+	Sprite* bossHpUI = nullptr;
+	Sprite* bossHpGage = nullptr;
+	Sprite* bossDamageGage = nullptr;
+	Sprite* bossHpUICover = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -184,4 +195,14 @@ private: // メンバ変数
 
 	//マウス座標
 	POINT mousePosition;
+
+	// メインコアのHPバーの座標
+	XMFLOAT2 bossHpUIPosition = { 1255.0f , 30.0f };
+	// メインコアのHPバーのサイズ
+	XMFLOAT2 bossHpGageSize;
+	// メインコアのダメージバーのサイズ
+	XMFLOAT2 bossDamageGageSize;
+
+	// メインコアのHP
+	
 };

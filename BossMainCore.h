@@ -53,9 +53,6 @@ public: // メンバ関数
 private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
 
-	// 最大の体力
-	float lifeMax = 30.0f;
-
 	// コア解放時の座標
 	XMFLOAT3 OnPosition = { 0.0f, 0.75f, 0.0f };
 
@@ -91,8 +88,13 @@ public:
 	// メインコアの撃破
 	bool isBreak = false;
 
+
+	// 最大の体力
+	float lifeMax = 30.0f;
 	// 現在の体力
 	float life = lifeMax;
+
+	float lifeRatio = {};
 
 	// カラー変更タイムレート
 	float colorTimeRate = 1.0f;

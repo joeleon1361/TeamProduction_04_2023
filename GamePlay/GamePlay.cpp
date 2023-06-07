@@ -42,6 +42,22 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	// ボス
+	if (!Sprite::LoadTexture(TextureNumber::game_boss_frame_1, L"Resources/Sprite/GameUI/BossHpUI/game_boss_frame_1.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::game_boss_frame_2, L"Resources/Sprite/GameUI/BossHpUI/game_boss_frame_2.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::game_boss_gauge, L"Resources/Sprite/GameUI/BossHpUI/game_boss_gauge.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
@@ -51,6 +67,12 @@ void GamePlay::Initialize()
 	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
 
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
+
+	// ボス
+	bossHpUI = Sprite::Create(TextureNumber::game_boss_frame_1, { bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
+	bossHpGage = Sprite::Create(TextureNumber::game_boss_gauge, bossHpUIPosition);
+	bossDamageGage = Sprite::Create(TextureNumber::game_boss_gauge, bossHpUIPosition);
+	bossHpUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
 
 	// パーティクル
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -104,6 +126,19 @@ void GamePlay::Initialize()
 
 	modelBossPartsCoreStand = ObjModel::CreateFromOBJ("bossPartsCoreStand");
 	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
+
+	// ボスのHPゲージ
+	bossHpGage->SetColor({ 0.1f, 0.6f, 0.1f, 1.0f });
+	bossHpGage->SetSize({ 530.0f, 30.0f });
+	bossHpGage->SetAnchorPoint({ 1.0f, 0.5f });
+
+	bossDamageGage->SetColor({ 1.0f, 0, 0.2f, 1.0f });
+	bossDamageGage->SetSize({ 530.0f, 30.0f });
+	bossDamageGage->SetAnchorPoint({ 1.0f, 0.5f });
+
+	bossHpUI->SetAnchorPoint({ 1.0f, 0.5f });
+
+	bossHpUICover->SetAnchorPoint({ 1.0f, 0.5f });
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
@@ -248,6 +283,9 @@ void GamePlay::Update()
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 
+	bossHpGageSize = bossHpGage->GetSize();
+	bossDamageGageSize = Lerp::LerpFloat2(bossDamageGage->GetSize(), bossHpGageSize, 0.1f);
+
 	// コアヒットエフェクト
 	CoreHitEffect();
 
@@ -321,6 +359,25 @@ void GamePlay::Update()
 
 	// 全てのコアを破壊した後
 	CoreAllBreak();
+
+	// ボスのHPゲージ
+	// ボスのHP計算
+	bossMainCore->lifeRatio = bossMainCore->life / bossMainCore->lifeMax;
+	bossHpGageSize.x = bossMainCore->lifeRatio * 530.0f;
+
+	bossHpGage->SetPosition(bossHpUIPosition);
+	bossHpGage->SetColor({ 0.1f, 0.6f, 0.1f, 1.0f });
+	bossHpGage->SetSize(bossHpGageSize);
+
+	bossDamageGage->SetPosition(bossHpUIPosition);
+	bossDamageGage->SetColor({ 1.0f, 0, 0.2f, 1.0f });
+	bossDamageGage->SetSize(bossDamageGageSize);
+
+	bossHpUI->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
+	bossHpUI->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+
+	bossHpUICover->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
+	bossHpUICover->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -511,9 +568,15 @@ void GamePlay::Draw()
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
+	
+	Reticle->Draw();
+
+	bossHpUI->Draw();
+	bossDamageGage->Draw();
+	bossHpGage->Draw();
+	bossHpUICover->Draw();
 
 	player->DebugTextDraw();
-	Reticle->Draw();
 	debugText.DrawAll(cmdList);
 
 	// スプライト描画後処理
