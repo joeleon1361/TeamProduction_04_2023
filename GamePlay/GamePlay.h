@@ -73,8 +73,7 @@ private: // 静的メンバ変数
 		debug_txt,
 		game_bg,
 		reticle,
-		black
-		reticle,
+		black,
 
 		// ボス
 		game_boss_frame_1,
@@ -110,6 +109,8 @@ public: // メンバ関数
 
 	// プレイヤーの弾を発射
 	void Shoot();
+
+	void PlayerMovementBoundaryChecking();
 
 	// ボスの弾を発射
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);

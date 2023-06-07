@@ -726,6 +726,6 @@ void ParticleManager::BulletParticle(int PartNum, int Life, XMFLOAT3 position, X
 		XMFLOAT3 acc{};
 
 		// 追加
-		Add(Life, pos, vel, acc, start_color, end_color, start_scale, 0.0f);
+		Add(Life, pos, vel, acc, start_color, end_color, start_scale, 0.0f, 0.0f, 0.0f);
 	}
 }

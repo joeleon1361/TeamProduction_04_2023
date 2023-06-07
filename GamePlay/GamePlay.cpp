@@ -315,22 +315,7 @@ void GamePlay::Update()
 	bossDamageGageSize = Lerp::LerpFloat2(bossDamageGage->GetSize(), bossHpGageSize, 0.1f);
 	
 		//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-
-	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
-	{
-		// コア1の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 8.0f))
-		{
-			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
-			}
-			bossCore_1->colorTimeRate = 0.0f;
-			bossCore_1->life--;
-			bullet->deathFlag = true;
-		}
+	
 
 	boostGageSize = boostGage->GetSize();
 
@@ -356,29 +341,6 @@ void GamePlay::Update()
 			return bullet->GetDeathFlag();
 		}
 	);
-
-	// ボスの砲台1を一定間隔で発射
-	if (bossTurret_1->isAlive == true)
-	{
-		bossTurret_1->shotTimer--;
-		if (bossTurret_1->shotTimer <= 0)
-		{
-			BossTargetShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 10.0f);
-			bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
-		}
-	}
-
-	// ボスの砲台2を一定間隔で発射
-	/*if (bossTurret_2->isAlive == true)
-	{
-		bossTurret_2->shotTimer--;
-		if (bossTurret_2->shotTimer <= 0)
-		{
-			BossTargetShoot(bossTurret_2->GetWorldPosition(), player->GetPosition(), 10.0f);
-			bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
-		}
-	}*/
-
 
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{
@@ -465,36 +427,7 @@ void GamePlay::Update()
 	bossPartsCoreStand->Update();
 	bossMainCore->Update();
 
-	if (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
-	{
-		float dx = player->GetPosition().x - boss->GetPosition().x;
-		float dy = player->GetPosition().y - boss->GetPosition().y;
-		float dz = player->GetPosition().z - boss->GetPosition().z;
-
-		float length = sqrtf(powf(dx, 2) + powf(dy, 2) + powf(dz, 2));
-
-		if (length > 0.0f)
-		{
-			dx /= length;
-			dy /= length;
-			dz /= length;
-		}
-
-		float newX = player->GetPosition().x;
-		float newY = player->GetPosition().y;
-		float newZ = player->GetPosition().z;
-
-		float elapsedTime = 0.0f;
-
-		while (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
-		{
-			player->MoveTowards(newX, player->GetPosition().x + dx, 1.0f, elapsedTime);
-			player->MoveTowards(newY, player->GetPosition().y + dy, 1.0f, elapsedTime);
-			player->MoveTowards(newZ, player->GetPosition().z + dz, 1.0f, elapsedTime);
-			player->SetPosition({ newX, newY, newZ });
-			elapsedTime += 0.1f;
-		}
-	}
+	PlayerMovementBoundaryChecking();
 
 	objSkydome->Update();
 	Reticle->SetAnchorPoint({ 0.5f, 0.5f });
@@ -732,7 +665,7 @@ void GamePlay::Shoot()
 		if (shotFlag == true)
 		{
 			std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
-			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f);
+			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
 			newBullet->eyePosition = camera->GetEye();
 			//newBullet->eyePosition.y += 10.0f;
 			newBullet->targetPosition = camera->GetTarget();
@@ -745,7 +678,70 @@ void GamePlay::Shoot()
 	}
 }
 
-// ボスの狙い弾
+void GamePlay::PlayerMovementBoundaryChecking()
+{
+	if (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
+	{
+		float dx = player->GetPosition().x - boss->GetPosition().x;
+		float dy = player->GetPosition().y - boss->GetPosition().y;
+		float dz = player->GetPosition().z - boss->GetPosition().z;
+
+		float length = sqrtf(powf(dx, 2) + powf(dy, 2) + powf(dz, 2));
+
+		if (length > 0.0f)
+		{
+			dx /= length;
+			dy /= length;
+			dz /= length;
+		}
+
+		float newX = player->GetPosition().x;
+		float newY = player->GetPosition().y;
+		float newZ = player->GetPosition().z;
+
+		float elapsedTime = 0.0f;
+
+		while (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
+		{
+			player->MoveTowards(newX, player->GetPosition().x + dx, 1.0f, elapsedTime);
+			player->MoveTowards(newY, player->GetPosition().y + dy, 1.0f, elapsedTime);
+			player->MoveTowards(newZ, player->GetPosition().z + dz, 1.0f, elapsedTime);
+			player->SetPosition({ newX, newY, newZ });
+			elapsedTime += 0.1f;
+		}
+	}
+	if (!player->CheckCollisionWithBoss(boss->GetPosition(), 440.0f))
+	{
+		float dx = player->GetPosition().x - boss->GetPosition().x;
+		float dy = player->GetPosition().y - boss->GetPosition().y;
+		float dz = player->GetPosition().z - boss->GetPosition().z;
+
+		float length = sqrtf(powf(dx, 2) + powf(dy, 2) + powf(dz, 2));
+
+		if (length > 0.0f)
+		{
+			dx /= length;
+			dy /= length;
+			dz /= length;
+		}
+
+		float newX = player->GetPosition().x;
+		float newY = player->GetPosition().y;
+		float newZ = player->GetPosition().z;
+
+		float elapsedTime = 0.0f;
+
+		while (!player->CheckCollisionWithBoss(boss->GetPosition(), 440.0f))
+		{
+			player->MoveTowards(newX, player->GetPosition().x - dx, 1.0f, elapsedTime);
+			player->MoveTowards(newY, player->GetPosition().y - dy, 1.0f, elapsedTime);
+			player->MoveTowards(newZ, player->GetPosition().z - dz, 1.0f, elapsedTime);
+			player->SetPosition({ newX, newY, newZ });
+			elapsedTime += 0.1f;
+		}
+	}
+}
+
 void GamePlay::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed)
 {
 	std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
@@ -898,7 +894,6 @@ void GamePlay::BossPartsHitEffect()
 			}
 			bullet->deathFlag = true;
 		}
-
 
 		// Turret 2 collision detection
 		//if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 8.0f))
