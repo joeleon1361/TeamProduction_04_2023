@@ -74,6 +74,11 @@ void GamePlay::Initialize()
 	bossDamageGage = Sprite::Create(TextureNumber::game_boss_gauge, bossHpUIPosition);
 	bossHpUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
 
+	// ブーストゲージ
+	boostUI = Sprite::Create(TextureNumber::game_boss_frame_1, { boostUIPosition.x + 10.0f, boostUIPosition.y });
+	boostGage = Sprite::Create(TextureNumber::game_boss_gauge, boostUIPosition);
+	boostUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { boostUIPosition.x + 10.0f, boostUIPosition.y });
+
 	// パーティクル
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
 
@@ -139,6 +144,15 @@ void GamePlay::Initialize()
 	bossHpUI->SetAnchorPoint({ 1.0f, 0.5f });
 
 	bossHpUICover->SetAnchorPoint({ 1.0f, 0.5f });
+
+	// ブーストゲージ
+	boostGage->SetColor({ 0.6f, 0.6f, 0.1f, 1.0f });
+	boostGage->SetSize({ 530.0f, 30.0f });
+	boostGage->SetAnchorPoint({ 1.0f, 0.5f });
+
+	boostUI->SetAnchorPoint({ 1.0f, 0.5f });
+
+	boostUICover->SetAnchorPoint({ 1.0f, 0.5f });
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
@@ -286,6 +300,8 @@ void GamePlay::Update()
 	bossHpGageSize = bossHpGage->GetSize();
 	bossDamageGageSize = Lerp::LerpFloat2(bossDamageGage->GetSize(), bossHpGageSize, 0.1f);
 
+	boostGageSize = boostGage->GetSize();
+
 	// コアヒットエフェクト
 	CoreHitEffect();
 
@@ -366,18 +382,26 @@ void GamePlay::Update()
 	bossHpGageSize.x = bossMainCore->lifeRatio * 530.0f;
 
 	bossHpGage->SetPosition(bossHpUIPosition);
-	bossHpGage->SetColor({ 0.1f, 0.6f, 0.1f, 1.0f });
 	bossHpGage->SetSize(bossHpGageSize);
 
 	bossDamageGage->SetPosition(bossHpUIPosition);
-	bossDamageGage->SetColor({ 1.0f, 0, 0.2f, 1.0f });
 	bossDamageGage->SetSize(bossDamageGageSize);
 
 	bossHpUI->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-	bossHpUI->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
 	bossHpUICover->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-	bossHpUICover->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+
+	// ブーストゲージ
+	float ratio;
+	ratio = player->GetBoostPow() / 100.0f;
+	boostGageSize.x = ratio * 530.0f;
+
+	boostGage->SetPosition(boostUIPosition);
+	boostGage->SetSize(boostGageSize);
+
+	boostUI->SetPosition({ boostUIPosition.x + 10.0f, boostUIPosition.y });
+
+	boostUICover->SetPosition({ boostUIPosition.x + 10.0f, boostUIPosition.y });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -575,6 +599,10 @@ void GamePlay::Draw()
 	bossDamageGage->Draw();
 	bossHpGage->Draw();
 	bossHpUICover->Draw();
+
+	boostUI->Draw();
+	boostGage->Draw();
+	boostUICover->Draw();
 
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);

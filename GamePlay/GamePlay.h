@@ -146,6 +146,10 @@ private: // メンバ変数
 	Sprite* bossHpGage = nullptr;
 	Sprite* bossDamageGage = nullptr;
 	Sprite* bossHpUICover = nullptr;
+
+	Sprite* boostUI = nullptr;
+	Sprite* boostGage = nullptr;
+	Sprite* boostUICover = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -203,6 +207,8 @@ private: // メンバ変数
 	// メインコアのダメージバーのサイズ
 	XMFLOAT2 bossDamageGageSize;
 
-	// メインコアのHP
-	
+	// ブーストゲージの座標
+	XMFLOAT2 boostUIPosition = { 1255.0f , 690.0f };
+	// ブーストゲージのサイズ
+	XMFLOAT2 boostGageSize;
 };
