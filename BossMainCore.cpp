@@ -65,7 +65,7 @@ void BossMainCore::Update()
 		HitChangeColor();
 
 		// HP‚ª0‚É‚È‚Á‚½‚çŒ‚”j
-		/*if (life <= 0.0f)
+		if (life <= 0.0f)
 		{
 			if (DestroyPartTime > 0)
 			{
@@ -73,7 +73,7 @@ void BossMainCore::Update()
 			}
 
 			isAlive = false;
-		}*/
+		}
 
 		onTimer--;
 		if (onTimer < 0)

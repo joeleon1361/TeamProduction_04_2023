@@ -399,6 +399,13 @@ void GamePlay::Update()
 	}
 	// パーティクル更新
 	circleParticle->Update();
+
+	// HPが0になったら撃破
+	if (bossMainCore->life <= 0.0f)
+	{
+		//シーン切り替え
+		SceneManager::GetInstance()->ChangeScene("RESULT");
+	}
 }
 
 void GamePlay::Draw()
@@ -540,7 +547,7 @@ void GamePlay::DrawDebugText()
 		<< mousePosition.x << ","
 		<< mousePosition.y << ")";
 
-	debugText.Print(MousePosition.str(), 0, 0, 2.0f);
+	debugText.Print(MousePosition.str(), 0, 0, 1.0f);
 
 	//レティクルの座標
 	std::ostringstream ReticlePosition;
@@ -549,7 +556,37 @@ void GamePlay::DrawDebugText()
 		<< ReticlePos.x << ","
 		<< ReticlePos.y << ")";
 
-	debugText.Print(ReticlePosition.str(), 0, 60, 2.0f);
+	debugText.Print(ReticlePosition.str(), 0, 60, 1.0f);
+
+	std::ostringstream CoreLife_1;
+	CoreLife_1 << "CoreLife_1:("
+		<< std::fixed << std::setprecision(2)
+		<< bossCore_1->life << ")"; // z
+	debugText.Print(CoreLife_1.str(), 10, 210, 1.0f);
+
+	std::ostringstream CoreLife_2;
+	CoreLife_2 << "CoreLife_2:("
+		<< std::fixed << std::setprecision(2)
+		<< bossCore_2->life << ")"; // z
+	debugText.Print(CoreLife_2.str(), 10, 230, 1.0f);
+
+	std::ostringstream CoreLife_3;
+	CoreLife_3 << "CoreLife_3:("
+		<< std::fixed << std::setprecision(2)
+		<< bossCore_3->life << ")"; // z
+	debugText.Print(CoreLife_3.str(), 10, 250, 1.0f);
+
+	std::ostringstream CoreLife_4;
+	CoreLife_4 << "CoreLife_4:("
+		<< std::fixed << std::setprecision(2)
+		<< bossCore_4->life << ")"; // z
+	debugText.Print(CoreLife_4.str(), 10, 270, 1.0f);
+
+	std::ostringstream MainCoreLife;
+	MainCoreLife << "MainCoreLife:("
+		<< std::fixed << std::setprecision(2)
+		<< bossMainCore->life << ")"; // z
+	debugText.Print(MainCoreLife.str(), 10, 290, 1.0f);
 }
 
 // プレイヤー弾発射
@@ -706,9 +743,14 @@ void GamePlay::CoreHitEffect()
 				circleParticle->DefaultParticle(10, 50, bossMainCore->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
 				circleParticle->DefaultParticle(10, 50, bossMainCore->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());
 			}
+
+			if (bossMainCore->isAlive == true)
+			{
+				bossMainCore->life--;
+			}
+			
 			bossMainCore->colorTimeRate = 0.0f;
 			bossMainCore->colorTimeRate2 = 0.0f;
-			bossMainCore->life--;
 			bullet->deathFlag = true;
 		}
 	}

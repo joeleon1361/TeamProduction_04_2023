@@ -54,7 +54,7 @@ private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
 
 	// 最大の体力
-	float lifeMax = 100.0f;
+	float lifeMax = 30.0f;
 
 	// コア解放時の座標
 	XMFLOAT3 OnPosition = { 0.0f, 0.75f, 0.0f };
