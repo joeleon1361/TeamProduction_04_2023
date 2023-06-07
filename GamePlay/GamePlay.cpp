@@ -258,29 +258,6 @@ void GamePlay::Update()
 		}
 	);
 
-	// ボスの砲台1を一定間隔で発射
-	if (bossTurret_1->isAlive == true)
-	{
-		bossTurret_1->shotTimer--;
-		if (bossTurret_1->shotTimer <= 0)
-		{
-			BossTargetShoot(bossTurretWorldPosition_1, player->GetPosition(), 10.0f);
-			bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
-		}
-	}
-	
-	// ボスの砲台2を一定間隔で発射
-	if (bossTurret_2->isAlive == true)
-	{
-		bossTurret_2->shotTimer--;
-		if (bossTurret_2->shotTimer <= 0)
-		{
-			BossTargetShoot(bossTurretWorldPosition_2, player->GetPosition(), 10.0f);
-			bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
-		}
-	}
-	
-
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{
 		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, player->GetPosition(), 3.0f))
@@ -302,39 +279,7 @@ void GamePlay::Update()
 		}
 	);
 
-	//ライフが0になった時にオブジェクトの位置から撃破パーティクルを発生
-	if (bossCore_1->GetAliveFlag() == false)
-	{
-		if (bossCore_1->GetDestroyPartTime() > 0)
-		{
-			BlastPart_1(20, worldPos, 20.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-		}
-	}
-
-	if (bossCore_2->GetAliveFlag() == false)
-	{
-		if (bossCore_2->GetDestroyPartTime() > 0)
-		{
-			BlastPart_2(20, worldPos2, 20.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
-		}
-	}
-
-
-	if (bossCore_3->GetAliveFlag() == false)
-	{
-		if (bossCore_3->GetDestroyPartTime() > 0)
-		{
-			BlastPart_3(20, worldPos3, 20.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
-		}
-	}
-
-	if (bossCore_4->GetAliveFlag() == false)
-	{
-		if (bossCore_4->GetDestroyPartTime() > 0)
-		{
-			BlastPart_4(20, worldPos4, 20.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
-		}
-	}
+	EnemyAliveFlagChecking();
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -687,6 +632,64 @@ void GamePlay::ShotDetection()
 			BasicCollisionDetection(bullet->GetPosition(), 3.0f, boss->GetPosition(), 32.0f))
 		{
 			bullet->deathFlag = true;
+		}
+	}
+}
+
+void GamePlay::EnemyAliveFlagChecking()
+{
+	// ボスの砲台1を一定間隔で発射
+	if (bossTurret_1->isAlive == true)
+	{
+		bossTurret_1->shotTimer--;
+		if (bossTurret_1->shotTimer <= 0)
+		{
+			BossTargetShoot(bossTurretWorldPosition_1, player->GetPosition(), 10.0f);
+			bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
+		}
+	}
+
+	// ボスの砲台2を一定間隔で発射
+	if (bossTurret_2->isAlive == true)
+	{
+		bossTurret_2->shotTimer--;
+		if (bossTurret_2->shotTimer <= 0)
+		{
+			BossTargetShoot(bossTurretWorldPosition_2, player->GetPosition(), 10.0f);
+			bossTurret_2->shotTimer = bossTurret_2->ShotInterval;
+		}
+	}
+
+	//ライフが0になった時にオブジェクトの位置から撃破パーティクルを発生
+	if (bossCore_1->GetAliveFlag() == false)
+	{
+		if (bossCore_1->GetDestroyPartTime() > 0)
+		{
+			BlastPart_1(20, worldPos, 20.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+		}
+	}
+
+	if (bossCore_2->GetAliveFlag() == false)
+	{
+		if (bossCore_2->GetDestroyPartTime() > 0)
+		{
+			BlastPart_2(20, worldPos2, 20.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
+		}
+	}
+
+	if (bossCore_3->GetAliveFlag() == false)
+	{
+		if (bossCore_3->GetDestroyPartTime() > 0)
+		{
+			BlastPart_3(20, worldPos3, 20.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
+		}
+	}
+
+	if (bossCore_4->GetAliveFlag() == false)
+	{
+		if (bossCore_4->GetDestroyPartTime() > 0)
+		{
+			BlastPart_4(20, worldPos4, 20.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
 		}
 	}
 }
