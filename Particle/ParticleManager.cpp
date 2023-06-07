@@ -122,10 +122,10 @@ void ParticleManager::Update()
 		it->color.w = (it->e_color.w - it->s_color.w) / f;
 		it->color.w += it->s_color.w;
 
-		// スケールの線形補間
+		//スケールの線形補間
 		it->scale = it->s_scale + (it->e_scale - it->s_scale) / f;
 
-		// スケールの線形補間
+		//回転の線形補間
 		it->rotation = it->s_rotation + (it->e_rotation - it->s_rotation) / f;
 	}
 
@@ -198,7 +198,7 @@ void ParticleManager::Draw(ID3D12GraphicsCommandList* cmdList)
 	cmdList->DrawInstanced(drawNum, 1, 0, 0);
 }
 
-void ParticleManager::Add(int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel, const XMFLOAT4& start_color, const XMFLOAT4& end_color, float start_scale, float end_scale)
+void ParticleManager::Add(int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel, const XMFLOAT4& start_color, const XMFLOAT4& end_color, float start_scale, float end_scale, float start_rotation, float end_rotation)
 {
 	// リストに要素を追加
 	particles.emplace_front();
@@ -211,6 +211,8 @@ void ParticleManager::Add(int life, const XMFLOAT3& position, const XMFLOAT3& ve
 	p.e_color = end_color;
 	p.s_scale = start_scale;
 	p.e_scale = end_scale;
+	p.s_rotation = start_rotation;
+	p.e_rotation = end_rotation;
 	p.num_frame = life;
 }
 
@@ -545,7 +547,7 @@ void ParticleManager::DefaultParticle(int PartNum, int Life, XMFLOAT3 position, 
 		acc.y = -(float)rand() / RAND_MAX * md_acc;
 
 		// 追加
-		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 180.0f);
 	}
 }
 
@@ -567,7 +569,7 @@ void ParticleManager::BlastPart_1(int Life, XMFLOAT3 position, int StartScale, i
 		XMFLOAT3 acc{};
 
 		// 追加
-		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 360.0f);
 	}
 }
 
@@ -588,7 +590,7 @@ void ParticleManager::BlastPart_2(int Life, XMFLOAT3 position, int StartScale, i
 		XMFLOAT3 acc{};
 
 		// 追加
-		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 360.0f);
 	}
 }
 
@@ -609,7 +611,7 @@ void ParticleManager::BlastPart_3(int Life, XMFLOAT3 position, int StartScale, i
 		XMFLOAT3 acc{};
 
 		// 追加
-		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 360.0f);
 	}
 }
 
@@ -630,7 +632,7 @@ void ParticleManager::BlastPart_4(int Life, XMFLOAT3 position, int StartScale, i
 		XMFLOAT3 acc{};
 
 		// 追加
-		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 360.0f);
 	}
 }
 
@@ -656,7 +658,7 @@ void ParticleManager::JettParticle(int PartNum, int Life, XMFLOAT3 position, XMF
 		acc.y = -(float)rand() / RAND_MAX * md_acc;
 
 		// 追加
-		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 360.0f);
 	}
 }
 
@@ -682,6 +684,31 @@ void ParticleManager::BoostParticle(int PartNum, int Life, XMFLOAT3 position, in
 		acc.y = -(float)rand() / RAND_MAX * md_acc;
 
 		// 追加
-		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale);
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 360.0f);
+	}
+}
+
+void ParticleManager::SparkParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor)
+{
+	for (int i = 0; i < PartNum; i++) {
+		// X,Y,Z全て[-20.0f,+20.0f]でランダムに分布
+		const float rnd_pos = 1.0f;
+		XMFLOAT3 pos{};
+		pos.x = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.x;
+		pos.y = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.y;
+		pos.z = ((float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f) + position.z;
+
+		const float rnd_vel = 10.0f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
+		XMFLOAT3 acc{};
+		const float md_acc = 0.001f;
+		acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+		// 追加
+		Add(Life, pos, vel, acc, StartColor, EndColor, StartScale, EndScale, 0.0f, 360.0f);
 	}
 }

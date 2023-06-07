@@ -13,8 +13,8 @@
 #include "Sprite.h"
 #include "ObjObject.h"
 #include "Sound.h"
-#include "ParticleManager.h"
 #include "Camera.h"
+#include "ParticleManager.h"
 
 class Title : public BaseScene
 {
@@ -31,7 +31,10 @@ private: // 静的メンバ変数
 	// スプライトのテクスチャ番号
 	static enum TextureNumber
 	{
-		title_bg
+		title_bg,
+		titlefont,
+		pressspace,
+		black
 	};
 
 public:
@@ -54,12 +57,50 @@ public:
 	void Draw() override;
 
 private: // メンバ変数
+	//DirectXCommon
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+
+	//入力
 	Input* input = Input::GetInstance();
+
+	//音声
 	Sound* sound = Sound::GetInstance();
 
+	//カメラ
 	Camera* camera = nullptr;
 
+	//スプライト
 	Sprite* titleBG = nullptr;
-};
+	Sprite* titleBG_LD = nullptr;
+	Sprite* titleBG_RU = nullptr;
+	Sprite* titleBG_RD = nullptr;
+	Sprite* TitleFont = nullptr;
+	Sprite* PressSpace = nullptr;
+	Sprite* Black = nullptr;
 
+	//3Dオブジェクト
+	ObjObject* objTitleFont = nullptr;
+
+	//モデル
+	ObjModel* modelTitleFont = nullptr;
+
+	//パーティクル
+	ParticleManager* Particle = nullptr;
+
+	//タイトルスプライト座標
+	XMFLOAT2 TitlePos_LU = {0.0f, 0.0f};
+	XMFLOAT2 TitlePos_LD = { 0.0f, 720.0f };
+	XMFLOAT2 TitlePos_RU = { 1280.0f, 0.0f };
+	XMFLOAT2 TitlePos_RD = {1280.0f, 720.0f};
+
+	float Speed_y = 1.8f;
+
+	//黒背景のアルファ値
+	float BlackAlpha = 0.0f;
+
+	//遷移フラグ
+	bool StartFlag = false;
+	
+	//描画タイマー
+	int DrawTimer = 0;
+};

@@ -42,6 +42,12 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	//黒背景
+	if (!Sprite::LoadTexture(TextureNumber::black, L"Resources/Sprite/TitleUI/Black.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
@@ -51,6 +57,11 @@ void GamePlay::Initialize()
 	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
 
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
+
+	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
+
+	BlackAlpha = 1.0f;
+	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 
 	// パーティクル
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -207,6 +218,9 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
+	BlackAlpha -= 0.02f;
+	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
+
 	//RECT構造体へのポインタ
 	RECT rect;
 
@@ -231,6 +245,9 @@ void GamePlay::Update()
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
+
+	
+		//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
 
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
@@ -491,6 +508,7 @@ void GamePlay::Draw()
 	// 背景スプライト描画
 	gameBG->Draw();
 
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -566,6 +584,8 @@ void GamePlay::Draw()
 	player->DebugTextDraw();
 	Reticle->Draw();
 	debugText.DrawAll(cmdList);
+	Black->Draw();
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

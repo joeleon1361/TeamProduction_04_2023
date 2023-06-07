@@ -28,6 +28,7 @@ public: // サブクラス
 		XMFLOAT3 pos; // xyz座標
 		float scale; // スケール
 		XMFLOAT4 color;
+		float rotation;
 	};
 
 	// 定数バッファ用データ構造体
@@ -95,7 +96,7 @@ public: // メンバ関数
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
 	// パーティクルの追加
-	void Add(int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel, const XMFLOAT4& start_color, const XMFLOAT4& end_color, float start_scale, float end_scale);
+	void Add(int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel, const XMFLOAT4& start_color, const XMFLOAT4& end_color, float start_scale, float end_scale, float start_rotation, float end_rotation);
 
 	// デスクリプタヒープの初期化
 	void InitializeDescriptorHeap();
@@ -124,6 +125,9 @@ public: // メンバ関数
 
 	//ブーストパーティクル
 	void BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+
+	//火花パーティクル
+	void SparkParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
 private: // メンバ変数
 	// デバイス
@@ -159,5 +163,15 @@ private: // メンバ変数
 		add,
 		sub
 	};
+
+	//重力加速度
+	float Gravity = 9.8f;
+
+	//Y軸の移動量
+	float VY = 0.0f;
+
+	//経過時間
+	int elapsedTime = 0;
+
 };
 

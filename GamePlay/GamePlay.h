@@ -70,7 +70,8 @@ private: // 静的メンバ変数
 	{
 		debug_txt,
 		game_bg,
-		reticle
+		reticle,
+		black
 	};
 
 public: // メンバ関数
@@ -120,6 +121,7 @@ private: // メンバ変数
 	Sprite* gameBG = nullptr;
 	Sprite* Reticle = nullptr;
 	Sprite* test = nullptr;
+	Sprite* Black = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -157,6 +159,12 @@ private: // メンバ変数
 
 	float shotRate = 0.0f;
 	bool shotFlag = true;
+
+	//黒背景の変数
+	bool BlackFlag = false;
+	float BlackAlpha = 1.0f;
+
+	float timer = 0.0f;
 
 	//レティクル座標
 	XMFLOAT2 ReticlePos = { 0.0f, 0.0f };
