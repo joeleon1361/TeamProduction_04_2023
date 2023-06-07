@@ -1,6 +1,6 @@
 ﻿#include "WinApp.h"
 
-const wchar_t WinApp::windowClassName[] = L"ミーティア";
+const wchar_t WinApp::windowClassName[] = L"Gear Break";
 
 #pragma comment(lib, "winmm.lib")
 

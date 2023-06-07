@@ -358,6 +358,17 @@ void GamePlay::Update()
 		}
 	}
 
+	// ボスの砲台1を一定間隔で発射
+	if (bossTurret_1->isAlive == true)
+	{
+		bossTurret_1->shotTimer--;
+		if (bossTurret_1->shotTimer <= 0)
+		{
+			BossTargetShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 10.0f);
+			bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
+		}
+	}
+
 	// ボスの狙い弾を更新
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{

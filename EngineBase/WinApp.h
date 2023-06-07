@@ -2,7 +2,7 @@
 #include <Windows.h>
 
 #define WINDOW_H_
-#define WINDOW_CLASS_NAME "ミーティア" // ウィンドウクラス名
+#define WINDOW_CLASS_NAME "Gear Break" // ウィンドウクラス名
 
 // ウィンドウズアプリケーション
 class WinApp
