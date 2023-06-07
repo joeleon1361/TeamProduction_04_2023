@@ -123,6 +123,8 @@ public: // メンバ関数
 
 	void EnemyAliveFlagChecking();
 
+	void PlayerMovementBoundaryChecking();
+
 	// ボスの弾を発射
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
