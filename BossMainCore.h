@@ -2,8 +2,9 @@
 #include "ObjObject.h"
 #include "ParticleManager.h"
 #include "Lerp.h"
+#include "BossCore.h"
 
-class BossCore :
+class BossMainCore :
 	public ObjObject
 {
 private:
@@ -13,7 +14,7 @@ private:
 
 public: // 静的メンバ関数
 // 3Dオブジェクト生成
-	static BossCore* Create(ObjModel* model = nullptr);
+	static BossMainCore* Create(ObjModel* model = nullptr);
 
 private: // 静的メンバ変数
 
@@ -23,6 +24,9 @@ public: // メンバ関数
 
 	// 毎フレーム処理
 	void Update() override;
+
+	// 座標移動
+	void ChangePosition();
 
 	// ヒット時のカラー変更
 	void HitChangeColor();
@@ -49,8 +53,11 @@ public: // メンバ関数
 private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
 
-	// 最大の体力
-	float lifeMax = 10.0f;
+	// コア解放時の座標
+	XMFLOAT3 OnPosition = { 0.0f, 0.75f, 0.0f };
+
+	// コア閉鎖時の座標
+	XMFLOAT3 OffPosition = { 0.0f, 0.0f, 0.0f };
 
 	// 基本のカラー
 	XMFLOAT4 baseColor = { 0.9f, 0.2f, 0.2f, 1.0f };
@@ -71,17 +78,31 @@ private: // メンバ変数
 	//デフォルト値
 	int DestroyDefault = 20;
 
+	// 座標移動タイムレート
+	float positionTimeRate = 0.0f;
+
 public:
 	// 生存フラグ
 	bool isAlive = true;
 
+	// メインコアの撃破
+	bool isBreak = false;
+
+
+	// 最大の体力
+	float lifeMax = 30.0f;
 	// 現在の体力
 	float life = lifeMax;
+
+	float lifeRatio = {};
 
 	// カラー変更タイムレート
 	float colorTimeRate = 1.0f;
 
 	// カラー変更タイムレート
 	float colorTimeRate2 = 1.0f;
+
+	// メインコアの出現時間
+	float onTimer = 400.0f;
 };
 

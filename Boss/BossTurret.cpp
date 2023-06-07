@@ -53,6 +53,7 @@ void BossTurret::Update()
 	ObjObject::Update();
 
 	// ヒット時のカラー変更
+
 	HitChangeColor();
 
 	if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)

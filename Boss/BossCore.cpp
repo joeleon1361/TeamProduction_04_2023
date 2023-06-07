@@ -36,17 +36,9 @@ bool BossCore::Initialize()
 	modelBossPartsSphere = ObjModel::CreateFromOBJ("bossPartsSphere");
 	SetModel(modelBossPartsSphere);
 
-	// 生存フラグの初期化
-	isAlive = true;
 
-	// 体力の初期化
-	life = lifeMax;
-
-	// カラー変更タイムレートの初期化
-	colorTimeRate = 1.0f;
-
-	//破壊タイマーのリセット
-	DestroyPartTime = DestroyDefault;
+	// 変数のリセット
+	VarReset();
 
 	return true;
 }
@@ -55,8 +47,18 @@ void BossCore::Update()
 {
 	ObjObject::Update();
 
-	// ヒット時のカラー変更
-	HitChangeColor();
+	if (isAlive)
+	{
+		// 生存時のカラー変更
+		AliveChangeColor();
+		// ヒット時のカラー変更
+		HitChangeColor();
+	}
+	
+	if (!isAlive)
+	{
+		color = breakColor;
+	}
 
 	// HPが0になったら撃破
 	if (life <= 0.0f)
@@ -78,10 +80,36 @@ void BossCore::HitChangeColor()
 	{
 		colorTimeRate = 1.0f;
 	}
-	color = Lerp::LerpFloat4(hitColor, baseColor, colorTimeRate);
+	color = Lerp::LerpFloat4(hitColor, aliveColor, colorTimeRate);
+}
+
+// 生存時のカラー変更
+void BossCore::AliveChangeColor()
+{
+	colorTimeRate2 += 0.02;
+	if (colorTimeRate2 > 1.0f)
+	{
+		colorTimeRate2 = 0.0f;
+	}
+	aliveColor = Lerp::LerpFloat4(baseColor, breakColor, colorTimeRate2);
 }
 
 void BossCore::TimerReset(int Timer, int ResetValue)
 {
 	Timer = ResetValue;
+}
+
+void BossCore::VarReset()
+{
+	// 生存フラグの初期化
+	isAlive = true;
+
+	// 体力の初期化
+	life = lifeMax;
+
+	// カラー変更タイムレートの初期化
+	colorTimeRate = 1.0f;
+
+	//破壊タイマーのリセット
+	DestroyPartTime = DestroyDefault;
 }

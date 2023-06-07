@@ -58,6 +58,8 @@ public: // メンバ関数
 
 	const XMFLOAT4& GetBoostPartColor() { return BoostPartColor; }
 
+	const float& GetBoostPow() { return BoostPow; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	DebugText debugText;
@@ -93,7 +95,7 @@ private: // メンバ変数
 	float Gravity = 9.8f;
 
 	//ブースト体力
-	int BoostPow = 100;
+	float BoostPow = 100;
 
 	//ブーストフラグ
 	bool BoostFlag = false;

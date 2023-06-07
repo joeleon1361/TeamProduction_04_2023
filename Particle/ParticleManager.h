@@ -125,6 +125,9 @@ public: // メンバ関数
 	//ブーストパーティクル
 	void BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
+	// 弾パーティクル生成
+	void BulletParticle(int PartNum, int Life, XMFLOAT3 position, XMFLOAT4 start_color, XMFLOAT4 end_color, float start_scale);
+
 private: // メンバ変数
 	// デバイス
 	ID3D12Device* device = nullptr;

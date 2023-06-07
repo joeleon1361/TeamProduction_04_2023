@@ -22,6 +22,7 @@
 #include "Boss.h"
 #include "BossTurret.h"
 #include "BossCore.h"
+#include "BossMainCore.h"
 #include "BossParts.h"
 #include "TargetBullet.h"
 
@@ -49,6 +50,7 @@ class BossBullet;
 class TargetBullet;
 class StageObject;
 class BossCore;
+class BossMainCore;
 class BossParts;
 class BossTurret;
 
@@ -70,7 +72,12 @@ private: // 静的メンバ変数
 	{
 		debug_txt,
 		game_bg,
-		reticle
+		reticle,
+
+		// ボス
+		game_boss_frame_1,
+		game_boss_frame_2,
+		game_boss_gauge
 	};
 
 public: // メンバ関数
@@ -105,6 +112,19 @@ public: // メンバ関数
 	// ボスの弾を発射
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
+	// コア撃破エフェクト
+	void CoreBreakEffect();
+
+	// コアヒットエフェクト
+	void CoreHitEffect();
+
+	// ボスパーツヒットエフェクト
+	void BossPartsHitEffect();
+
+	// 全てのコアを破壊した後の処理
+	void CoreAllBreak();
+
+	// 当たり判定
 	bool BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize);
 
 private: // メンバ変数
@@ -120,6 +140,16 @@ private: // メンバ変数
 	Sprite* gameBG = nullptr;
 	Sprite* Reticle = nullptr;
 	Sprite* test = nullptr;
+
+	// ボスのHPUI
+	Sprite* bossHpUI = nullptr;
+	Sprite* bossHpGage = nullptr;
+	Sprite* bossDamageGage = nullptr;
+	Sprite* bossHpUICover = nullptr;
+
+	Sprite* boostUI = nullptr;
+	Sprite* boostGage = nullptr;
+	Sprite* boostUICover = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -127,17 +157,23 @@ private: // メンバ変数
 	ObjModel* modelBossPartsCoreBox = nullptr;
 	ObjModel* modelBossPartsSphere = nullptr;
 	ObjModel* modelBossPartsTurretStand = nullptr;
+	ObjModel* modelBossPartsBody = nullptr;
+	ObjModel* modelBossPartsCoreStand = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
 
+	BossParts* bossPartsCoreStand = nullptr;
 	BossParts* bossPartsRing = nullptr;
 	BossParts* bossPartsSphere = nullptr;
+	BossParts* bossPartsBody = nullptr;
 
 	BossCore* bossCore_1 = nullptr;
 	BossCore* bossCore_2 = nullptr;
 	BossCore* bossCore_3 = nullptr;
 	BossCore* bossCore_4 = nullptr;
+
+	BossMainCore* bossMainCore = nullptr;
 
 	BossParts* bossCoreBox_1 = nullptr;
 	BossParts* bossCoreBox_2 = nullptr;
@@ -145,10 +181,10 @@ private: // メンバ変数
 	BossParts* bossCoreBox_4 = nullptr;
 
 	BossParts* bossTurretStand_1 = nullptr;
-	BossParts* bossTurretStand_2 = nullptr;
+	//BossParts* bossTurretStand_2 = nullptr;
 
 	BossTurret* bossTurret_1 = nullptr;
-	BossTurret* bossTurret_2 = nullptr;
+	//BossTurret* bossTurret_2 = nullptr;
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<TargetBullet>> playerBullets;
@@ -163,4 +199,16 @@ private: // メンバ変数
 
 	//マウス座標
 	POINT mousePosition;
+
+	// メインコアのHPバーの座標
+	XMFLOAT2 bossHpUIPosition = { 1255.0f , 30.0f };
+	// メインコアのHPバーのサイズ
+	XMFLOAT2 bossHpGageSize;
+	// メインコアのダメージバーのサイズ
+	XMFLOAT2 bossDamageGageSize;
+
+	// ブーストゲージの座標
+	XMFLOAT2 boostUIPosition = { 1255.0f , 690.0f };
+	// ブーストゲージのサイズ
+	XMFLOAT2 boostGageSize;
 };

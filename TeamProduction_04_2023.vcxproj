@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BossMainCore.cpp" />
     <ClCompile Include="Boss\BossTurret.cpp" />
     <ClCompile Include="Boss\BossCore.cpp" />
     <ClCompile Include="Boss\BossParts.cpp" />
@@ -274,6 +275,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossMainCore.h" />
     <ClInclude Include="Boss\BossTurret.h" />
     <ClInclude Include="Boss\BossCore.h" />
     <ClInclude Include="Boss\BossParts.h" />
