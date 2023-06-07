@@ -74,6 +74,7 @@ private: // 静的メンバ変数
 		game_bg,
 		reticle,
 		black,
+		rule,
 
 		// ボス
 		game_boss_frame_1,
@@ -155,6 +156,7 @@ private: // メンバ変数
 	Sprite* boostUICover = nullptr;
 	
 	Sprite* Black = nullptr;
+	Sprite* Rule = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
