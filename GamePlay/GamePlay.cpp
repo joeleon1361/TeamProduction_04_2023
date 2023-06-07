@@ -673,7 +673,7 @@ void GamePlay::Shoot()
 		if (shotFlag == true)
 		{
 			std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
-			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f);
+			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
 			newBullet->eyePosition = camera->GetEye();
 			//newBullet->eyePosition.y += 10.0f;
 			newBullet->targetPosition = camera->GetTarget();

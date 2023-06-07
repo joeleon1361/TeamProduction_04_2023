@@ -18,7 +18,7 @@ private:
 
 public: // 静的メンバ関数
 // 3Dオブジェクト生成
-	static std::unique_ptr<TargetBullet>Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed);
+	static std::unique_ptr<TargetBullet>Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed, XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up);
 
 private: // 静的メンバ変数
 // 消えるまでの時間
@@ -26,7 +26,8 @@ private: // 静的メンバ変数
 
 public: // メンバ関数
 // 初期化
-	bool Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed);
+	bool Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed,
+		XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up);
 
 	// 毎フレーム処理
 	void Update();
@@ -54,5 +55,6 @@ public:
 	XMFLOAT3 eyePosition = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 targetPosition = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 upVector = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 bulletDirection = { 0.0f, 0.0f, 0.0f };
 };
 
