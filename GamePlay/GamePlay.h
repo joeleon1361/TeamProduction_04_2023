@@ -73,6 +73,8 @@ private: // 静的メンバ変数
 		debug_txt,
 		game_bg,
 		reticle,
+		black
+		reticle,
 
 		// ボス
 		game_boss_frame_1,
@@ -151,6 +153,8 @@ private: // メンバ変数
 	Sprite* boostGage = nullptr;
 	Sprite* boostUICover = nullptr;
 	
+	Sprite* Black = nullptr;
+	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
 	ObjModel* modelBossPartsRing = nullptr;
@@ -193,6 +197,12 @@ private: // メンバ変数
 
 	float shotRate = 0.0f;
 	bool shotFlag = true;
+
+	//黒背景の変数
+	bool BlackFlag = false;
+	float BlackAlpha = 1.0f;
+
+	float timer = 0.0f;
 
 	//レティクル座標
 	XMFLOAT2 ReticlePos = { 0.0f, 0.0f };

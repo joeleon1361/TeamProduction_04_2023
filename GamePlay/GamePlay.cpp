@@ -58,6 +58,12 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	//黒背景
+	if (!Sprite::LoadTexture(TextureNumber::black, L"Resources/Sprite/TitleUI/Black.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
@@ -78,6 +84,11 @@ void GamePlay::Initialize()
 	boostUI = Sprite::Create(TextureNumber::game_boss_frame_1, { boostUIPosition.x + 10.0f, boostUIPosition.y });
 	boostGage = Sprite::Create(TextureNumber::game_boss_gauge, boostUIPosition);
 	boostUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { boostUIPosition.x + 10.0f, boostUIPosition.y });
+
+	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
+
+	BlackAlpha = 1.0f;
+	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 
 	// パーティクル
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -272,6 +283,9 @@ void GamePlay::Finalize()
 
 void GamePlay::Update()
 {
+	BlackAlpha -= 0.02f;
+	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
+
 	//RECT構造体へのポインタ
 	RECT rect;
 
@@ -299,6 +313,24 @@ void GamePlay::Update()
 
 	bossHpGageSize = bossHpGage->GetSize();
 	bossDamageGageSize = Lerp::LerpFloat2(bossDamageGage->GetSize(), bossHpGageSize, 0.1f);
+	
+		//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+
+	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
+	{
+		// コア1の疑似ヒット処理
+		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 8.0f))
+		{
+			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
+			{
+				circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+			}
+			bossCore_1->colorTimeRate = 0.0f;
+			bossCore_1->life--;
+			bullet->deathFlag = true;
+		}
 
 	boostGageSize = boostGage->GetSize();
 
@@ -500,6 +532,7 @@ void GamePlay::Draw()
 	// 背景スプライト描画
 	gameBG->Draw();
 
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
@@ -606,6 +639,8 @@ void GamePlay::Draw()
 
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
+	Black->Draw();
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
