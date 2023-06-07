@@ -64,6 +64,12 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	//黒背景
+	if (!Sprite::LoadTexture(TextureNumber::rule, L"Resources/Sprite/TitleUI/Rule.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
@@ -89,6 +95,8 @@ void GamePlay::Initialize()
 
 	BlackAlpha = 1.0f;
 	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
+
+	Rule = Sprite::Create(TextureNumber::rule, { 0.0f, 0.0f });
 
 	// パーティクル
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -435,7 +443,7 @@ void GamePlay::Update()
 
 	test->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
 
-	DrawDebugText();
+	//DrawDebugText();
 
 	circleParticle->JettParticle(5, 10, player->GetPosition(), player->GetVel(), 1.0f, 0.0f, { 0.941f, 0.231f, 0.156f, 1.0f }, { 0.941f, 0.862f, 0.156f, 1.0f });
 
@@ -570,8 +578,9 @@ void GamePlay::Draw()
 	boostGage->Draw();
 	boostUICover->Draw();
 
-	player->DebugTextDraw();
+	//player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
+	Rule->Draw();
 	Black->Draw();
 
 
