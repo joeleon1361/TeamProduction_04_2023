@@ -116,6 +116,9 @@ public: // メンバ関数
 	// ボスパーツヒットエフェクト
 	void BossPartsHitEffect();
 
+	// 全てのコアを破壊した後の処理
+	void CoreAllBreak();
+
 	// 当たり判定
 	bool BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize);
 

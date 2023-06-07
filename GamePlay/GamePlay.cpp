@@ -319,6 +319,9 @@ void GamePlay::Update()
 	// コア撃破エフェクト
 	CoreBreakEffect();
 
+	// 全てのコアを破壊した後
+	CoreAllBreak();
+
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
 	// camera->SetDistance(sqrtf(pow(boss->GetPosition().x - player->GetPosition().x, 2) + pow(boss->GetPosition().y - player->GetPosition().y, 2) + pow(boss->GetPosition().z - player->GetPosition().z, 2)) + 48.0f);
@@ -740,6 +743,32 @@ void GamePlay::BossPartsHitEffect()
 		//	}
 		//	bullet->deathFlag = true;
 		//}
+	}
+}
+
+void GamePlay::CoreAllBreak()
+{
+	if (bossMainCore->isBreak == true)
+	{
+		bossCore_1->VarReset();
+		bossCore_2->VarReset();
+		bossCore_3->VarReset();
+		bossCore_4->VarReset();
+
+		bossMainCore->VarReset();
+
+		if (bossCore_1->isAlive && bossCore_2->isAlive && bossCore_3->isAlive && bossCore_4->isAlive && bossMainCore->isAlive == false)
+		{
+			bossMainCore->isBreak = false;
+		}
+	}
+
+	if (bossMainCore->isAlive == false)
+	{
+		if (!bossCore_1->isAlive && !bossCore_2->isAlive && !bossCore_3->isAlive && !bossCore_4->isAlive)
+		{
+			bossMainCore->isAlive = true;
+		}
 	}
 }
 

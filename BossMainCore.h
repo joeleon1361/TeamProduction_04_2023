@@ -2,6 +2,7 @@
 #include "ObjObject.h"
 #include "ParticleManager.h"
 #include "Lerp.h"
+#include "BossCore.h"
 
 class BossMainCore :
 	public ObjObject
@@ -36,6 +37,9 @@ public: // メンバ関数
 	//タイマーリセット
 	void TimerReset(int Timer, int ResetValue);
 
+	// 値をリセット
+	void VarReset();
+
 	//ゲッター
 	const int& GetLife() { return life; }
 	const int& GetDestroyPartTime() { return DestroyPartTime; }
@@ -50,7 +54,7 @@ private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
 
 	// 最大の体力
-	float lifeMax = 10.0f;
+	float lifeMax = 100.0f;
 
 	// コア解放時の座標
 	XMFLOAT3 OnPosition = { 0.0f, 0.75f, 0.0f };
@@ -84,6 +88,9 @@ public:
 	// 生存フラグ
 	bool isAlive = true;
 
+	// メインコアの撃破
+	bool isBreak = false;
+
 	// 現在の体力
 	float life = lifeMax;
 
@@ -92,5 +99,8 @@ public:
 
 	// カラー変更タイムレート
 	float colorTimeRate2 = 1.0f;
+
+	// メインコアの出現時間
+	float onTimer = 400.0f;
 };
 

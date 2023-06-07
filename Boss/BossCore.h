@@ -33,6 +33,9 @@ public: // メンバ関数
 	//タイマーリセット
 	void TimerReset(int Timer, int ResetValue);
 
+	// 値をリセット
+	void VarReset();
+
 	//ゲッター
 	const int& GetLife() { return life; }
 	const int& GetDestroyPartTime() { return DestroyPartTime; }

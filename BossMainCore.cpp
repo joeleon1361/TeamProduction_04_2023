@@ -36,9 +36,6 @@ bool BossMainCore::Initialize()
 	modelBossPartsSphere = ObjModel::CreateFromOBJ("bossPartsSphere");
 	SetModel(modelBossPartsSphere);
 
-	// 生存フラグの初期化
-	isAlive = true;
-
 	// 体力の初期化
 	life = lifeMax;
 
@@ -47,6 +44,9 @@ bool BossMainCore::Initialize()
 
 	//破壊タイマーのリセット
 	DestroyPartTime = DestroyDefault;
+
+	// 変数のリセット
+	VarReset();
 
 	return true;
 }
@@ -63,22 +63,28 @@ void BossMainCore::Update()
 		AliveChangeColor();
 		// ヒット時のカラー変更
 		HitChangeColor();
+
+		// HPが0になったら撃破
+		/*if (life <= 0.0f)
+		{
+			if (DestroyPartTime > 0)
+			{
+				DestroyPartTime--;
+			}
+
+			isAlive = false;
+		}*/
+
+		onTimer--;
+		if (onTimer < 0)
+		{
+			isBreak = true;
+		}
 	}
 
 	if (!isAlive)
 	{
 		color = breakColor;
-	}
-
-	// HPが0になったら撃破
-	if (life <= 0.0f)
-	{
-		if (DestroyPartTime > 0)
-		{
-			DestroyPartTime--;
-		}
-
-		isAlive = false;
 	}
 }
 
@@ -128,4 +134,13 @@ void BossMainCore::AliveChangeColor()
 void BossMainCore::TimerReset(int Timer, int ResetValue)
 {
 	Timer = ResetValue;
+}
+
+void BossMainCore::VarReset()
+{
+	// 生存フラグの初期化
+	isAlive = false;
+
+	// メインコアの出現時間
+	onTimer = 400.0f;
 }
