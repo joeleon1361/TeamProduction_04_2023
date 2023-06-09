@@ -56,5 +56,6 @@ public:
 	XMFLOAT3 targetPosition = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 upVector = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 bulletDirection = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 prevPosition = { 0.0f, 0.0f, 0.0f };
 };
 

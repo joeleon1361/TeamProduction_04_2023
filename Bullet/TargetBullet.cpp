@@ -41,6 +41,8 @@ bool TargetBullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, con
 	this->targetPosition = aimTarget;
 	this->upVector = up;
 
+	prevPosition = this->position;
+
 	float magnitude = (float)sqrt((target.x - position.x) * (target.x - position.x) + (target.y - position.y) * (target.y - position.y) + (target.z - position.z) * (target.z - position.z));
 
 	velocity.x = (target.x - position.x) / magnitude;
@@ -92,6 +94,8 @@ bool TargetBullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, con
 
 void TargetBullet::Update()
 {
+	prevPosition = position;
+
 	ObjObject::Update();
 
 	// Update the bullet position based on the bullet direction

@@ -685,7 +685,7 @@ void GamePlay::Shoot()
 		if (shotFlag == true)
 		{
 			std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
-			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
+			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 30.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
 			newBullet->eyePosition = camera->GetEye();
 			//newBullet->eyePosition.y += 10.0f;
 			newBullet->targetPosition = camera->GetTarget();
@@ -817,7 +817,7 @@ void GamePlay::CoreHitEffect()
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		// コア1の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 8.0f))
+		if (CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
 			{
@@ -832,7 +832,7 @@ void GamePlay::CoreHitEffect()
 		}
 
 		// コア2の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 8.0f))
+		if (CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
 			{
@@ -847,7 +847,7 @@ void GamePlay::CoreHitEffect()
 		}
 
 		// コア3の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 8.0f))
+		if (CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
 			{
@@ -862,7 +862,7 @@ void GamePlay::CoreHitEffect()
 		}
 
 		// コア4の疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 8.0f))
+		if (CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
 			{
@@ -877,7 +877,7 @@ void GamePlay::CoreHitEffect()
 		}
 
 		// メインコアの疑似ヒット処理
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossMainCore->GetWorldPosition(), 8.0f))
+		if (CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossMainCore->GetWorldPosition(), 24.0f))
 		{
 			if (bossMainCore->GetLife() <= 1 && bossMainCore->GetLife() >= 0)
 			{
@@ -904,7 +904,7 @@ void GamePlay::BossPartsHitEffect()
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		// Turret 1 collision detection
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_1->GetWorldPosition(), 8.0f))
+		if (CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossTurret_1->GetWorldPosition(), 24.0f))
 		{
 			// 必要なときはいつでも、次の3行を自由に復元してください。
 			if (bossTurret_1->isAlive == true)
@@ -916,7 +916,7 @@ void GamePlay::BossPartsHitEffect()
 		}
 
 		// Turret 2 collision detection
-		//if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 8.0f))
+		//if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 24.0f))
 		//{
 		//	// 必要なときはいつでも、次の3行を自由に復元してください。
 		//	if (bossTurret_2->isAlive == true)
@@ -964,4 +964,56 @@ bool GamePlay::BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMF
 	float radiusSum = bulletSize + bossSize;
 
 	return distance <= radiusSum;
+}
+
+bool GamePlay::CCDCollisionDetection(XMFLOAT3 prevBulletPos, XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize)
+{
+	XMVECTOR s1PrevPos = XMLoadFloat3(&prevBulletPos);
+	XMVECTOR s1Pos = XMLoadFloat3(&bulletPos);
+	XMVECTOR s2Pos = XMLoadFloat3(&bossPos);
+
+	// the vector from the previous position to the current position
+	XMVECTOR bulletTravelVector = s1Pos - s1PrevPos;
+
+	// the vector from the boss to the bullet's previous position
+	XMVECTOR bossToBulletPrevPosVector = s1PrevPos - s2Pos;
+
+	// the projection of the bossToBulletPrevPosVector onto the bulletTravelVector
+	float dotProduct = XMVectorGetX(XMVector3Dot(bossToBulletPrevPosVector, bulletTravelVector));
+	float projectionScalar = dotProduct / XMVectorGetX(XMVector3LengthSq(bulletTravelVector));
+	XMVECTOR projection = bulletTravelVector * projectionScalar;
+
+	if (dotProduct < 0)
+	{
+		// the projection is in the opposite direction of the bullet's travel, so the closest point
+		// is the bullet's previous position
+		float distance = XMVectorGetX(XMVector3Length(s1PrevPos - s2Pos));
+		float radiusSum = bulletSize + bossSize;
+
+		return distance <= radiusSum;
+	}
+	else
+	{
+		float projectionLength = XMVectorGetX(XMVector3Length(projection));
+		float travelLength = XMVectorGetX(XMVector3Length(bulletTravelVector));
+
+		if (projectionLength > travelLength)
+		{
+			// the projection is longer than the bullet's travel distance, so the closest point
+			// is the bullet's current position
+			float distance = XMVectorGetX(XMVector3Length(s1Pos - s2Pos));
+			float radiusSum = bulletSize + bossSize;
+
+			return distance <= radiusSum;
+		}
+		else
+		{
+			// the closest point to the boss along the bullet's path is the end of the projection
+			XMVECTOR closestPoint = s1PrevPos + projection;
+			float distance = XMVectorGetX(XMVector3Length(closestPoint - s2Pos));
+			float radiusSum = bulletSize + bossSize;
+
+			return distance <= radiusSum;
+		}
+	}
 }
