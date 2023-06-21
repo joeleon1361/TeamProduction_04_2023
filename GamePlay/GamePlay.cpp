@@ -80,16 +80,9 @@ void GamePlay::Initialize()
 
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 
-	// ボス
-	bossHpUI = Sprite::Create(TextureNumber::game_boss_frame_1, { bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-	bossHpGage = Sprite::Create(TextureNumber::game_boss_gauge, bossHpUIPosition);
-	bossDamageGage = Sprite::Create(TextureNumber::game_boss_gauge, bossHpUIPosition);
-	bossHpUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-
 	// ブーストゲージ
-	boostUI = Sprite::Create(TextureNumber::game_boss_frame_1, { boostUIPosition.x + 10.0f, boostUIPosition.y });
-	boostGage = Sprite::Create(TextureNumber::game_boss_gauge, boostUIPosition);
-	boostUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { boostUIPosition.x + 10.0f, boostUIPosition.y });
+	tst = GageUI::Create({1255.0f, 690.0f}, { 530.0f, 30.0f });
+	tst2 = DeltaGageUI::Create({ 1255.0f , 60.0f }, { 530.0f, 30.0f });
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
@@ -151,27 +144,6 @@ void GamePlay::Initialize()
 	modelBossPartsCoreStand = ObjModel::CreateFromOBJ("bossPartsCoreStand");
 	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
 
-	// ボスのHPゲージ
-	bossHpGage->SetColor({ 0.1f, 0.6f, 0.1f, 1.0f });
-	bossHpGage->SetSize({ 530.0f, 30.0f });
-	bossHpGage->SetAnchorPoint({ 1.0f, 0.5f });
-
-	bossDamageGage->SetColor({ 1.0f, 0, 0.2f, 1.0f });
-	bossDamageGage->SetSize({ 530.0f, 30.0f });
-	bossDamageGage->SetAnchorPoint({ 1.0f, 0.5f });
-
-	bossHpUI->SetAnchorPoint({ 1.0f, 0.5f });
-
-	bossHpUICover->SetAnchorPoint({ 1.0f, 0.5f });
-
-	// ブーストゲージ
-	boostGage->SetColor({ 0.6f, 0.6f, 0.1f, 1.0f });
-	boostGage->SetSize({ 530.0f, 30.0f });
-	boostGage->SetAnchorPoint({ 1.0f, 0.5f });
-
-	boostUI->SetAnchorPoint({ 1.0f, 0.5f });
-
-	boostUICover->SetAnchorPoint({ 1.0f, 0.5f });
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
@@ -318,14 +290,9 @@ void GamePlay::Update()
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
-
-	bossHpGageSize = bossHpGage->GetSize();
-	bossDamageGageSize = Lerp::LerpFloat2(bossDamageGage->GetSize(), bossHpGageSize, 0.1f);
 	
 		//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
 	
-
-	boostGageSize = boostGage->GetSize();
 
 	// コアヒットエフェクト
 	CoreHitEffect();
@@ -389,32 +356,10 @@ void GamePlay::Update()
 	// 全てのコアを破壊した後
 	CoreAllBreak();
 
-	// ボスのHPゲージ
-	// ボスのHP計算
-	bossMainCore->lifeRatio = bossMainCore->life / bossMainCore->lifeMax;
-	bossHpGageSize.x = bossMainCore->lifeRatio * 530.0f;
-
-	bossHpGage->SetPosition(bossHpUIPosition);
-	bossHpGage->SetSize(bossHpGageSize);
-
-	bossDamageGage->SetPosition(bossHpUIPosition);
-	bossDamageGage->SetSize(bossDamageGageSize);
-
-	bossHpUI->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-
-	bossHpUICover->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-
 	// ブーストゲージ
-	float ratio;
-	ratio = player->GetBoostPow() / 100.0f;
-	boostGageSize.x = ratio * 530.0f;
-
-	boostGage->SetPosition(boostUIPosition);
-	boostGage->SetSize(boostGageSize);
-
-	boostUI->SetPosition({ boostUIPosition.x + 10.0f, boostUIPosition.y });
-
-	boostUICover->SetPosition({ boostUIPosition.x + 10.0f, boostUIPosition.y });
+	tst->Update(player->GetBoostPow(), 100.0f);
+	// ボスのHPゲージ
+	tst2->Update(bossMainCore->life, bossMainCore->lifeMax);
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -454,7 +399,7 @@ void GamePlay::Update()
 
 	test->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
 
-	//DrawDebugText();
+	DrawDebugText();
 
 	circleParticle->JettParticle(5, 10, player->GetPosition(), player->GetVel(), 1.0f, 0.0f, { 0.941f, 0.231f, 0.156f, 1.0f }, { 0.941f, 0.862f, 0.156f, 1.0f });
 
@@ -580,20 +525,13 @@ void GamePlay::Draw()
 	
 	Reticle->Draw();
 
-	bossHpUI->Draw();
-	bossDamageGage->Draw();
-	bossHpGage->Draw();
-	bossHpUICover->Draw();
-
-	boostUI->Draw();
-	boostGage->Draw();
-	boostUICover->Draw();
+	tst->Draw();
+	tst2->Draw();
 
 	//player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
 	Rule->Draw();
 	Black->Draw();
-
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -664,7 +602,7 @@ void GamePlay::DrawDebugText()
 	std::ostringstream MainCoreLife;
 	MainCoreLife << "MainCoreLife:("
 		<< std::fixed << std::setprecision(2)
-		<< bossMainCore->life << ")"; // z
+		<< bossMainCore->onTimer << ")"; // z
 	debugText.Print(MainCoreLife.str(), 10, 290, 1.0f);
 }
 

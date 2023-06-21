@@ -235,6 +235,12 @@
     <ClCompile Include="BossMainCore.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
+    <ClCompile Include="GageUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DeltaGageUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -430,5 +436,7 @@
     <ClInclude Include="BossMainCore.h">
       <Filter>Boss</Filter>
     </ClInclude>
+    <ClInclude Include="GageUI.h" />
+    <ClInclude Include="DeltaGageUI.h" />
   </ItemGroup>
 </Project>

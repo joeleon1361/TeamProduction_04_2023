@@ -170,6 +170,8 @@
     <ClCompile Include="Collider\CollisionPrimitive.cpp" />
     <ClCompile Include="Collider\SphereCollider.cpp" />
     <ClCompile Include="DebugText\DebugText.cpp" />
+    <ClCompile Include="DeltaGageUI.cpp" />
+    <ClCompile Include="GageUI.cpp" />
     <ClCompile Include="Math\Easing.cpp" />
     <ClCompile Include="EngineBase\DirectXCommon.cpp" />
     <ClCompile Include="EngineBase\WinApp.cpp" />
@@ -279,6 +281,8 @@
     <ClInclude Include="Boss\BossTurret.h" />
     <ClInclude Include="Boss\BossCore.h" />
     <ClInclude Include="Boss\BossParts.h" />
+    <ClInclude Include="DeltaGageUI.h" />
+    <ClInclude Include="GageUI.h" />
     <ClInclude Include="GameBase\AbstractSceneFactory.h" />
     <ClInclude Include="GameBase\BaseScene.h" />
     <ClInclude Include="Boss\Boss.h" />

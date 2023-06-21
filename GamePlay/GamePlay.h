@@ -32,6 +32,9 @@
 
 #include "SceneManager.h"
 
+#include "GageUI.h"
+#include "DeltaGageUI.h"
+
 #include <cassert>
 #include <sstream>
 #include <iomanip>
@@ -53,6 +56,8 @@ class BossCore;
 class BossMainCore;
 class BossParts;
 class BossTurret;
+class GageUI;
+class DeltaGageUI;
 
 // ゲームシーン
 class GamePlay : public BaseScene
@@ -145,18 +150,11 @@ private: // メンバ変数
 	Sprite* Reticle = nullptr;
 	Sprite* test = nullptr;
 
-	// ボスのHPUI
-	Sprite* bossHpUI = nullptr;
-	Sprite* bossHpGage = nullptr;
-	Sprite* bossDamageGage = nullptr;
-	Sprite* bossHpUICover = nullptr;
-
-	Sprite* boostUI = nullptr;
-	Sprite* boostGage = nullptr;
-	Sprite* boostUICover = nullptr;
-	
 	Sprite* Black = nullptr;
 	Sprite* Rule = nullptr;
+
+	GageUI* tst = nullptr;
+	DeltaGageUI* tst2 = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
