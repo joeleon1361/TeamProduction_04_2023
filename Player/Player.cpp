@@ -58,6 +58,10 @@ void Player::Update()
 {
 	ObjObject::Update();
 
+	//ブースト
+	//Boost();
+	BoostTest();
+
 	// オブジェクト移動
 	Move();
 
@@ -65,9 +69,6 @@ void Player::Update()
 	Rolling();
 
 	DebugTextUpdate();
-
-	//ブースト
-	Boost();
 }
 
 void Player::Draw()
@@ -112,15 +113,15 @@ void Player::DebugTextUpdate()
 	//debugText.Print(RollRotation.str(), 10, 170, 1.0f);
 
 	std::ostringstream BoostPow_;
-	BoostPow_ << "BoostPow:("
+	BoostPow_ << "BoostPowNow:("
 		<< std::fixed << std::setprecision(2)
-		<< BoostPow << ")"; // z
+		<< boostSpeed << ")"; // z
 	debugText.Print(BoostPow_.str(), 10, 150, 1.0f);
 
 	std::ostringstream BoostFlag_;
 	BoostFlag_ << "BoostFlag:("
 		<< std::fixed << std::setprecision(2)
-		<< BoostFlag << ")"; // z
+		<< testRate << ")"; // z
 	debugText.Print(BoostFlag_.str(), 10, 170, 1.0f);
 }
 
@@ -206,9 +207,9 @@ void Player::Move()
 	Vel.y = (y / hypotenuse);
 	Vel.z = (z / hypotenuse);
 
-	position.x += Speed * Vel.x;
-	position.y += Speed * Vel.y;
-	position.z += Speed * Vel.z;
+	position.x += totalSpeed * Vel.x;
+	position.y += totalSpeed * Vel.y;
+	position.z += totalSpeed * Vel.z;
 
 	/*if (!input->PushKey(DIK_S) && !input->PushKey(DIK_W))
 	{
@@ -270,13 +271,13 @@ void Player::Boost()
 
 	if (BoostFlag == true)
 	{
-		if (BoostPow > 0)
+		if (BoostPowNow > 0)
 		{
-			BoostPow--;
-			Speed = 3.0f;
+			BoostPowNow--;
+			totalSpeed = 3.0f;
 		}
 
-		if (BoostPow <= 0)
+		if (BoostPowNow <= 0)
 		{
 			BoostFlag = false;
 		}
@@ -284,13 +285,62 @@ void Player::Boost()
 
 	if (BoostFlag == false)
 	{
-		Speed = 2.0f;
-		if (BoostPow < 100)
+		totalSpeed = 2.0f;
+		if (BoostPowNow < BoostPowMax)
 		{
-			BoostPow++;
+			BoostPowNow++;
+		}
+	}
+}
+
+void Player::BoostTest()
+{
+
+	BoostPartColor = { (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , 1.0f };
+	if (Input::GetInstance()->PushMouseRight() == true)
+	{
+		BoostFlag = true;
+		//testRate += 0.1f;
+	}
+
+	if (Input::GetInstance()->PushMouseRight() == false)
+	{
+		BoostFlag = false;
+		//testRate -= 0.1f;
+	}
+
+	if (BoostFlag == true)
+	{
+		if (BoostPowNow > 0)
+		{
+			BoostPowNow--;
+			testRate += 0.1f;
+		}
+
+		if (BoostPowNow <= 0)
+		{
+			BoostFlag = false;
 		}
 	}
 
+	if (BoostFlag == false)
+	{
+		testRate -= 0.1f;
+		if (BoostPowNow < BoostPowMax)
+		{
+			BoostPowNow++;
+		}
+	}
+
+	boostSpeed = Lerp::LerpFloat(boostSpeedMin, boostSpeedMax, testRate);
+
+	totalSpeed = (baseSpeed + boostSpeed) - shootSpeed;
+
+	boostSpeed = max(boostSpeed, boostSpeedMin);
+	boostSpeed = min(boostSpeed, boostSpeedMax);
+
+	testRate = max(testRate, 0.0f);
+	testRate = min(testRate, 1.0f);
 }
 
 bool Player::CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius)

@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "DebugText.h"
 #include "Vector.h"
+#include "Easing.h"
+#include "Lerp.h"
 
 class Player :
 	public ObjObject
@@ -45,6 +47,8 @@ public: // メンバ関数
 
 	void Boost();
 
+	void BoostTest();
+
 	bool CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius);
 
 	void MoveTowards(float& current, float target, float speed, float elapsedTime);
@@ -58,7 +62,9 @@ public: // メンバ関数
 
 	const XMFLOAT4& GetBoostPartColor() { return BoostPartColor; }
 
-	const float& GetBoostPow() { return BoostPow; }
+	const float& GetBoostPowNow() { return BoostPowNow; }
+
+	const float& GetBoostPowMax() { return BoostPowMax; }
 
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
@@ -86,7 +92,7 @@ private: // メンバ変数
 	float collisionSphereRadius = 3.0f;
 
 	//プレイヤースピード
-	float Speed = 2.0f;
+	float totalSpeed = 2.0f;
 
 	XMFLOAT3 Vel = {};
 	float yVel = 0.0f;
@@ -94,14 +100,30 @@ private: // メンバ変数
 	//重力加速度
 	float Gravity = 9.8f;
 
+	// プ―スト体力の最大値
+	float BoostPowMax = 100.0f;
+
 	//ブースト体力
-	float BoostPow = 100;
+	float BoostPowNow = BoostPowMax;
 
 	//ブーストフラグ
 	bool BoostFlag = false;
 
 	//ブーストパーティクルカラー
 	XMFLOAT4 BoostPartColor = {};
+
+	// ブースト時の速度
+	float boostSpeedMax = 1.0f;
+	float boostSpeedMin = 0.0f;
+	float boostSpeed = boostSpeedMin;
+	// ブースト速度の線分補間レート
+	float testRate = 0.0f;
+
+	// 通常時の速度
+	float baseSpeed = 2.0f;
+
+	// 弾発射時の速度
+	float shootSpeed = 0.0f;
 
 public:
 	Vector3 direction = { 0, 0, 1 };

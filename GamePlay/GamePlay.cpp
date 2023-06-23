@@ -301,7 +301,26 @@ void GamePlay::Update()
 	BossPartsHitEffect();
 
 	// プレイヤーの球発射処理
-	Shoot();
+	if (playerBulletType == Normal)
+	{
+		Shoot();
+
+		if (input->TriggerKey(DIK_T))
+		{
+			playerBulletType = Charge;
+		}
+	}
+	else if (playerBulletType == Charge)
+	{
+		chargeShoot();
+
+		if (input->TriggerKey(DIK_T))
+		{
+			playerBulletType = Normal;
+		}
+	}
+
+
 
 	// プレイヤーの狙い弾を更新
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
@@ -357,7 +376,7 @@ void GamePlay::Update()
 	CoreAllBreak();
 
 	// ブーストゲージ
-	tst->Update(player->GetBoostPow(), 100.0f);
+	tst->Update(player->GetBoostPowNow(), player->GetBoostPowMax());
 	// ボスのHPゲージ
 	tst2->Update(bossMainCore->life, bossMainCore->lifeMax);
 
@@ -528,9 +547,9 @@ void GamePlay::Draw()
 	tst->Draw();
 	tst2->Draw();
 
-	//player->DebugTextDraw();
+	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
-	Rule->Draw();
+	//Rule->Draw();
 	Black->Draw();
 
 	// スプライト描画後処理
@@ -602,7 +621,7 @@ void GamePlay::DrawDebugText()
 	std::ostringstream MainCoreLife;
 	MainCoreLife << "MainCoreLife:("
 		<< std::fixed << std::setprecision(2)
-		<< bossMainCore->onTimer << ")"; // z
+		<< playerBulletType << ")"; // z
 	debugText.Print(MainCoreLife.str(), 10, 290, 1.0f);
 }
 
@@ -634,6 +653,52 @@ void GamePlay::Shoot()
 			shotRate = 1.5f;
 		}
 	}
+}
+
+void GamePlay::chargeShoot()
+{
+	chargeRatio = chargeNow / chargeMax;
+
+	chargeSize = Easing::InOutQuadFloat(0.0, 10.0, chargeRatio);
+
+	circleParticle->BulletParticle(5, 2, player->GetPosition(), {0.1f,1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f, 1.0f}, chargeSize);
+
+	if (isCharge == false)
+	{
+		if (chargeNow < chargeMax)
+		{
+			if ( Input::GetInstance()->PushMouseLeft())
+			{
+				chargeNow++;
+			}
+			else if (!Input::GetInstance()->PushMouseLeft())
+			{
+				chargeNow -= 2.0f;
+			}
+		}
+		else
+		{
+			if (!Input::GetInstance()->PushMouseLeft())
+			{
+				isCharge = true;
+			}
+		}
+	}
+	else
+	{
+		std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
+		newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
+		newBullet->eyePosition = camera->GetEye();
+		//newBullet->eyePosition.y += 10.0f;
+		newBullet->targetPosition = camera->GetTarget();
+		newBullet->upVector = camera->GetUp();
+		playerBullets.push_back(std::move(newBullet));
+
+		chargeNow = 0.0f;
+		isCharge = false;
+	}
+	chargeNow = max(chargeNow, 0.0);
+	chargeNow = min(chargeNow, chargeMax);
 }
 
 void GamePlay::PlayerMovementBoundaryChecking()
