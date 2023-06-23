@@ -96,13 +96,29 @@ void Player::DebugTextUpdate()
 		<< rotation.z << ")"; // z
 	debugText.Print(PlayerRotation.str(), 10, 110, 1.0f);
 
-	std::ostringstream PlayerSpeed;
-	PlayerSpeed << "PlayerSpeed:("
+	std::ostringstream TotalSpeed;
+	TotalSpeed << "TotalSpeed:("
 		<< std::fixed << std::setprecision(2)
-		<< playerSpeed.x << "," // x
-		<< playerSpeed.y << "," // y
-		<< playerSpeed.z << ")"; // z
-	debugText.Print(PlayerSpeed.str(), 10, 130, 1.0f);
+		<< totalSpeed << ")"; // z
+	debugText.Print(TotalSpeed.str(), 10, 130, 1.0f);
+
+	std::ostringstream BaseSpeed;
+	BaseSpeed << "BaseSpeed:("
+		<< std::fixed << std::setprecision(2)
+		<< baseSpeed << ")"; // z
+	debugText.Print(BaseSpeed.str(), 10, 150, 1.0f);
+
+	std::ostringstream ShootSpeed;
+	ShootSpeed << "ShootSpeed:("
+		<< std::fixed << std::setprecision(2)
+		<< shootSpeed << ")"; // z
+	debugText.Print(ShootSpeed.str(), 10, 170, 1.0f);
+
+	std::ostringstream BoostSpeed;
+	BoostSpeed << "BoostSpeed:("
+		<< std::fixed << std::setprecision(2)
+		<< boostSpeed << ")"; // z
+	debugText.Print(BoostSpeed.str(), 10, 190, 1.0f);
 
 	//std::ostringstream RollRotation;
 	//RollRotation << "RollRotation:("
@@ -115,14 +131,14 @@ void Player::DebugTextUpdate()
 	std::ostringstream BoostPow_;
 	BoostPow_ << "BoostPowNow:("
 		<< std::fixed << std::setprecision(2)
-		<< boostSpeed << ")"; // z
-	debugText.Print(BoostPow_.str(), 10, 150, 1.0f);
+		<< BoostPowNow << ")"; // z
+	debugText.Print(BoostPow_.str(), 10, 210, 1.0f);
 
 	std::ostringstream BoostFlag_;
 	BoostFlag_ << "BoostFlag:("
 		<< std::fixed << std::setprecision(2)
-		<< testRate << ")"; // z
-	debugText.Print(BoostFlag_.str(), 10, 170, 1.0f);
+		<< BoostFlag << ")"; // z
+	debugText.Print(BoostFlag_.str(), 10, 230, 1.0f);
 }
 
 void Player::DebugTextDraw()
@@ -300,13 +316,13 @@ void Player::BoostTest()
 	if (Input::GetInstance()->PushMouseRight() == true)
 	{
 		BoostFlag = true;
-		//testRate += 0.1f;
+		//boostTimeRate += 0.1f;
 	}
 
 	if (Input::GetInstance()->PushMouseRight() == false)
 	{
 		BoostFlag = false;
-		//testRate -= 0.1f;
+		//boostTimeRate -= 0.1f;
 	}
 
 	if (BoostFlag == true)
@@ -314,7 +330,7 @@ void Player::BoostTest()
 		if (BoostPowNow > 0)
 		{
 			BoostPowNow--;
-			testRate += 0.1f;
+			boostTimeRate += 0.1f;
 		}
 
 		if (BoostPowNow <= 0)
@@ -325,22 +341,22 @@ void Player::BoostTest()
 
 	if (BoostFlag == false)
 	{
-		testRate -= 0.1f;
+		boostTimeRate -= 0.1f;
 		if (BoostPowNow < BoostPowMax)
 		{
 			BoostPowNow++;
 		}
 	}
 
-	boostSpeed = Lerp::LerpFloat(boostSpeedMin, boostSpeedMax, testRate);
-
-	totalSpeed = (baseSpeed + boostSpeed) - shootSpeed;
+	boostSpeed = Lerp::LerpFloat(boostSpeedMin, boostSpeedMax, boostTimeRate);
 
 	boostSpeed = max(boostSpeed, boostSpeedMin);
 	boostSpeed = min(boostSpeed, boostSpeedMax);
 
-	testRate = max(testRate, 0.0f);
-	testRate = min(testRate, 1.0f);
+	boostTimeRate = max(boostTimeRate, 0.0f);
+	boostTimeRate = min(boostTimeRate, 1.0f);
+
+	totalSpeed = (baseSpeed + boostSpeed) - shootSpeed;
 }
 
 bool Player::CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius)

@@ -598,31 +598,31 @@ void GamePlay::DrawDebugText()
 	CoreLife_1 << "CoreLife_1:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_1->life << ")"; // z
-	debugText.Print(CoreLife_1.str(), 10, 210, 1.0f);
+	debugText.Print(CoreLife_1.str(), 10, 270, 1.0f);
 
 	std::ostringstream CoreLife_2;
 	CoreLife_2 << "CoreLife_2:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_2->life << ")"; // z
-	debugText.Print(CoreLife_2.str(), 10, 230, 1.0f);
+	debugText.Print(CoreLife_2.str(), 10, 290, 1.0f);
 
 	std::ostringstream CoreLife_3;
 	CoreLife_3 << "CoreLife_3:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_3->life << ")"; // z
-	debugText.Print(CoreLife_3.str(), 10, 250, 1.0f);
+	debugText.Print(CoreLife_3.str(), 10, 310, 1.0f);
 
 	std::ostringstream CoreLife_4;
 	CoreLife_4 << "CoreLife_4:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_4->life << ")"; // z
-	debugText.Print(CoreLife_4.str(), 10, 270, 1.0f);
+	debugText.Print(CoreLife_4.str(), 10, 330, 1.0f);
 
 	std::ostringstream MainCoreLife;
 	MainCoreLife << "MainCoreLife:("
 		<< std::fixed << std::setprecision(2)
 		<< playerBulletType << ")"; // z
-	debugText.Print(MainCoreLife.str(), 10, 290, 1.0f);
+	debugText.Print(MainCoreLife.str(), 10, 350, 1.0f);
 }
 
 // プレイヤー弾発射
@@ -631,6 +631,8 @@ void GamePlay::Shoot()
 	shotRate -= 0.1f;
 
 	XMVECTOR bulletVelocity = { 0,0,1.0f };
+
+	player->shootSpeed = Lerp::LerpFloat(0.0f, 1.0f, player->shootSpeedTimeRate);
 
 	if (Input::GetInstance()->PushKey(DIK_SPACE) || Input::GetInstance()->PushMouseLeft())
 	{
@@ -652,7 +654,19 @@ void GamePlay::Shoot()
 			shotFlag = false;
 			shotRate = 1.5f;
 		}
+
+		player->shootSpeedTimeRate += 0.05f;
 	}
+	else if (!Input::GetInstance()->PushMouseLeft())
+	{
+		player->shootSpeedTimeRate -= 0.1f;
+	}
+
+	player->shootSpeed = max(player->shootSpeed, 0.0f);
+	player->shootSpeed = min(player->shootSpeed, 1.0f);
+
+	player->shootSpeedTimeRate = max(player->shootSpeedTimeRate, 0.0f);
+	player->shootSpeedTimeRate = min(player->shootSpeedTimeRate, 1.0f);
 }
 
 void GamePlay::chargeShoot()
@@ -663,6 +677,8 @@ void GamePlay::chargeShoot()
 
 	circleParticle->BulletParticle(5, 2, player->GetPosition(), {0.1f,1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f, 1.0f}, chargeSize);
 
+	player->shootSpeed = Lerp::LerpFloat(0.0f, 2.0f, player->shootSpeedTimeRate);
+
 	if (isCharge == false)
 	{
 		if (chargeNow < chargeMax)
@@ -670,10 +686,12 @@ void GamePlay::chargeShoot()
 			if ( Input::GetInstance()->PushMouseLeft())
 			{
 				chargeNow++;
+				player->shootSpeedTimeRate += 0.05f;
 			}
 			else if (!Input::GetInstance()->PushMouseLeft())
 			{
 				chargeNow -= 2.0f;
+				player->shootSpeedTimeRate -= 0.1f;
 			}
 		}
 		else
@@ -697,6 +715,13 @@ void GamePlay::chargeShoot()
 		chargeNow = 0.0f;
 		isCharge = false;
 	}
+
+	player->shootSpeed = max(player->shootSpeed, 0.0f);
+	player->shootSpeed = min(player->shootSpeed, 2.0f);
+
+	player->shootSpeedTimeRate = max(player->shootSpeedTimeRate, 0.0f);
+	player->shootSpeedTimeRate = min(player->shootSpeedTimeRate, 1.0f);
+
 	chargeNow = max(chargeNow, 0.0);
 	chargeNow = min(chargeNow, chargeMax);
 }

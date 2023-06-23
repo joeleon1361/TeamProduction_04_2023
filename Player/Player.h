@@ -117,15 +117,16 @@ private: // メンバ変数
 	float boostSpeedMin = 0.0f;
 	float boostSpeed = boostSpeedMin;
 	// ブースト速度の線分補間レート
-	float testRate = 0.0f;
+	float boostTimeRate = 0.0f;
 
 	// 通常時の速度
 	float baseSpeed = 2.0f;
 
-	// 弾発射時の速度
-	float shootSpeed = 0.0f;
-
 public:
 	Vector3 direction = { 0, 0, 1 };
 	Vector3 moveDirection = {};
+
+	// 弾発射時の速度
+	float shootSpeed = 0.0f;
+	float shootSpeedTimeRate = 0.0f;
 };
