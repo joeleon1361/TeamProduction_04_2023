@@ -436,7 +436,11 @@
     <ClInclude Include="BossMainCore.h">
       <Filter>Boss</Filter>
     </ClInclude>
-    <ClInclude Include="GageUI.h" />
-    <ClInclude Include="DeltaGageUI.h" />
+    <ClInclude Include="DeltaGageUI.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GageUI.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

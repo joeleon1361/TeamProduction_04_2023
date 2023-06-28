@@ -162,8 +162,10 @@ private: // メンバ変数
 	Sprite* Black = nullptr;
 	Sprite* Rule = nullptr;
 
-	GageUI* tst = nullptr;
-	DeltaGageUI* tst2 = nullptr;
+	GageUI* gageBoost = nullptr;
+	DeltaGageUI* gageBossHp = nullptr;
+
+	GageUI* gageSpeed = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;

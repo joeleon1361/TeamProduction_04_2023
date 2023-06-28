@@ -66,6 +66,16 @@ public: // メンバ関数
 
 	const float& GetBoostPowMax() { return BoostPowMax; }
 
+	const float& GetTotalSpeed() { return totalSpeed; }
+
+	const float& GetNormalShootSpeedMax() { return normalShootSpeedMax; }
+
+	const float& GetChargeShootSpeedMax() { return chargeShootSpeedMax; }
+
+	const float& GetShootSpeedMin() { return shootSpeedMin; }
+
+	const float& GetTotalSpeedMax() { return baseSpeed + boostSpeedMax; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	DebugText debugText;
@@ -121,6 +131,11 @@ private: // メンバ変数
 
 	// 通常時の速度
 	float baseSpeed = 2.0f;
+
+	// 弾発射時の速度
+	float normalShootSpeedMax = 1.0f;
+	float chargeShootSpeedMax = 2.0f;
+	float shootSpeedMin = 0.0f;
 
 public:
 	Vector3 direction = { 0, 0, 1 };

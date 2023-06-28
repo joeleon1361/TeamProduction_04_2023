@@ -311,18 +311,15 @@ void Player::Boost()
 
 void Player::BoostTest()
 {
-
 	BoostPartColor = { (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , 1.0f };
 	if (Input::GetInstance()->PushMouseRight() == true)
 	{
 		BoostFlag = true;
-		//boostTimeRate += 0.1f;
 	}
 
 	if (Input::GetInstance()->PushMouseRight() == false)
 	{
 		BoostFlag = false;
-		//boostTimeRate -= 0.1f;
 	}
 
 	if (BoostFlag == true)

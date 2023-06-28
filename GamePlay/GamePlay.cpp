@@ -81,8 +81,11 @@ void GamePlay::Initialize()
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 
 	// ブーストゲージ
-	tst = GageUI::Create({1255.0f, 690.0f}, { 530.0f, 30.0f });
-	tst2 = DeltaGageUI::Create({ 1255.0f , 60.0f }, { 530.0f, 30.0f });
+	gageBoost = GageUI::Create({1255.0f, 690.0f}, { 530.0f, 30.0f });
+	gageBossHp = DeltaGageUI::Create({ 1255.0f , 60.0f }, { 530.0f, 30.0f });
+
+	// 速度ゲージ
+	gageSpeed = GageUI::Create({ 1255.0f, 650.0f }, { 530.0f, 30.0f });
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
@@ -376,9 +379,11 @@ void GamePlay::Update()
 	CoreAllBreak();
 
 	// ブーストゲージ
-	tst->Update(player->GetBoostPowNow(), player->GetBoostPowMax());
+	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax());
 	// ボスのHPゲージ
-	tst2->Update(bossMainCore->life, bossMainCore->lifeMax);
+	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax);
+	// プレイヤーの速度ゲージ
+	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax());
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -544,8 +549,9 @@ void GamePlay::Draw()
 	
 	Reticle->Draw();
 
-	tst->Draw();
-	tst2->Draw();
+	gageBoost->Draw();
+	gageBossHp->Draw();
+	gageSpeed->Draw();
 
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
@@ -560,7 +566,6 @@ void GamePlay::Draw()
 // マウスの処理
 void GamePlay::GetMouse()
 {
-
 	//マウスの(スクリーン)座標を取得する
 	GetCursorPos(&mousePosition);
 
@@ -582,7 +587,6 @@ void GamePlay::DrawDebugText()
 		<< std::fixed << std::setprecision(5)
 		<< mousePosition.x << ","
 		<< mousePosition.y << ")";
-
 	debugText.Print(MousePosition.str(), 0, 0, 1.0f);
 
 	//レティクルの座標
@@ -591,7 +595,6 @@ void GamePlay::DrawDebugText()
 		<< std::fixed << std::setprecision(5)
 		<< ReticlePos.x << ","
 		<< ReticlePos.y << ")";
-
 	debugText.Print(ReticlePosition.str(), 0, 60, 1.0f);
 
 	std::ostringstream CoreLife_1;
@@ -632,7 +635,7 @@ void GamePlay::Shoot()
 
 	XMVECTOR bulletVelocity = { 0,0,1.0f };
 
-	player->shootSpeed = Lerp::LerpFloat(0.0f, 1.0f, player->shootSpeedTimeRate);
+	player->shootSpeed = Lerp::LerpFloat(player->GetShootSpeedMin(), player->GetNormalShootSpeedMax(), player->shootSpeedTimeRate);
 
 	if (Input::GetInstance()->PushKey(DIK_SPACE) || Input::GetInstance()->PushMouseLeft())
 	{
@@ -662,8 +665,8 @@ void GamePlay::Shoot()
 		player->shootSpeedTimeRate -= 0.1f;
 	}
 
-	player->shootSpeed = max(player->shootSpeed, 0.0f);
-	player->shootSpeed = min(player->shootSpeed, 1.0f);
+	player->shootSpeed = max(player->shootSpeed, player->GetShootSpeedMin());
+	player->shootSpeed = min(player->shootSpeed, player->GetNormalShootSpeedMax());
 
 	player->shootSpeedTimeRate = max(player->shootSpeedTimeRate, 0.0f);
 	player->shootSpeedTimeRate = min(player->shootSpeedTimeRate, 1.0f);
@@ -677,7 +680,7 @@ void GamePlay::chargeShoot()
 
 	circleParticle->BulletParticle(5, 2, player->GetPosition(), {0.1f,1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f, 1.0f}, chargeSize);
 
-	player->shootSpeed = Lerp::LerpFloat(0.0f, 2.0f, player->shootSpeedTimeRate);
+	player->shootSpeed = Lerp::LerpFloat(player->GetShootSpeedMin(), player->GetChargeShootSpeedMax(), player->shootSpeedTimeRate);
 
 	if (isCharge == false)
 	{
@@ -716,8 +719,8 @@ void GamePlay::chargeShoot()
 		isCharge = false;
 	}
 
-	player->shootSpeed = max(player->shootSpeed, 0.0f);
-	player->shootSpeed = min(player->shootSpeed, 2.0f);
+	player->shootSpeed = max(player->shootSpeed, player->GetShootSpeedMin());
+	player->shootSpeed = min(player->shootSpeed, player->GetChargeShootSpeedMax());
 
 	player->shootSpeedTimeRate = max(player->shootSpeedTimeRate, 0.0f);
 	player->shootSpeedTimeRate = min(player->shootSpeedTimeRate, 1.0f);
