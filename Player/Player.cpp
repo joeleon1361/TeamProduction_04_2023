@@ -231,9 +231,9 @@ void Player::Move()
 	position.y += totalSpeed * Vel.y;
 	position.z += totalSpeed * Vel.z;
 
-	velocity222.x = Speed * Vel.x;
-	velocity222.y = Speed * Vel.y;
-	velocity222.z = Speed * Vel.z;
+	velocity222.x = totalSpeed * Vel.x;
+	velocity222.y = totalSpeed * Vel.y;
+	velocity222.z = totalSpeed * Vel.z;
 
 	/*if (!input->PushKey(DIK_S) && !input->PushKey(DIK_W))
 	{
