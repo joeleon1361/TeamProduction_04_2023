@@ -54,7 +54,7 @@ private: // メンバ変数
 	ObjModel* modelBossPartsSphere = nullptr;
 
 	// コア解放時の座標
-	XMFLOAT3 OnPosition = { 0.0f, 0.75f, 0.0f };
+	XMFLOAT3 OnPosition = { 0.0f, 0.9f, 0.0f };
 
 	// コア閉鎖時の座標
 	XMFLOAT3 OffPosition = { 0.0f, 0.0f, 0.0f };
@@ -103,6 +103,6 @@ public:
 	float colorTimeRate2 = 1.0f;
 
 	// メインコアの出現時間
-	float onTimer = 400.0f;
+	float onTimer = 800.0f;
 };
 

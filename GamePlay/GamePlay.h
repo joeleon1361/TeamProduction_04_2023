@@ -33,6 +33,9 @@
 
 #include "SceneManager.h"
 
+#include "GageUI.h"
+#include "DeltaGageUI.h"
+
 #include <cassert>
 #include <sstream>
 #include <iomanip>
@@ -54,6 +57,8 @@ class BossCore;
 class BossMainCore;
 class BossParts;
 class BossTurret;
+class GageUI;
+class DeltaGageUI;
 
 // ゲームシーン
 class GamePlay : public BaseScene
@@ -81,6 +86,13 @@ private: // 静的メンバ変数
 		game_boss_frame_1,
 		game_boss_frame_2,
 		game_boss_gauge
+	};
+
+	// プレイヤーの球
+	static enum BulletType
+	{
+		Normal,
+		Charge
 	};
 
 public: // メンバ関数
@@ -111,6 +123,8 @@ public: // メンバ関数
 
 	// プレイヤーの弾を発射
 	void Shoot();
+
+	void chargeShoot();
 
 	void PlayerMovementBoundaryChecking();
 
@@ -148,18 +162,13 @@ private: // メンバ変数
 	Sprite* Reticle = nullptr;
 	Sprite* test = nullptr;
 
-	// ボスのHPUI
-	Sprite* bossHpUI = nullptr;
-	Sprite* bossHpGage = nullptr;
-	Sprite* bossDamageGage = nullptr;
-	Sprite* bossHpUICover = nullptr;
-
-	Sprite* boostUI = nullptr;
-	Sprite* boostGage = nullptr;
-	Sprite* boostUICover = nullptr;
-	
 	Sprite* Black = nullptr;
 	Sprite* Rule = nullptr;
+
+	GageUI* gageBoost = nullptr;
+	DeltaGageUI* gageBossHp = nullptr;
+
+	GageUI* gageSpeed = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -220,13 +229,16 @@ private: // メンバ変数
 
 	// メインコアのHPバーの座標
 	XMFLOAT2 bossHpUIPosition = { 1255.0f , 30.0f };
-	// メインコアのHPバーのサイズ
-	XMFLOAT2 bossHpGageSize;
-	// メインコアのダメージバーのサイズ
-	XMFLOAT2 bossDamageGageSize;
-
+	
 	// ブーストゲージの座標
 	XMFLOAT2 boostUIPosition = { 1255.0f , 690.0f };
-	// ブーストゲージのサイズ
-	XMFLOAT2 boostGageSize;
+	
+
+	float chargeNow = 0.0f;
+	float chargeMax = 30.0f;
+	float chargeRatio = 0.0f;
+	float chargeSize = 0.0f;
+	bool isCharge = false;
+
+	int playerBulletType = Normal;
 };

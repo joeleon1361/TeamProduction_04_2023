@@ -235,6 +235,12 @@
     <ClCompile Include="BossMainCore.cpp">
       <Filter>Boss</Filter>
     </ClCompile>
+    <ClCompile Include="GageUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DeltaGageUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="ObjectParticle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -433,6 +439,14 @@
     <ClInclude Include="BossMainCore.h">
       <Filter>Boss</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectParticle.h" />
+    <ClInclude Include="ObjectParticle.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaGageUI.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GageUI.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

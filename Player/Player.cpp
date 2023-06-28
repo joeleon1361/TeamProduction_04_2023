@@ -60,6 +60,10 @@ void Player::Update()
 {
 	ObjObject::Update();
 
+	//ブースト
+	//Boost();
+	BoostTest();
+
 	// オブジェクト移動
 	Move();
 
@@ -69,9 +73,6 @@ void Player::Update()
 	Rolling();
 
 	DebugTextUpdate();
-
-	//ブースト
-	Boost();
 }
 
 void Player::Draw()
@@ -99,13 +100,29 @@ void Player::DebugTextUpdate()
 		<< rotation.z << ")"; // z
 	debugText.Print(PlayerRotation.str(), 10, 110, 1.0f);
 
-	std::ostringstream PlayerSpeed;
-	PlayerSpeed << "PlayerSpeed:("
+	std::ostringstream TotalSpeed;
+	TotalSpeed << "TotalSpeed:("
 		<< std::fixed << std::setprecision(2)
-		<< playerSpeed.x << "," // x
-		<< playerSpeed.y << "," // y
-		<< playerSpeed.z << ")"; // z
-	debugText.Print(PlayerSpeed.str(), 10, 130, 1.0f);
+		<< totalSpeed << ")"; // z
+	debugText.Print(TotalSpeed.str(), 10, 130, 1.0f);
+
+	std::ostringstream BaseSpeed;
+	BaseSpeed << "BaseSpeed:("
+		<< std::fixed << std::setprecision(2)
+		<< baseSpeed << ")"; // z
+	debugText.Print(BaseSpeed.str(), 10, 150, 1.0f);
+
+	std::ostringstream ShootSpeed;
+	ShootSpeed << "ShootSpeed:("
+		<< std::fixed << std::setprecision(2)
+		<< shootSpeed << ")"; // z
+	debugText.Print(ShootSpeed.str(), 10, 170, 1.0f);
+
+	std::ostringstream BoostSpeed;
+	BoostSpeed << "BoostSpeed:("
+		<< std::fixed << std::setprecision(2)
+		<< boostSpeed << ")"; // z
+	debugText.Print(BoostSpeed.str(), 10, 190, 1.0f);
 
 	//std::ostringstream RollRotation;
 	//RollRotation << "RollRotation:("
@@ -116,16 +133,16 @@ void Player::DebugTextUpdate()
 	//debugText.Print(RollRotation.str(), 10, 170, 1.0f);
 
 	std::ostringstream BoostPow_;
-	BoostPow_ << "BoostPow:("
+	BoostPow_ << "BoostPowNow:("
 		<< std::fixed << std::setprecision(2)
-		<< BoostPow << ")"; // z
-	debugText.Print(BoostPow_.str(), 10, 150, 1.0f);
+		<< BoostPowNow << ")"; // z
+	debugText.Print(BoostPow_.str(), 10, 210, 1.0f);
 
 	std::ostringstream BoostFlag_;
 	BoostFlag_ << "BoostFlag:("
 		<< std::fixed << std::setprecision(2)
 		<< BoostFlag << ")"; // z
-	debugText.Print(BoostFlag_.str(), 10, 170, 1.0f);
+	debugText.Print(BoostFlag_.str(), 10, 230, 1.0f);
 }
 
 void Player::DebugTextDraw()
@@ -210,9 +227,9 @@ void Player::Move()
 	Vel.y = (y / hypotenuse);
 	Vel.z = (z / hypotenuse);
 
-	position.x += Speed * Vel.x;
-	position.y += Speed * Vel.y;
-	position.z += Speed * Vel.z;
+	position.x += totalSpeed * Vel.x;
+	position.y += totalSpeed * Vel.y;
+	position.z += totalSpeed * Vel.z;
 
 	velocity222.x = Speed * Vel.x;
 	velocity222.y = Speed * Vel.y;
@@ -278,13 +295,13 @@ void Player::Boost()
 
 	if (BoostFlag == true)
 	{
-		if (BoostPow > 0)
+		if (BoostPowNow > 0)
 		{
-			BoostPow--;
-			Speed = 3.0f;
+			BoostPowNow--;
+			totalSpeed = 3.0f;
 		}
 
-		if (BoostPow <= 0)
+		if (BoostPowNow <= 0)
 		{
 			BoostFlag = false;
 		}
@@ -292,13 +309,59 @@ void Player::Boost()
 
 	if (BoostFlag == false)
 	{
-		Speed = 2.0f;
-		if (BoostPow < 100)
+		totalSpeed = 2.0f;
+		if (BoostPowNow < BoostPowMax)
 		{
-			BoostPow++;
+			BoostPowNow++;
+		}
+	}
+}
+
+void Player::BoostTest()
+{
+	BoostPartColor = { (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , 1.0f };
+	if (Input::GetInstance()->PushMouseRight() == true)
+	{
+		BoostFlag = true;
+	}
+
+	if (Input::GetInstance()->PushMouseRight() == false)
+	{
+		BoostFlag = false;
+	}
+
+	if (BoostFlag == true)
+	{
+		if (BoostPowNow > 0)
+		{
+			BoostPowNow--;
+			boostTimeRate += 0.1f;
+		}
+
+		if (BoostPowNow <= 0)
+		{
+			BoostFlag = false;
 		}
 	}
 
+	if (BoostFlag == false)
+	{
+		boostTimeRate -= 0.1f;
+		if (BoostPowNow < BoostPowMax)
+		{
+			BoostPowNow++;
+		}
+	}
+
+	boostSpeed = Lerp::LerpFloat(boostSpeedMin, boostSpeedMax, boostTimeRate);
+
+	boostSpeed = max(boostSpeed, boostSpeedMin);
+	boostSpeed = min(boostSpeed, boostSpeedMax);
+
+	boostTimeRate = max(boostTimeRate, 0.0f);
+	boostTimeRate = min(boostTimeRate, 1.0f);
+
+	totalSpeed = (baseSpeed + boostSpeed) - shootSpeed;
 }
 
 bool Player::CheckCollisionWithBoss(XMFLOAT3 bossPos, float collisionRadius)

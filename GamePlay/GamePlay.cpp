@@ -83,16 +83,12 @@ void GamePlay::Initialize()
 
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 
-	// ボス
-	bossHpUI = Sprite::Create(TextureNumber::game_boss_frame_1, { bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-	bossHpGage = Sprite::Create(TextureNumber::game_boss_gauge, bossHpUIPosition);
-	bossDamageGage = Sprite::Create(TextureNumber::game_boss_gauge, bossHpUIPosition);
-	bossHpUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-
 	// ブーストゲージ
-	boostUI = Sprite::Create(TextureNumber::game_boss_frame_1, { boostUIPosition.x + 10.0f, boostUIPosition.y });
-	boostGage = Sprite::Create(TextureNumber::game_boss_gauge, boostUIPosition);
-	boostUICover = Sprite::Create(TextureNumber::game_boss_frame_2, { boostUIPosition.x + 10.0f, boostUIPosition.y });
+	gageBoost = GageUI::Create({1255.0f, 690.0f}, { 530.0f, 30.0f });
+	gageBossHp = DeltaGageUI::Create({ 1255.0f , 60.0f }, { 530.0f, 30.0f });
+
+	// 速度ゲージ
+	gageSpeed = GageUI::Create({ 1255.0f, 650.0f }, { 530.0f, 30.0f });
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
@@ -154,27 +150,6 @@ void GamePlay::Initialize()
 	modelBossPartsCoreStand = ObjModel::CreateFromOBJ("bossPartsCoreStand");
 	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
 
-	// ボスのHPゲージ
-	bossHpGage->SetColor({ 0.1f, 0.6f, 0.1f, 1.0f });
-	bossHpGage->SetSize({ 530.0f, 30.0f });
-	bossHpGage->SetAnchorPoint({ 1.0f, 0.5f });
-
-	bossDamageGage->SetColor({ 1.0f, 0, 0.2f, 1.0f });
-	bossDamageGage->SetSize({ 530.0f, 30.0f });
-	bossDamageGage->SetAnchorPoint({ 1.0f, 0.5f });
-
-	bossHpUI->SetAnchorPoint({ 1.0f, 0.5f });
-
-	bossHpUICover->SetAnchorPoint({ 1.0f, 0.5f });
-
-	// ブーストゲージ
-	boostGage->SetColor({ 0.6f, 0.6f, 0.1f, 1.0f });
-	boostGage->SetSize({ 530.0f, 30.0f });
-	boostGage->SetAnchorPoint({ 1.0f, 0.5f });
-
-	boostUI->SetAnchorPoint({ 1.0f, 0.5f });
-
-	boostUICover->SetAnchorPoint({ 1.0f, 0.5f });
 
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
@@ -321,14 +296,9 @@ void GamePlay::Update()
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
-
-	bossHpGageSize = bossHpGage->GetSize();
-	bossDamageGageSize = Lerp::LerpFloat2(bossDamageGage->GetSize(), bossHpGageSize, 0.1f);
-
-	//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-
-
-	boostGageSize = boostGage->GetSize();
+	
+		//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+	
 
 	// コアヒットエフェクト
 	CoreHitEffect();
@@ -337,7 +307,26 @@ void GamePlay::Update()
 	BossPartsHitEffect();
 
 	// プレイヤーの球発射処理
-	Shoot();
+	if (playerBulletType == Normal)
+	{
+		Shoot();
+
+		if (input->TriggerKey(DIK_T))
+		{
+			playerBulletType = Charge;
+		}
+	}
+	else if (playerBulletType == Charge)
+	{
+		chargeShoot();
+
+		if (input->TriggerKey(DIK_T))
+		{
+			playerBulletType = Normal;
+		}
+	}
+
+
 
 	// プレイヤーの狙い弾を更新
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
@@ -406,32 +395,12 @@ void GamePlay::Update()
 	// 全てのコアを破壊した後
 	CoreAllBreak();
 
-	// ボスのHPゲージ
-	// ボスのHP計算
-	bossMainCore->lifeRatio = bossMainCore->life / bossMainCore->lifeMax;
-	bossHpGageSize.x = bossMainCore->lifeRatio * 530.0f;
-
-	bossHpGage->SetPosition(bossHpUIPosition);
-	bossHpGage->SetSize(bossHpGageSize);
-
-	bossDamageGage->SetPosition(bossHpUIPosition);
-	bossDamageGage->SetSize(bossDamageGageSize);
-
-	bossHpUI->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-
-	bossHpUICover->SetPosition({ bossHpUIPosition.x + 10.0f, bossHpUIPosition.y });
-
 	// ブーストゲージ
-	float ratio;
-	ratio = player->GetBoostPow() / 100.0f;
-	boostGageSize.x = ratio * 530.0f;
-
-	boostGage->SetPosition(boostUIPosition);
-	boostGage->SetSize(boostGageSize);
-
-	boostUI->SetPosition({ boostUIPosition.x + 10.0f, boostUIPosition.y });
-
-	boostUICover->SetPosition({ boostUIPosition.x + 10.0f, boostUIPosition.y });
+	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax());
+	// ボスのHPゲージ
+	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax);
+	// プレイヤーの速度ゲージ
+	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax());
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -472,7 +441,7 @@ void GamePlay::Update()
 
 	test->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
 
-	//DrawDebugText();
+	DrawDebugText();
 
 	circleParticle->JettParticle(5, 10, player->GetPosition(), player->GetVel(), 1.0f, 0.0f, { 0.941f, 0.231f, 0.156f, 1.0f }, { 0.941f, 0.862f, 0.156f, 1.0f });
 
@@ -598,20 +567,14 @@ void GamePlay::Draw()
 	
 	Reticle->Draw();
 
-	bossHpUI->Draw();
-	bossDamageGage->Draw();
-	bossHpGage->Draw();
-	bossHpUICover->Draw();
+	gageBoost->Draw();
+	gageBossHp->Draw();
+	gageSpeed->Draw();
 
-	boostUI->Draw();
-	boostGage->Draw();
-	boostUICover->Draw();
-
-	//player->DebugTextDraw();
+	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
-	Rule->Draw();
+	//Rule->Draw();
 	Black->Draw();
-
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -621,7 +584,6 @@ void GamePlay::Draw()
 // マウスの処理
 void GamePlay::GetMouse()
 {
-
 	//マウスの(スクリーン)座標を取得する
 	GetCursorPos(&mousePosition);
 
@@ -643,7 +605,6 @@ void GamePlay::DrawDebugText()
 		<< std::fixed << std::setprecision(5)
 		<< mousePosition.x << ","
 		<< mousePosition.y << ")";
-
 	debugText.Print(MousePosition.str(), 0, 0, 1.0f);
 
 	//レティクルの座標
@@ -652,38 +613,37 @@ void GamePlay::DrawDebugText()
 		<< std::fixed << std::setprecision(5)
 		<< ReticlePos.x << ","
 		<< ReticlePos.y << ")";
-
 	debugText.Print(ReticlePosition.str(), 0, 60, 1.0f);
 
 	std::ostringstream CoreLife_1;
 	CoreLife_1 << "CoreLife_1:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_1->life << ")"; // z
-	debugText.Print(CoreLife_1.str(), 10, 210, 1.0f);
+	debugText.Print(CoreLife_1.str(), 10, 270, 1.0f);
 
 	std::ostringstream CoreLife_2;
 	CoreLife_2 << "CoreLife_2:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_2->life << ")"; // z
-	debugText.Print(CoreLife_2.str(), 10, 230, 1.0f);
+	debugText.Print(CoreLife_2.str(), 10, 290, 1.0f);
 
 	std::ostringstream CoreLife_3;
 	CoreLife_3 << "CoreLife_3:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_3->life << ")"; // z
-	debugText.Print(CoreLife_3.str(), 10, 250, 1.0f);
+	debugText.Print(CoreLife_3.str(), 10, 310, 1.0f);
 
 	std::ostringstream CoreLife_4;
 	CoreLife_4 << "CoreLife_4:("
 		<< std::fixed << std::setprecision(2)
 		<< bossCore_4->life << ")"; // z
-	debugText.Print(CoreLife_4.str(), 10, 270, 1.0f);
+	debugText.Print(CoreLife_4.str(), 10, 330, 1.0f);
 
 	std::ostringstream MainCoreLife;
 	MainCoreLife << "MainCoreLife:("
 		<< std::fixed << std::setprecision(2)
-		<< bossMainCore->life << ")"; // z
-	debugText.Print(MainCoreLife.str(), 10, 290, 1.0f);
+		<< playerBulletType << ")"; // z
+	debugText.Print(MainCoreLife.str(), 10, 350, 1.0f);
 }
 
 // プレイヤー弾発射
@@ -694,6 +654,8 @@ void GamePlay::Shoot()
 	PlayerPos = player->GetPosition();
 
 	XMVECTOR bulletVelocity = { 0,0,1.0f };
+
+	player->shootSpeed = Lerp::LerpFloat(player->GetShootSpeedMin(), player->GetNormalShootSpeedMax(), player->shootSpeedTimeRate);
 
 	if (Input::GetInstance()->PushKey(DIK_SPACE) || Input::GetInstance()->PushMouseLeft())
 	{
@@ -715,7 +677,76 @@ void GamePlay::Shoot()
 			shotFlag = false;
 			shotRate = 1.5f;
 		}
+
+		player->shootSpeedTimeRate += 0.05f;
 	}
+	else if (!Input::GetInstance()->PushMouseLeft())
+	{
+		player->shootSpeedTimeRate -= 0.1f;
+	}
+
+	player->shootSpeed = max(player->shootSpeed, player->GetShootSpeedMin());
+	player->shootSpeed = min(player->shootSpeed, player->GetNormalShootSpeedMax());
+
+	player->shootSpeedTimeRate = max(player->shootSpeedTimeRate, 0.0f);
+	player->shootSpeedTimeRate = min(player->shootSpeedTimeRate, 1.0f);
+}
+
+void GamePlay::chargeShoot()
+{
+	chargeRatio = chargeNow / chargeMax;
+
+	chargeSize = Easing::InOutQuadFloat(0.0, 10.0, chargeRatio);
+
+	circleParticle->BulletParticle(5, 2, player->GetPosition(), {0.1f,1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f, 1.0f}, chargeSize);
+
+	player->shootSpeed = Lerp::LerpFloat(player->GetShootSpeedMin(), player->GetChargeShootSpeedMax(), player->shootSpeedTimeRate);
+
+	if (isCharge == false)
+	{
+		if (chargeNow < chargeMax)
+		{
+			if ( Input::GetInstance()->PushMouseLeft())
+			{
+				chargeNow++;
+				player->shootSpeedTimeRate += 0.05f;
+			}
+			else if (!Input::GetInstance()->PushMouseLeft())
+			{
+				chargeNow -= 2.0f;
+				player->shootSpeedTimeRate -= 0.1f;
+			}
+		}
+		else
+		{
+			if (!Input::GetInstance()->PushMouseLeft())
+			{
+				isCharge = true;
+			}
+		}
+	}
+	else
+	{
+		std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
+		newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
+		newBullet->eyePosition = camera->GetEye();
+		//newBullet->eyePosition.y += 10.0f;
+		newBullet->targetPosition = camera->GetTarget();
+		newBullet->upVector = camera->GetUp();
+		playerBullets.push_back(std::move(newBullet));
+
+		chargeNow = 0.0f;
+		isCharge = false;
+	}
+
+	player->shootSpeed = max(player->shootSpeed, player->GetShootSpeedMin());
+	player->shootSpeed = min(player->shootSpeed, player->GetChargeShootSpeedMax());
+
+	player->shootSpeedTimeRate = max(player->shootSpeedTimeRate, 0.0f);
+	player->shootSpeedTimeRate = min(player->shootSpeedTimeRate, 1.0f);
+
+	chargeNow = max(chargeNow, 0.0);
+	chargeNow = min(chargeNow, chargeMax);
 }
 
 void GamePlay::PlayerMovementBoundaryChecking()

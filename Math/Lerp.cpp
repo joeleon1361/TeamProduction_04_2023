@@ -2,6 +2,11 @@
 
 using namespace DirectX;
 
+float Lerp::LerpFloat(const float start, const float end, const float time)
+{
+	return start * (1.0f - time) + end * time;
+}
+
 XMFLOAT2 Lerp::LerpFloat2(const XMFLOAT2& start, const XMFLOAT2& end, const float time)
 {
 	XMFLOAT2 A, B;
