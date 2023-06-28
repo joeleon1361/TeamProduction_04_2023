@@ -25,6 +25,7 @@
 #include "BossMainCore.h"
 #include "BossParts.h"
 #include "TargetBullet.h"
+#include "ObjectParticle.h"
 
 #include "Spline.h"
 #include "Lerp.h"
@@ -199,6 +200,9 @@ private: // メンバ変数
 	std::list<std::unique_ptr<TargetBullet>> playerBullets;
 
 	std::list<std::unique_ptr<Bullet>>bossTargetBullets;
+
+	//オブジェクトパーティクル
+	std::list<std::unique_ptr<ObjectParticle>> particle;
 
 	float shotRate = 0.0f;
 	bool shotFlag = true;

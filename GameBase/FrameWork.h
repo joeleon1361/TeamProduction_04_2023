@@ -6,6 +6,8 @@
 #include "fbxsdk.h"
 #include "PostEffect.h"
 #include "FbxLoader.h"
+#include "ObjObject.h"
+#include "ObjectParticle.h"
 
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"

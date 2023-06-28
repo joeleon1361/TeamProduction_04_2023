@@ -58,6 +58,8 @@ void FrameWork::Initialize()
 	// 3Dオブジェクト静的初期化
 	ObjObject::StaticInitialize(dxCommon->GetDevice());
 
+	ObjectParticle::StaticInitialize(dxCommon->GetDevice());
+
 	FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
 #pragma endregion
 }
