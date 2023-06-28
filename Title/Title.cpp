@@ -21,6 +21,7 @@ void Title::Initialize()
 
 	// カメラセット
 	ObjObject::SetCamera(camera);
+	ObjectParticle::SetCamera(camera);
 
 	if (!Sprite::LoadTexture(TextureNumber::title_bg, L"Resources/Sprite/TitleUI/Title.jpg")) {
 		assert(0);
@@ -67,6 +68,15 @@ void Title::Initialize()
 	objTitleFont->SetScale({ 20.0f,20.0f,20.0f });
 	objTitleFont->SetPosition({ 0.0f,10.0f,45.0f});
 	objTitleFont->SetRotation({ -20.0f,0.0f,0.0f});
+
+	//オブジェクトパーティクル
+	modelObject = ObjModel::CreateFromOBJ("TitleSkydome");
+	//Object = ObjectParticle::Create(modelObject, DefaultPos);
+	//Object->SetModel(modelObject);
+
+	//Object->SetScale({ 10.0f,10.0f,10.0f });
+	//Object->SetRotation({ 0.0f,0.0f,0.0f });
+	
 
 	// パーティクル
 	//Particle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -149,6 +159,12 @@ void Title::Update()
 		StartFlag = true;
 	}
 
+	if (input->TriggerKey(DIK_M))
+	{
+		//Object = ObjectParticle::Create(modelObject, DefaultPos);
+		CreateParticle();
+	}
+
 	if (StartFlag == true)
 	{
 		BlackAlpha += 0.02f;
@@ -157,8 +173,30 @@ void Title::Update()
 
 	objTitleFont->Update();
 
+	if (Object)
+	{
+		Object->Update();
+	}
 	// パーティクル更新
 	//Particle->Update();
+
+	//オブジェクトパーティクルを更新
+	for (std::unique_ptr<ObjectParticle>& part : particle)
+	{
+		part->Update();
+	}
+
+	particle.remove_if([](std::unique_ptr<ObjectParticle>& bullet)
+		{
+			return bullet->GetDeathFlag();
+		}
+	);
+
+	//オブジェクトパーティクルを条件ありで削除
+	ObjPart.remove_if([](std::unique_ptr<ObjectParticle>& objectParticle)
+		{
+			return objectParticle->GetDeathFlag();
+		});
 
 	camera->SetEye({ 0.0f, 0.0f, 0.0f });
 	camera->SetTarget({ 0.0f, 0.0f, 100.0f });
@@ -174,19 +212,19 @@ void Title::Draw()
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
-	titleBG->Draw();
+	/*titleBG->Draw();
 	titleBG_LD->Draw();
 	titleBG_RU->Draw();
 	titleBG_RD->Draw();
 
-	TitleFont->Draw();
+	TitleFont->Draw();*/
 
 	if (DrawTimer <= 30)
 	{
 		PressSpace->Draw();
 	}
 
-	Black->Draw();
+	//Black->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -197,14 +235,32 @@ void Title::Draw()
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	ObjObject::PreDraw(cmdList);
+	ObjectParticle::PreDraw(cmdList);
 
 	// 3Dオブクジェクトの描画
 	//objTitleFont->Draw();
+
+	if (Object)
+	{
+		Object->Draw();
+	}
+
+	//オブジェクトパーティクル描画
+	for (std::unique_ptr<ObjectParticle>& part : particle)
+	{
+		part->Draw();
+	}
+
+	for (std::unique_ptr<ObjectParticle>& objPart : ObjPart)
+	{
+		objPart->Draw();
+	}
 
 	//パーティクル更新
 	//Particle->Draw(cmdList);
 
 	// 3Dオブジェクト描画後処理
+	ObjectParticle::PostDraw();
 	ObjObject::PostDraw();
 #pragma endregion
 
@@ -218,4 +274,18 @@ void Title::Draw()
 	Sprite::PostDraw();
 #pragma endregion
 
+}
+
+void Title::CreateParticle()
+{
+	XMFLOAT3 Position = {};
+
+	Position.x = 10.0f;
+	Position.y = 10.0f;
+	Position.z = 0.0f;
+
+	//パーティクルを発生させる
+	std::unique_ptr<ObjectParticle> newPart = std::make_unique<ObjectParticle>();
+	newPart = ObjectParticle::Create(modelObject, Position);
+	ObjPart.push_back(std::move(newPart));
 }

@@ -321,9 +321,9 @@ void GamePlay::Update()
 
 	bossHpGageSize = bossHpGage->GetSize();
 	bossDamageGageSize = Lerp::LerpFloat2(bossDamageGage->GetSize(), bossHpGageSize, 0.1f);
-	
-		//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-	
+
+	//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+
 
 	boostGageSize = boostGage->GetSize();
 
@@ -358,6 +358,7 @@ void GamePlay::Update()
 		}
 	}
 
+
 	// ボスの砲台1を一定間隔で発射
 	if (bossTurret_1->isAlive == true)
 	{
@@ -378,6 +379,19 @@ void GamePlay::Update()
 
 	// ボスの狙い弾を消去
 	bossTargetBullets.remove_if([](std::unique_ptr<Bullet>& bullet)
+		{
+			return bullet->GetDeathFlag();
+		}
+	);
+
+
+	//オブジェクトパーティクルを更新
+	for (std::unique_ptr<ObjectParticle>& part : particle)
+	{
+		part->Update();
+	}
+
+	particle.remove_if([](std::unique_ptr<ObjectParticle>& bullet)
 		{
 			return bullet->GetDeathFlag();
 		}

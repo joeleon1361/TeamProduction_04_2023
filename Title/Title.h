@@ -12,6 +12,7 @@
 #include "Input.h"
 #include "Sprite.h"
 #include "ObjObject.h"
+#include "ObjectParticle.h"
 #include "Sound.h"
 #include "Camera.h"
 #include "ParticleManager.h"
@@ -55,6 +56,9 @@ public:
 
 	// 描画
 	void Draw() override;
+	
+	//パーティクル生成
+	void CreateParticle();
 
 private: // メンバ変数
 	//DirectXCommon
@@ -81,11 +85,20 @@ private: // メンバ変数
 	//3Dオブジェクト
 	ObjObject* objTitleFont = nullptr;
 
+	ObjectParticle* Object = nullptr;
+
+	std::list<std::unique_ptr<ObjectParticle>> ObjPart;
+
 	//モデル
 	ObjModel* modelTitleFont = nullptr;
 
+	ObjModel* modelObject = nullptr;
+
 	//パーティクル
 	ParticleManager* Particle = nullptr;
+
+	//オブジェクトパーティクル
+	std::list<std::unique_ptr<ObjectParticle>> particle;
 
 	//タイトルスプライト座標
 	XMFLOAT2 TitlePos_LU = {0.0f, 0.0f};
@@ -103,4 +116,10 @@ private: // メンバ変数
 	
 	//描画タイマー
 	int DrawTimer = 0;
+
+	//デフォルトポイント
+	XMFLOAT3 DefaultPos = { 0.0f, 0.0f, 0.0f };
+
+	//オブジェクトパーティクル発生フラグ
+
 };
