@@ -210,7 +210,6 @@ private: // メンバ変数
 	float timer = 0.0f;
 
 	//レティクル座標
-	XMFLOAT2 ReticlePos = { 0.0f, 0.0f };
 
 	//マウス座標
 	POINT mousePosition;

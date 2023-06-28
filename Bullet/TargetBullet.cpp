@@ -3,6 +3,10 @@
 extern HWND hwnd;
 
 using namespace DirectX;
+extern XMFLOAT2 ReticlePos;
+extern XMFLOAT3 PlayerPos;
+
+extern XMFLOAT3 velocity222;
 
 std::unique_ptr<TargetBullet> TargetBullet::Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed, XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up)
 {
@@ -64,7 +68,7 @@ bool TargetBullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, con
 	// Calculate the ray direction in world space
 	XMFLOAT3 rayDirection;
 	XMVECTOR rayOrigin = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	XMVECTOR nearPoint = DirectX::XMVectorSet(cursorPos.x, cursorPos.y, 0.01f, 1.0f);
+	XMVECTOR nearPoint = DirectX::XMVectorSet(PlayerPos.x, PlayerPos.y + 0.3f, 0.0f, 1.0f);
 	XMVECTOR farPoint = DirectX::XMVectorSet(cursorPos.x, cursorPos.y, 1.0f, 1.0f);
 
 	// Create the view matrix based on the camera's position and orientation
@@ -75,16 +79,19 @@ bool TargetBullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, con
 	XMMATRIX transformationMatrix = DirectX::XMMatrixMultiply(viewMatrix, projectionMatrix);
 
 	// Unproject the cursor position from screen space to world space
-	nearPoint = DirectX::XMVector3Unproject(nearPoint, 0.0f, 0.0f, (float)width, (float)height, 0.01f, 1.0f, projectionMatrix, viewMatrix, DirectX::XMMatrixIdentity());
-	farPoint = DirectX::XMVector3Unproject(farPoint, 0.0f, 0.0f, (float)width, (float)height, 0.01f, 1.0f, projectionMatrix, viewMatrix, DirectX::XMMatrixIdentity());
+	nearPoint = DirectX::XMVector3Unproject(nearPoint, 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f, projectionMatrix, viewMatrix, DirectX::XMMatrixIdentity());
+	farPoint = DirectX::XMVector3Unproject(farPoint, 0.0f, 0.0f, (float)width, (float)height, 0.0f, 1.0f, projectionMatrix, viewMatrix, DirectX::XMMatrixIdentity());
 
 	// Calculate the ray direction in world space based on the camera's position and orientation
 	rayDirection = XMFLOAT3(DirectX::XMVectorGetX(farPoint) - DirectX::XMVectorGetX(nearPoint), DirectX::XMVectorGetY(farPoint) - DirectX::XMVectorGetY(nearPoint), DirectX::XMVectorGetZ(farPoint) - DirectX::XMVectorGetZ(nearPoint));
 	rayDirection.y += 3.0f; // Offset for camera being ABOVE the player, not lined up on the Y-axis
 	XMVECTOR RayDirection = DirectX::XMVector3Normalize(XMLoadFloat3(&rayDirection));
 
+	float scaleFactorX = 1.0f;
+	float scaleFactorY = 1.0f;
+
 	// Scale the Y component of the bullet direction vector
-	RayDirection *= DirectX::XMVectorSet(1.0f + (0.0003125 * (1536 - width)), 1.08f, 1.0f, 1.0f); // The x-component accounts for screen width size changes
+	RayDirection *= DirectX::XMVectorSet(scaleFactorX, scaleFactorY, 1.0f, 1.0f);
 
 	// Set the bullet direction to the ray direction
 	bulletDirection = XMFLOAT3(RayDirection.m128_f32[0], RayDirection.m128_f32[1], RayDirection.m128_f32[2]);

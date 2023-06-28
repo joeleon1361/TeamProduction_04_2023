@@ -2,6 +2,9 @@
 
 using namespace DirectX;
 extern HWND hwnd;
+extern XMFLOAT2 ReticlePos = { 0.0f, 0.0f };
+extern XMFLOAT3 PlayerPos = { 0.0f, 0.0f, 0.0 };
+extern float externRotationY;
 
 GamePlay::GamePlay()
 {
@@ -441,6 +444,7 @@ void GamePlay::Update()
 	bossCore_4->Update();
 	bossTurret_1->Update();
 	//bossTurret_2->Update();
+	bossTurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, externRotationY, bossTurretStand_1->GetRotation().z });
 	bossTurretStand_1->Update();
 	//bossTurretStand_2->Update();
 	bossPartsCoreStand->Update();
@@ -672,6 +676,8 @@ void GamePlay::DrawDebugText()
 void GamePlay::Shoot()
 {
 	shotRate -= 0.1f;
+
+	PlayerPos = player->GetPosition();
 
 	XMVECTOR bulletVelocity = { 0,0,1.0f };
 

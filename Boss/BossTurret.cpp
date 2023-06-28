@@ -2,6 +2,8 @@
 
 using namespace DirectX;
 
+extern XMFLOAT3 externPlayerPos;
+extern float externRotationY = 0.0f;
 
 BossTurret* BossTurret::Create(ObjModel* model)
 {
@@ -56,14 +58,14 @@ void BossTurret::Update()
 
 	HitChangeColor();
 
-	if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)
+	/*if (input->PushKey(DIK_UP) && input->PushKey(DIK_LCONTROL) == 0)
 	{
 		rotation.x -= 1.0f;
 	}
 	if (input->PushKey(DIK_DOWN) && input->PushKey(DIK_LCONTROL) == 0)
 	{
 		rotation.x += 1.0f;
-	}
+	}*/
 
 	// HPが0になったら撃破
 	if (life <= 0.0f)
@@ -81,10 +83,24 @@ void BossTurret::Update()
 		}
 		rotation = Lerp::LerpFloat3(GetRotation(), breakRotation, rotationTimeRate);
 	}
+	else
+	{
+		float axisX = (externPlayerPos.x - position.x);
+		float axisY = (externPlayerPos.y - position.y);
+		float axisZ = (externPlayerPos.z - position.z);
+		float hypotenuse = sqrt(pow(axisX, 2) + pow(axisY, 2) + pow(axisZ, 2));
+		float radians = atan2(axisZ, axisX);
+		float degrees = XMConvertToDegrees(radians);
+		float radians2 = asin(axisY / hypotenuse);
+		float degrees2 = XMConvertToDegrees(radians2);
+		SetRotation({ -degrees2, rotation.y, rotation.z });
+		externRotationY = -degrees + 90.0f;
+	}
 
 	// X軸を制限
 	rotation.x = max(rotation.x, -limitRot);
 	rotation.x = min(rotation.x, +limitRot);
+	SetRotation({ rotation.x, rotation.y, rotation.z });
 }
 
 // ヒット時のカラー変更
