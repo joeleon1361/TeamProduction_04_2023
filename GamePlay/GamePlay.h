@@ -140,6 +140,8 @@ public: // メンバ関数
 	// ボスパーツヒットエフェクト
 	void BossPartsHitEffect();
 
+	void PlayerHitEffect();
+
 	// 全てのコアを破壊した後の処理
 	void CoreAllBreak();
 
