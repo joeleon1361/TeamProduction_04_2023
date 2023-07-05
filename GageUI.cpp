@@ -40,11 +40,16 @@ bool GageUI::Initialize(XMFLOAT2 position, XMFLOAT2 size)
 	return true;
 }
 
-void GageUI::Update(float nowVal, float maxVal)
+void GageUI::Update(float nowVal, float maxVal, XMFLOAT2 position)
 {
 	// ゲージに入れる値の割合を計算
 	ratio = nowVal / maxVal;
 	nowSize.x = ratio * maxSize.x;
+
+	// 座標をセット
+	gageBase->SetPosition({ position.x + 10.0f, position.y });
+	gageMain->SetPosition(position);
+	gageCover->SetPosition({ position.x + 10.0f, position.y });
 
 	// サイズをセット
 	gageMain->SetSize(nowSize);
