@@ -391,14 +391,19 @@ void GamePlay::Update()
 	// 全てのコアを破壊した後
 	CoreAllBreak();
 
+	if (input->PushKey(DIK_H))
+	{
+		playerSpeedUIPosition.y += 1.0f;
+	}
+
 	PlayerHitEffect();
 
 	// ブーストゲージ
-	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax());
+	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax(), boostUIPosition);
 	// ボスのHPゲージ
-	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax);
+	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax, bossHpUIPosition);
 	// プレイヤーの速度ゲージ
-	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax());
+	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition);
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
