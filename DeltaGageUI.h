@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Sprite.h"
+#include "Lerp.h"
 
 class DeltaGageUI
 {

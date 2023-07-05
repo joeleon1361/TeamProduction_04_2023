@@ -84,11 +84,12 @@ void GamePlay::Initialize()
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 
 	// ブーストゲージ
-	gageBoost = GageUI::Create({1255.0f, 690.0f}, { 530.0f, 30.0f });
-	gageBossHp = DeltaGageUI::Create({ 1255.0f , 60.0f }, { 530.0f, 30.0f });
+	gageBoost = GageUI::Create(boostUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.6f, 0.1f, 1.0f });
+	gageBossHp = DeltaGageUI::Create(bossHpUIPosition, { 530.0f, 30.0f });
+	gagePlayerHp = DeltaGageUI::Create(playerHpUIPosition, { 530.0f, 30.0f });
 
 	// 速度ゲージ
-	gageSpeed = GageUI::Create({ 1255.0f, 650.0f }, { 530.0f, 30.0f });
+	gageSpeed = GageUI::Create(playerSpeedUIPosition, { 530.0f, 30.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
@@ -340,14 +341,6 @@ void GamePlay::Update()
 		}
 	);
 
-	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
-	{
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, player->GetPosition(), 3.0f))
-		{
-			bullet->deathFlag = true;
-		}
-	}
-
 	// ボスの砲台1を一定間隔で発射
 	if (bossTurret_1->isAlive == true)
 	{
@@ -399,11 +392,13 @@ void GamePlay::Update()
 	PlayerHitEffect();
 
 	// ブーストゲージ
-	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax(), boostUIPosition);
+	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax(), boostUIPosition, { 0.6f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 	// ボスのHPゲージ
 	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax, bossHpUIPosition);
 	// プレイヤーの速度ゲージ
-	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition);
+	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition, { 0.1f, 0.6f, 0.6f, 1.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
+
+	gagePlayerHp->Update(player->HP, player->HPMAX, playerHpUIPosition);
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -572,6 +567,7 @@ void GamePlay::Draw()
 	gageBoost->Draw();
 	gageBossHp->Draw();
 	gageSpeed->Draw();
+	gagePlayerHp->Draw();
 
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);

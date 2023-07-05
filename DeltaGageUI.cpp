@@ -1,5 +1,4 @@
 #include "DeltaGageUI.h"
-#include "Lerp.h"
 
 DeltaGageUI* DeltaGageUI::Create(XMFLOAT2 position, XMFLOAT2 size)
 {

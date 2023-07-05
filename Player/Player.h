@@ -145,5 +145,6 @@ public:
 	float shootSpeed = 0.0f;
 	float shootSpeedTimeRate = 0.0f;
 
-	float HP = 10.0f;
+	float HPMAX = 15.0f;
+	float HP = HPMAX;
 };

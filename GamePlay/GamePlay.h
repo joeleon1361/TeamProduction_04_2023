@@ -169,6 +169,7 @@ private: // メンバ変数
 
 	GageUI* gageBoost = nullptr;
 	DeltaGageUI* gageBossHp = nullptr;
+	DeltaGageUI* gagePlayerHp = nullptr;
 
 	GageUI* gageSpeed = nullptr;
 	
@@ -233,11 +234,12 @@ private: // メンバ変数
 	XMFLOAT2 bossHpUIPosition = { 1255.0f , 30.0f };
 	
 	// ブーストゲージの座標
-	XMFLOAT2 boostUIPosition = { 1255.0f , 690.0f };
+	XMFLOAT2 boostUIPosition = { 1255.0f , 650.0f };
 
 	// プレイヤーの速度ゲージの座標
-	XMFLOAT2 playerSpeedUIPosition = { 1255.0f, 650.0f };
+	XMFLOAT2 playerSpeedUIPosition = { 555.0f, 690.0f };
 	
+	XMFLOAT2 playerHpUIPosition = { 1255.0f, 690.0f };
 
 	float chargeNow = 0.0f;
 	float chargeMax = 30.0f;

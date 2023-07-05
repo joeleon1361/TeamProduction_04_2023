@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Sprite.h"
+#include "Lerp.h"
 
 class GageUI
 {
@@ -31,11 +32,11 @@ private: // 静的メンバ変数
 
 public: // 静的メンバ関数
 // インスタンス生成
-	static GageUI* Create(XMFLOAT2 position, XMFLOAT2 size);
+	static GageUI* Create(XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color);
 
-	bool Initialize(XMFLOAT2 position, XMFLOAT2 size);
+	bool Initialize(XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color);
 
-	void Update(float nowVal, float maxVal, XMFLOAT2 position);
+	void Update(float nowVal, float maxVal, XMFLOAT2 position, XMFLOAT4 start_color, XMFLOAT4 end_color);
 
 	void Draw();
 
@@ -49,4 +50,6 @@ private:
 	XMFLOAT2 maxSize = {};
 
 	float ratio = {};
+
+	XMFLOAT4 gageColor = {};
 };
