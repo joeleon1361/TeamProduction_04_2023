@@ -87,6 +87,7 @@ void GamePlay::Initialize()
 	gageBoost = GageUI::Create(boostUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.6f, 0.1f, 1.0f });
 	gageBossHp = DeltaGageUI::Create(bossHpUIPosition, { 530.0f, 30.0f });
 	gagePlayerHp = DeltaGageUI::Create(playerHpUIPosition, { 530.0f, 30.0f });
+	gageCharge = GageUI::Create(playerChargeUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
 	// 速度ゲージ
 	gageSpeed = GageUI::Create(playerSpeedUIPosition, { 530.0f, 30.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
@@ -400,6 +401,8 @@ void GamePlay::Update()
 
 	gagePlayerHp->Update(player->HP, player->HPMAX, playerHpUIPosition);
 
+	gageCharge->Update(chargeNow, chargeMax,playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
+
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
 	// camera->SetDistance(sqrtf(pow(boss->GetPosition().x - player->GetPosition().x, 2) + pow(boss->GetPosition().y - player->GetPosition().y, 2) + pow(boss->GetPosition().z - player->GetPosition().z, 2)) + 48.0f);
@@ -568,6 +571,7 @@ void GamePlay::Draw()
 	gageBossHp->Draw();
 	gageSpeed->Draw();
 	gagePlayerHp->Draw();
+	gageCharge->Draw();
 
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);

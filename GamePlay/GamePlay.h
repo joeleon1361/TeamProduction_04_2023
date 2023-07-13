@@ -172,6 +172,7 @@ private: // メンバ変数
 	DeltaGageUI* gagePlayerHp = nullptr;
 
 	GageUI* gageSpeed = nullptr;
+	GageUI* gageCharge = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -240,6 +241,8 @@ private: // メンバ変数
 	XMFLOAT2 playerSpeedUIPosition = { 555.0f, 690.0f };
 	
 	XMFLOAT2 playerHpUIPosition = { 1255.0f, 690.0f };
+
+	XMFLOAT2 playerChargeUIPosition = { 555.0f, 650.0f };
 
 	float chargeNow = 0.0f;
 	float chargeMax = 30.0f;
