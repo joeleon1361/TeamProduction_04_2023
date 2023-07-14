@@ -380,7 +380,7 @@ void GamePlay::Update()
 	//オブジェクトパーティクルを更新
 	for (std::unique_ptr<ObjectParticle>& part : particle)
 	{
-		part->Update();
+		//part->Update();
 	}
 
 	particle.remove_if([](std::unique_ptr<ObjectParticle>& bullet)

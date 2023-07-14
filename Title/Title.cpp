@@ -71,8 +71,8 @@ void Title::Initialize()
 
 	//オブジェクトパーティクル
 	modelObject = ObjModel::CreateFromOBJ("TitleSkydome");
-	//Object = ObjectParticle::Create(modelObject, DefaultPos);
-	//Object->SetModel(modelObject);
+	Object = ObjectParticle::Create(modelObject, DefaultPos);
+	Object->SetModel(modelObject);
 
 	//Object->SetScale({ 10.0f,10.0f,10.0f });
 	//Object->SetRotation({ 0.0f,0.0f,0.0f });
@@ -81,6 +81,11 @@ void Title::Initialize()
 	// パーティクル
 	//Particle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
 
+
+	// パーティクル
+	circleParticle = Test::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
+
+	circleParticle->SetModel(modelObject);
 
 	//カメラの注視点と座標を設定
 	camera->SetEye({ 0.0f, 0.0f, 0.0f });
@@ -173,18 +178,31 @@ void Title::Update()
 
 	objTitleFont->Update();
 
-	if (Object)
-	{
-		Object->Update();
-	}
+
+	Object->ObjPart(30, { 0, 0, -300 }, { 1, 1, 1 }, { 0.5,  0.5, 0.5 });
+	
+	Object->Update(Vector);
+	
 	// パーティクル更新
 	//Particle->Update();
+
+	//TestPart->ObjPart(30, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f ,1.0f });
+
+	//TestPart->Update();
 
 	//オブジェクトパーティクルを更新
 	for (std::unique_ptr<ObjectParticle>& part : particle)
 	{
-		part->Update();
+		part->Update(Vector);
 	}
+
+	//オブジェクトパーティクルを更新
+	for (std::unique_ptr<ObjectParticle>& objpart : ObjPart)
+	{
+		objpart->Update(Vector);
+	}
+
+	circleParticle->Update();
 
 	particle.remove_if([](std::unique_ptr<ObjectParticle>& bullet)
 		{
@@ -240,10 +258,8 @@ void Title::Draw()
 	// 3Dオブクジェクトの描画
 	//objTitleFont->Draw();
 
-	if (Object)
-	{
-		Object->Draw();
-	}
+
+	Object->Draw();
 
 	//オブジェクトパーティクル描画
 	for (std::unique_ptr<ObjectParticle>& part : particle)
@@ -255,6 +271,11 @@ void Title::Draw()
 	{
 		objPart->Draw();
 	}
+
+	// パーティクルの描画
+	circleParticle->Draw(cmdList);
+
+	//TestPart->Draw();
 
 	//パーティクル更新
 	//Particle->Draw(cmdList);
@@ -280,12 +301,20 @@ void Title::CreateParticle()
 {
 	XMFLOAT3 Position = {};
 
-	Position.x = 10.0f;
-	Position.y = 10.0f;
-	Position.z = 0.0f;
+	const float md_width = 10.0f;
 
-	//パーティクルを発生させる
-	std::unique_ptr<ObjectParticle> newPart = std::make_unique<ObjectParticle>();
-	newPart = ObjectParticle::Create(modelObject, Position);
-	ObjPart.push_back(std::move(newPart));
+	Position.x = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
+	Position.y = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
+	Position.z = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
+
+	//XMFLOAT3 Vector = {};
+	const float md_vel = 0.1f;
+	
+	Vector.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+	Vector.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+	Vector.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+
+	XMFLOAT3 acc{};
+	const float md_acc = 0.01f;
+	acc.y = -(float)rand() / RAND_MAX * md_acc;
 }
