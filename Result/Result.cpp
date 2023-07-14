@@ -44,7 +44,7 @@ void Result::Update()
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
-	camera->Update();
+	camera->Update({ 0, 0, 10 }, { 0, 0, 0 });
 }
 
 void Result::Draw()

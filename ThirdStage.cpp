@@ -250,8 +250,6 @@ void ThirdStage::Initialize()
 	camera->SetEye({ 0, 0, -10 });
 	camera->SetUp({ 0, 1, 0 });
 	//camera->SetDistance(48.0f);
-	camera->bossPos = boss->GetPosition();
-	camera->playerPos = player->GetPosition();
 
 	ShowCursor(false);
 }
@@ -397,12 +395,9 @@ void ThirdStage::Update()
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
 	// camera->SetDistance(sqrtf(pow(boss->GetPosition().x - player->GetPosition().x, 2) + pow(boss->GetPosition().y - player->GetPosition().y, 2) + pow(boss->GetPosition().z - player->GetPosition().z, 2)) + 48.0f);
-	camera->bossPos = boss->GetPosition();
-	camera->playerPos = player->GetPosition();
-	camera->playerRot = player->GetRotation();
 
 	// カメラの更新
-	camera->Update();
+	camera->Update(player->GetPosition(), boss->GetPosition());
 
 	// プレイヤーの更新
 	player->Update();

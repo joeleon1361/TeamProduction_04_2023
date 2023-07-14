@@ -200,7 +200,7 @@ void Title::Update()
 
 	camera->SetEye({ 0.0f, 0.0f, 0.0f });
 	camera->SetTarget({ 0.0f, 0.0f, 100.0f });
-	camera->Update();
+	camera->Update({ 0, 0, 10 }, { 0, 0, 0 });
 }
 
 void Title::Draw()

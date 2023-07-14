@@ -58,7 +58,7 @@ void StageSelect::Update()
 		SceneManager::GetInstance()->ChangeScene("THIRDSTAGE");
 	}
 
-	camera->Update();
+	camera->Update({ 0, 0, 10 }, { 0, 0, 0 });
 
 	DrawDebugText();
 }
