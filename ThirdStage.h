@@ -35,6 +35,7 @@
 
 #include "GageUI.h"
 #include "DeltaGageUI.h"
+#include "Collision.h"
 
 #include <cassert>
 #include <sstream>
@@ -143,11 +144,6 @@ public:
 
 	// 全てのコアを破壊した後の処理
 	void CoreAllBreak();
-
-	// 当たり判定
-	bool BasicCollisionDetection(XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize);
-
-	bool CCDCollisionDetection(XMFLOAT3 prevBulletPos, XMFLOAT3 bulletPos, float bulletSize, XMFLOAT3 bossPos, float bossSize);
 
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();

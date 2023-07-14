@@ -165,10 +165,7 @@
     <ClCompile Include="Bullet\TargetBullet.cpp" />
     <ClCompile Include="Bullet\Bullet.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
-    <ClCompile Include="Collider\Collision.cpp" />
-    <ClCompile Include="Collider\CollisionManager.cpp" />
-    <ClCompile Include="Collider\CollisionPrimitive.cpp" />
-    <ClCompile Include="Collider\SphereCollider.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DebugText\DebugText.cpp" />
     <ClCompile Include="DeltaGageUI.cpp" />
     <ClCompile Include="GageUI.cpp" />
@@ -304,6 +301,7 @@
     <ClInclude Include="Boss\BossTurret.h" />
     <ClInclude Include="Boss\BossCore.h" />
     <ClInclude Include="Boss\BossParts.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="DeltaGageUI.h" />
     <ClInclude Include="GageUI.h" />
     <ClInclude Include="GameBase\AbstractSceneFactory.h" />
@@ -312,14 +310,6 @@
     <ClInclude Include="Bullet\TargetBullet.h" />
     <ClInclude Include="Bullet\Bullet.h" />
     <ClInclude Include="Camera\Camera.h" />
-    <ClInclude Include="Collider\BaseCollider.h" />
-    <ClInclude Include="Collider\Collision.h" />
-    <ClInclude Include="Collider\CollisionInfo.h" />
-    <ClInclude Include="Collider\CollisionManager.h" />
-    <ClInclude Include="Collider\CollisionPrimitive.h" />
-    <ClInclude Include="Collider\CollisionTypes.h" />
-    <ClInclude Include="Collider\RaycastHit.h" />
-    <ClInclude Include="Collider\SphereCollider.h" />
     <ClInclude Include="DebugText\DebugText.h" />
     <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="EngineBase\DirectXCommon.h" />

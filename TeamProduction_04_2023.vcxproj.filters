@@ -65,9 +65,6 @@
     <Filter Include="EngineBase">
       <UniqueIdentifier>{3daa5a77-8d23-4194-8e38-0a807118291f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Collider">
-      <UniqueIdentifier>{e536b6eb-ed67-40db-9f89-c38934df73f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{a9c45b3e-8f22-4b9f-92bc-5ec79a0f4dd9}</UniqueIdentifier>
     </Filter>
@@ -160,18 +157,6 @@
     <ClCompile Include="Sound\Sound.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Collider\Collision.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider\CollisionManager.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider\CollisionPrimitive.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider\SphereCollider.cpp">
-      <Filter>Collider</Filter>
-    </ClCompile>
     <ClCompile Include="Player\Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
@@ -252,6 +237,9 @@
     </ClCompile>
     <ClCompile Include="ThirdStage.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,30 +358,6 @@
     <ClInclude Include="ScoreText\ScoreText.h">
       <Filter>2D\ScoreText</Filter>
     </ClInclude>
-    <ClInclude Include="Collider\BaseCollider.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\Collision.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\CollisionInfo.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\CollisionManager.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\CollisionPrimitive.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\CollisionTypes.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\RaycastHit.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\SphereCollider.h">
-      <Filter>Collider</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Spline.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -469,5 +433,6 @@
     <ClInclude Include="ThirdStage.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Collision.h" />
   </ItemGroup>
 </Project>
