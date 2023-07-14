@@ -340,14 +340,6 @@ void GamePlay::Update()
 		}
 	);
 
-	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
-	{
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, player->GetPosition(), 3.0f))
-		{
-			bullet->deathFlag = true;
-		}
-	}
-
 	// ボスの砲台1を一定間隔で発射
 	if (bossTurret_1->isAlive == true)
 	{
@@ -376,7 +368,7 @@ void GamePlay::Update()
 	//オブジェクトパーティクルを更新
 	for (std::unique_ptr<ObjectParticle>& part : particle)
 	{
-		part->Update();
+		//part->Update();
 	}
 
 	particle.remove_if([](std::unique_ptr<ObjectParticle>& bullet)
