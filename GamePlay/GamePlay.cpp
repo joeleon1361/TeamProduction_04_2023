@@ -340,14 +340,6 @@ void GamePlay::Update()
 		}
 	);
 
-	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
-	{
-		if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, player->GetPosition(), 3.0f))
-		{
-			bullet->deathFlag = true;
-		}
-	}
-
 	// ボスの砲台1を一定間隔で発射
 	if (bossTurret_1->isAlive == true)
 	{

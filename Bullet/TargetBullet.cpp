@@ -87,8 +87,8 @@ bool TargetBullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, con
 	rayDirection.y += 3.0f; // Offset for camera being ABOVE the player, not lined up on the Y-axis
 	XMVECTOR RayDirection = DirectX::XMVector3Normalize(XMLoadFloat3(&rayDirection));
 
-	float scaleFactorX = 1.0f;
-	float scaleFactorY = 1.0f;
+	float scaleFactorX = 1.5f;
+	float scaleFactorY = 1.5f;
 
 	// Scale the Y component of the bullet direction vector
 	RayDirection *= DirectX::XMVectorSet(scaleFactorX, scaleFactorY, 1.0f, 1.0f);
