@@ -563,6 +563,7 @@ void GamePlay::Draw()
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	
+	// 前景スプライト描画
 	Reticle->Draw();
 
 	gageBoost->Draw();

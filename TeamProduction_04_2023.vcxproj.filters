@@ -245,13 +245,13 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SecondStage.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="StageSelect.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="ThirdStage.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -460,8 +460,14 @@
     <ClInclude Include="GageUI.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SecondStage.h" />
-    <ClInclude Include="StageSelect.h" />
-    <ClInclude Include="ThirdStage.h" />
+    <ClInclude Include="SecondStage.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelect.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdStage.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
