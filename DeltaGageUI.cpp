@@ -45,7 +45,7 @@ bool DeltaGageUI::Initialize(XMFLOAT2 position, XMFLOAT2 size)
 	return true;
 }
 
-void DeltaGageUI::Update(float nowVal, float maxVal)
+void DeltaGageUI::Update(float nowVal, float maxVal, XMFLOAT2 position)
 {
 	// ゲージに入れる値の割合を計算
 	ratio = nowVal / maxVal;
@@ -53,6 +53,12 @@ void DeltaGageUI::Update(float nowVal, float maxVal)
 
 	// 差分ゲージの計算
 	delatSize = Lerp::LerpFloat2(gageDelta->GetSize(), nowSize, 0.1f);
+
+	// 座標をセット
+	gageBase->SetPosition({ position.x + 10.0f, position.y });
+	gageDelta->SetPosition(position);
+	gageMain->SetPosition(position);
+	gageCover->SetPosition({ position.x + 10.0f, position.y });
 
 	// サイズをセット
 	gageMain->SetSize(nowSize);

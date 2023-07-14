@@ -35,7 +35,7 @@ public: // Ã“Iƒƒ“ƒoŠÖ”
 
 	bool Initialize(XMFLOAT2 position, XMFLOAT2 size);
 
-	void Update(float nowVal, float maxVal);
+	void Update(float nowVal, float maxVal, XMFLOAT2 position);
 
 	void Draw();
 

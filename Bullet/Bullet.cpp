@@ -46,6 +46,8 @@ bool Bullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, const XMF
 
 void Bullet::Update()
 {
+	prevPosition = position;
+
 	ObjObject::Update();
 
 	position.x += velocity.x * speed;

@@ -291,14 +291,14 @@ void GamePlay::Update()
 	ReticlePos.x = ((float)(mousePosition.x) / (float)width) * WinApp::window_width;
 	ReticlePos.y = ((float)(mousePosition.y) / (float)height) * WinApp::window_height;
 
+	// Debug Use Only
 	if (input->TriggerKey(DIK_C))
 	{
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 	
-		//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-	
+	//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
 
 	// コアヒットエフェクト
 	CoreHitEffect();
@@ -326,8 +326,6 @@ void GamePlay::Update()
 		}
 	}
 
-
-
 	// プレイヤーの狙い弾を更新
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
@@ -349,7 +347,6 @@ void GamePlay::Update()
 			bullet->deathFlag = true;
 		}
 	}
-
 
 	// ボスの砲台1を一定間隔で発射
 	if (bossTurret_1->isAlive == true)
@@ -376,7 +373,6 @@ void GamePlay::Update()
 		}
 	);
 
-
 	//オブジェクトパーティクルを更新
 	for (std::unique_ptr<ObjectParticle>& part : particle)
 	{
@@ -395,12 +391,19 @@ void GamePlay::Update()
 	// 全てのコアを破壊した後
 	CoreAllBreak();
 
+	if (input->PushKey(DIK_H))
+	{
+		playerSpeedUIPosition.y += 1.0f;
+	}
+
+	PlayerHitEffect();
+
 	// ブーストゲージ
-	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax());
+	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax(), boostUIPosition);
 	// ボスのHPゲージ
-	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax);
+	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax, bossHpUIPosition);
 	// プレイヤーの速度ゲージ
-	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax());
+	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition);
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -470,7 +473,6 @@ void GamePlay::Draw()
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
 	gameBG->Draw();
-
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -644,6 +646,12 @@ void GamePlay::DrawDebugText()
 		<< std::fixed << std::setprecision(2)
 		<< playerBulletType << ")"; // z
 	debugText.Print(MainCoreLife.str(), 10, 350, 1.0f);
+
+	std::ostringstream PlayerHP;
+	PlayerHP << "Player HP:("
+		<< std::fixed << std::setprecision(2)
+		<< player->HP << ")"; // z
+	debugText.Print(PlayerHP.str(), 10, 560, 1.0f);
 }
 
 // プレイヤー弾発射
@@ -977,6 +985,26 @@ void GamePlay::BossPartsHitEffect()
 		//	}
 		//	bullet->deathFlag = true;
 		//}
+	}
+}
+
+void GamePlay::PlayerHitEffect()
+{
+	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
+	{
+		if (CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, player->GetPosition(), 8.0f))
+		{
+			player->HP -= 1.0f;
+			circleParticle->DefaultParticle(20, 50, player->GetPosition(), 20.0f, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f});
+
+			bullet->deathFlag = true;
+		}
+	}
+
+	if (player->HP <= 0.0f)
+	{
+		//シーン切り替え
+		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 }
 

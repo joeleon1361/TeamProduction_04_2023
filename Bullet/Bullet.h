@@ -44,5 +44,7 @@ private: // メンバ変数
 public:
 	// デスフラグ
 	bool deathFlag = false;
+
+	XMFLOAT3 prevPosition = { 0.0f, 0.0f, 0.0f };
 };
 

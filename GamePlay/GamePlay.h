@@ -140,6 +140,8 @@ public: // メンバ関数
 	// ボスパーツヒットエフェクト
 	void BossPartsHitEffect();
 
+	void PlayerHitEffect();
+
 	// 全てのコアを破壊した後の処理
 	void CoreAllBreak();
 
@@ -232,6 +234,9 @@ private: // メンバ変数
 	
 	// ブーストゲージの座標
 	XMFLOAT2 boostUIPosition = { 1255.0f , 690.0f };
+
+	// プレイヤーの速度ゲージの座標
+	XMFLOAT2 playerSpeedUIPosition = { 1255.0f, 650.0f };
 	
 
 	float chargeNow = 0.0f;

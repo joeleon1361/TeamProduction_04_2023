@@ -144,4 +144,6 @@ public:
 	// ’e”­ŽËŽž‚Ì‘¬“x
 	float shootSpeed = 0.0f;
 	float shootSpeedTimeRate = 0.0f;
+
+	float HP = 10.0f;
 };
