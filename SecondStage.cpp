@@ -1,25 +1,25 @@
-ï»¿#include "GamePlay.h"
+#include "SecondStage.h"
 
 using namespace DirectX;
 extern HWND hwnd;
 
-GamePlay::GamePlay()
+SecondStage::SecondStage()
 {
 }
 
-GamePlay::~GamePlay()
+SecondStage::~SecondStage()
 {
 }
 
-void GamePlay::Initialize()
+void SecondStage::Initialize()
 {
-	// ã‚µã‚¦ãƒ³ãƒ‰åˆæœŸåŒ–
+	// ƒTƒEƒ“ƒh‰Šú‰»
 	sound->Initialize();
 
-	// ã‚«ãƒ¡ãƒ©ç”Ÿæˆ
+	// ƒJƒƒ‰¶¬
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
 
-	// ã‚«ãƒ¡ãƒ©ã‚»ãƒƒãƒˆ
+	// ƒJƒƒ‰ƒZƒbƒg
 	ObjObject::SetCamera(camera);
 	Player::SetCamera(camera);
 	Boss::SetCamera(camera);
@@ -29,13 +29,13 @@ void GamePlay::Initialize()
 		return;
 	}
 
-	//ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ãƒ†ã‚¯ã‚¹ãƒãƒ£
+	//ƒŒƒeƒBƒNƒ‹ƒeƒNƒXƒ`ƒƒ
 	if (!Sprite::LoadTexture(TextureNumber::reticle, L"Resources/Re.png")) {
 		assert(0);
 		return;
 	}
 
-	// ãƒœã‚¹
+	// ƒ{ƒX
 	if (!Sprite::LoadTexture(TextureNumber::game_boss_frame_1, L"Resources/Sprite/GameUI/BossHpUI/game_boss_frame_1.png")) {
 		assert(0);
 		return;
@@ -51,56 +51,55 @@ void GamePlay::Initialize()
 		return;
 	}
 
-	//é»’èƒŒæ™¯
+	//•”wŒi
 	if (!Sprite::LoadTexture(TextureNumber::black, L"Resources/Sprite/TitleUI/Black.png")) {
 		assert(0);
 		return;
 	}
 
-	//é»’èƒŒæ™¯
+	//•”wŒi
 	if (!Sprite::LoadTexture(TextureNumber::rule, L"Resources/Sprite/TitleUI/Rule.png")) {
 		assert(0);
 		return;
 	}
 
-	// ãƒ‡ãƒãƒƒã‚°ãƒ†ã‚­ã‚¹ãƒˆç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
+	// ƒfƒoƒbƒOƒeƒLƒXƒg—pƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
-	// ãƒ‡ãƒãƒƒã‚°ãƒ†ã‚­ã‚¹ãƒˆåˆæœŸåŒ–
+	// ƒfƒoƒbƒOƒeƒLƒXƒg‰Šú‰»
 	debugText.Initialize(0);
 
-	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
-	gameBG = Sprite::Create(TextureNumber::game_bg, { 0.0f,0.0f });
+	secondStageBG = Sprite::Create(TextureNumber::game_bg, { 0.0f,0.0f });
 
 	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
 
 	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 
-	// ãƒ–ãƒ¼ã‚¹ãƒˆã‚²ãƒ¼ã‚¸
+	// ƒu[ƒXƒgƒQ[ƒW
 	gageBoost = GageUI::Create(boostUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.6f, 0.1f, 1.0f });
 	gageBossHp = DeltaGageUI::Create(bossHpUIPosition, { 530.0f, 30.0f });
 	gagePlayerHp = DeltaGageUI::Create(playerHpUIPosition, { 530.0f, 30.0f });
 	gageCharge = GageUI::Create(playerChargeUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
-	// é€Ÿåº¦ã‚²ãƒ¼ã‚¸
+	// ‘¬“xƒQ[ƒW
 	gageSpeed = GageUI::Create(playerSpeedUIPosition, { 530.0f, 30.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
 
-	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
+	Black = Sprite::Create(TextureNumber::black, { 0.0f, 0.0f });
 
 	BlackAlpha = 1.0f;
 	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 
 	Rule = Sprite::Create(TextureNumber::rule, { 0.0f, 0.0f });
 
-	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	// ƒp[ƒeƒBƒNƒ‹
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	// ƒvƒŒƒCƒ„[
 	player = Player::Create();
 
-	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ 
+	// ƒXƒJƒCƒh[ƒ€
 	objSkydome = ObjObject::Create();
 
-	// ãƒœã‚¹
+	// ƒ{ƒX
 	boss = Boss::Create();
 	bossPartsRing = BossParts::Create();
 	bossPartsSphere = BossParts::Create();
@@ -119,7 +118,7 @@ void GamePlay::Initialize()
 	bossPartsCoreStand = BossParts::Create();
 	bossMainCore = BossMainCore::Create();
 
-	// ãƒ¢ãƒ‡ãƒ«ã‚»ãƒƒãƒˆ
+	// ƒ‚ƒfƒ‹ƒZƒbƒg
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
 	objSkydome->SetModel(modelSkydome);
 
@@ -145,27 +144,27 @@ void GamePlay::Initialize()
 	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
 
 
-	// åº§æ¨™ã®ã‚»ãƒƒãƒˆ
+	// À•W‚ÌƒZƒbƒg
 	camera->SetTarget({ 0, 0, 0 });
 	camera->SetEye({ 0, 30, -10 });
 	camera->SetUp({ 0, 1, 0 });
 	camera->SetDistance(20.0f);
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	// ƒvƒŒƒCƒ„[
 	player->SetPosition({ 0.0f, 0.0f, -200.0f });
 	player->SetRotation({ 0.0f, 180.0f, 0.0f });
 	player->SetScale({ 2.0f, 2.0f, 2.0f });
 
-	// ãƒœã‚¹ã®ãƒ™ãƒ¼ã‚¹
+	// ƒ{ƒX‚Ìƒx[ƒX
 	boss->SetPosition({ 0.0f,0.0f,0.0f });
 	boss->SetRotation({ 0.0f, 0.0f, 0.0f });
 	boss->SetScale({ 7.0f, 7.0f, 7.0f });
 
-	// ãƒœã‚¹ã®ãƒªãƒ³ã‚°ãƒ‘ãƒ¼ãƒ„
+	// ƒ{ƒX‚ÌƒŠƒ“ƒOƒp[ƒc
 	bossPartsRing->SetScale({ 4.0f, 4.0f, 4.0f });
 	bossPartsRing->SetParent(boss);
 
-	// ãƒœã‚¹ã®çƒãƒ‘ãƒ¼ãƒ„
+	// ƒ{ƒX‚Ì‹…ƒp[ƒc
 	bossPartsSphere->SetScale({ 4.2f, 4.2f, 4.2f });
 	bossPartsSphere->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 	bossPartsSphere->SetParent(boss);
@@ -176,55 +175,55 @@ void GamePlay::Initialize()
 	bossPartsCoreStand->SetColor({ 0.647f, 0.619f, 0.658f, 1.0f });
 	bossPartsCoreStand->SetParent(boss);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢ãƒœãƒƒã‚¯ã‚¹1
+	// ƒ{ƒX‚ÌƒRƒAƒ{ƒbƒNƒX1
 	bossCoreBox_1->SetPosition({ 0.0f , 0.0f, -1.2f });
 	bossCoreBox_1->SetRotation({ 0.0f, 180.0f, 0.0f });
 	bossCoreBox_1->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_1->SetParent(bossPartsRing);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢ãƒœãƒƒã‚¯ã‚¹2
+	// ƒ{ƒX‚ÌƒRƒAƒ{ƒbƒNƒX2
 	bossCoreBox_2->SetPosition({ 1.2f , 0.0f, 0.0f });
 	bossCoreBox_2->SetRotation({ 0.0f, 90.0f, 0.0f });
 	bossCoreBox_2->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_2->SetParent(bossPartsRing);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢ãƒœãƒƒã‚¯ã‚¹3
+	// ƒ{ƒX‚ÌƒRƒAƒ{ƒbƒNƒX3
 	bossCoreBox_3->SetPosition({ 0.0f , 0.0f, 1.2f });
 	bossCoreBox_3->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_3->SetParent(bossPartsRing);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢ãƒœãƒƒã‚¯ã‚¹4
+	// ƒ{ƒX‚ÌƒRƒAƒ{ƒbƒNƒX4
 	bossCoreBox_4->SetPosition({ -1.2f , 0.0f, 0.0f });
 	bossCoreBox_4->SetRotation({ 0.0f, 270.0f, 0.0f });
 	bossCoreBox_4->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossCoreBox_4->SetParent(bossPartsRing);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢1
+	// ƒ{ƒX‚ÌƒRƒA1
 	bossCore_1->SetPosition({ 0.0f , 0.0f, 1.0f });
 	bossCore_1->SetScale({ 0.7f, 0.7f, 0.7f });
 	bossCore_1->SetParent(bossCoreBox_1);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢2
+	// ƒ{ƒX‚ÌƒRƒA2
 	bossCore_2->SetPosition({ 0.0f , 0.0f, 1.0f });
 	bossCore_2->SetScale({ 0.7f, 0.7f, 0.7f });
 	bossCore_2->SetParent(bossCoreBox_2);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢3
+	// ƒ{ƒX‚ÌƒRƒA3
 	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.0f });
 	bossCore_3->SetScale({ 0.7f, 0.7f, 0.7f });
 	bossCore_3->SetParent(bossCoreBox_3);
 
-	// ãƒœã‚¹ã®ã‚³ã‚¢4
+	// ƒ{ƒX‚ÌƒRƒA4
 	bossCore_4->SetPosition({ 0.0f , 0.0f, 1.0f });
 	bossCore_4->SetScale({ 0.7f, 0.7f, 0.7f });
 	bossCore_4->SetParent(bossCoreBox_4);
 
-	// ãƒœã‚¹ã®ãƒ¡ã‚¤ãƒ³ã‚³ã‚¢
-	bossMainCore->SetPosition({0.0f, 0.0f, 0.0f});
+	// ƒ{ƒX‚ÌƒƒCƒ“ƒRƒA
+	bossMainCore->SetPosition({ 0.0f, 0.0f, 0.0f });
 	bossMainCore->SetScale({ 0.75f, 0.75f, 0.75f });
 	bossMainCore->SetParent(bossPartsCoreStand);
 
-	// ãƒœã‚¹ã®ç ²å°1
+	// ƒ{ƒX‚Ì–C‘ä1
 	bossTurretStand_1->SetPosition({ 0.0f, 0.9f, 0.0f });
 	bossTurretStand_1->SetScale({ 0.3f, 0.3f, 0.3f });
 	bossTurretStand_1->SetParent({ bossPartsSphere });
@@ -233,7 +232,7 @@ void GamePlay::Initialize()
 	bossTurret_1->SetScale({ 1.0f, 1.0f, 1.0f });
 	bossTurret_1->SetParent({ bossTurretStand_1 });
 
-	// ãƒœã‚¹ã®ç ²å°2
+	// ƒ{ƒX‚Ì–C‘ä2
 	/*bossTurretStand_2->SetPosition({ 0.0f, -0.9f, 0.0f });
 	bossTurretStand_2->SetRotation({ 0.0f, 0.0f, 180.0f });
 	bossTurretStand_2->SetScale({ 0.3f, 0.3f, 0.3f });
@@ -255,50 +254,50 @@ void GamePlay::Initialize()
 	ShowCursor(false);
 }
 
-void GamePlay::Finalize()
+void SecondStage::Finalize()
 {
 }
 
-void GamePlay::Update()
+void SecondStage::Update()
 {
 	BlackAlpha -= 0.02f;
 	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 
-	//RECTæ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	//RECT\‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^
 	RECT rect;
 
-	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å¤–å´ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
+	//ƒEƒBƒ“ƒhƒE‚ÌŠO‘¤‚ÌƒTƒCƒY‚ğæ“¾
 	GetClientRect(hwnd, &rect);
 
 	int width = rect.right - rect.left;
 	int height = rect.bottom - rect.top;
 
-	//ãƒã‚¦ã‚¹ã®(ã‚¹ã‚¯ãƒªãƒ¼ãƒ³)åº§æ¨™ã‚’å–å¾—ã™ã‚‹
+	//ƒ}ƒEƒX‚Ì(ƒXƒNƒŠ[ƒ“)À•W‚ğæ“¾‚·‚é
 	GetCursorPos(&mousePosition);
 
-	//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢åº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//ƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒAÀ•W‚É•ÏŠ·‚·‚é
 	ScreenToClient(hwnd, &mousePosition);
 
-	//ãƒã‚¦ã‚¹åº§æ¨™ã‚’2Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã«ä»£å…¥
+	//ƒ}ƒEƒXÀ•W‚ğ2DƒŒƒeƒBƒNƒ‹‚ÌƒXƒvƒ‰ƒCƒg‚É‘ã“ü
 	ReticlePos.x = ((float)(mousePosition.x) / (float)width) * WinApp::window_width;
 	ReticlePos.y = ((float)(mousePosition.y) / (float)height) * WinApp::window_height;
 
 	// Debug Use Only
 	if (input->TriggerKey(DIK_C))
 	{
-		//ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆ
+		//ƒV[ƒ“Ø‚è‘Ö‚¦
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
-	
+
 	//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
 
-	// ã‚³ã‚¢ãƒ’ãƒƒãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	// ƒRƒAƒqƒbƒgƒGƒtƒFƒNƒg
 	CoreHitEffect();
 
-	// ãƒœã‚¹ãƒ‘ãƒ¼ãƒ„ãƒ’ãƒƒãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	// ƒ{ƒXƒp[ƒcƒqƒbƒgƒGƒtƒFƒNƒg
 	BossPartsHitEffect();
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çƒç™ºå°„å‡¦ç†
+	// ƒvƒŒƒCƒ„[‚Ì‹…”­Ëˆ—
 	if (playerBulletType == Normal)
 	{
 		Shoot();
@@ -318,21 +317,21 @@ void GamePlay::Update()
 		}
 	}
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç‹™ã„å¼¾ã‚’æ›´æ–°
+	// ƒvƒŒƒCƒ„[‚Ì‘_‚¢’e‚ğXV
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		circleParticle->BulletParticle(5, 10, bullet->GetPosition(), { 0.1f,1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 1.0f, 1.0f }, 5.0f);
 		bullet->Update();
 	}
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç‹™ã„å¼¾ã‚’æ¶ˆå»
+	// ƒvƒŒƒCƒ„[‚Ì‘_‚¢’e‚ğÁ‹
 	playerBullets.remove_if([](std::unique_ptr<TargetBullet>& bullet)
 		{
 			return bullet->GetDeathFlag();
 		}
 	);
 
-	// ãƒœã‚¹ã®ç ²å°1ã‚’ä¸€å®šé–“éš”ã§ç™ºå°„
+	// ƒ{ƒX‚Ì–C‘ä1‚ğˆê’èŠÔŠu‚Å”­Ë
 	if (bossTurret_1->isAlive == true)
 	{
 		bossTurret_1->shotTimer--;
@@ -343,24 +342,24 @@ void GamePlay::Update()
 		}
 	}
 
-	// ãƒœã‚¹ã®ç‹™ã„å¼¾ã‚’æ›´æ–°
+	// ƒ{ƒX‚Ì‘_‚¢’e‚ğXV
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{
 		circleParticle->BulletParticle(5, 10, bullet->GetPosition(), { 1.0f,0.1f, 0.1f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f }, 7.0f);
 		bullet->Update();
 	}
 
-	// ãƒœã‚¹ã®ç‹™ã„å¼¾ã‚’æ¶ˆå»
+	// ƒ{ƒX‚Ì‘_‚¢’e‚ğÁ‹
 	bossTargetBullets.remove_if([](std::unique_ptr<Bullet>& bullet)
 		{
 			return bullet->GetDeathFlag();
 		}
 	);
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’æ›´æ–°
+	//ƒIƒuƒWƒFƒNƒgƒp[ƒeƒBƒNƒ‹‚ğXV
 	for (std::unique_ptr<ObjectParticle>& part : particle)
 	{
-		//part->Update();
+		part->Update();
 	}
 
 	particle.remove_if([](std::unique_ptr<ObjectParticle>& bullet)
@@ -369,10 +368,10 @@ void GamePlay::Update()
 		}
 	);
 
-	// ã‚³ã‚¢æ’ƒç ´ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	// ƒRƒAŒ‚”jƒGƒtƒFƒNƒg
 	CoreBreakEffect();
 
-	// å…¨ã¦ã®ã‚³ã‚¢ã‚’ç ´å£Šã—ãŸå¾Œ
+	// ‘S‚Ä‚ÌƒRƒA‚ğ”j‰ó‚µ‚½Œã
 	CoreAllBreak();
 
 	if (input->PushKey(DIK_H))
@@ -382,25 +381,25 @@ void GamePlay::Update()
 
 	PlayerHitEffect();
 
-	// ãƒ–ãƒ¼ã‚¹ãƒˆã‚²ãƒ¼ã‚¸
+	// ƒu[ƒXƒgƒQ[ƒW
 	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax(), boostUIPosition, { 0.6f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
-	// ãƒœã‚¹ã®HPã‚²ãƒ¼ã‚¸
+	// ƒ{ƒX‚ÌHPƒQ[ƒW
 	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax, bossHpUIPosition);
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®é€Ÿåº¦ã‚²ãƒ¼ã‚¸
+	// ƒvƒŒƒCƒ„[‚Ì‘¬“xƒQ[ƒW
 	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition, { 0.1f, 0.6f, 0.6f, 1.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
 
 	gagePlayerHp->Update(player->HP, player->HPMAX, playerHpUIPosition);
 
-	gageCharge->Update(chargeNow, chargeMax,playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
+	gageCharge->Update(chargeNow, chargeMax, playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
-	// ã‚«ãƒ¡ãƒ©ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚»ãƒƒãƒˆ
+	// ƒJƒƒ‰ƒ^[ƒQƒbƒg‚ÌƒZƒbƒg
 	// camera->SetTarget(boss->GetPosition());
 	// camera->SetDistance(sqrtf(pow(boss->GetPosition().x - player->GetPosition().x, 2) + pow(boss->GetPosition().y - player->GetPosition().y, 2) + pow(boss->GetPosition().z - player->GetPosition().z, 2)) + 48.0f);
 
-	// ã‚«ãƒ¡ãƒ©ã®æ›´æ–°
+	// ƒJƒƒ‰‚ÌXV
 	camera->Update(player->GetPosition(), boss->GetPosition());
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ›´æ–°
+	// ƒvƒŒƒCƒ„[‚ÌXV
 	player->Update();
 	boss->Update();
 	bossPartsRing->Update();
@@ -415,7 +414,7 @@ void GamePlay::Update()
 	bossCore_4->Update();
 	bossTurret_1->Update(player->GetPosition());
 	//bossTurret_2->Update();
-	bossTurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, bossTurret_1->GetExternRotationY(), bossTurretStand_1->GetRotation().z});
+	bossTurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, bossTurret_1->GetExternRotationY(), bossTurretStand_1->GetRotation().z });
 	bossTurretStand_1->Update();
 	//bossTurretStand_2->Update();
 	bossPartsCoreStand->Update();
@@ -437,39 +436,39 @@ void GamePlay::Update()
 	{
 		circleParticle->BoostParticle(5, 50, player->GetPosition(), 1.0f, 0.0f, player->GetBoostPartColor(), player->GetBoostPartColor());
 	}
-	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ›´æ–°
+	// ƒp[ƒeƒBƒNƒ‹XV
 	circleParticle->Update();
 
-	// HPãŒ0ã«ãªã£ãŸã‚‰æ’ƒç ´
+	// HP‚ª0‚É‚È‚Á‚½‚çŒ‚”j
 	if (bossMainCore->life <= 0.0f)
 	{
-		//ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆ
+		//ƒV[ƒ“Ø‚è‘Ö‚¦
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 }
 
-void GamePlay::Draw()
+void SecondStage::Draw()
 {
-	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—
+	// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìæ“¾
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
-#pragma region èƒŒæ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
-	// èƒŒæ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‰å‡¦ç†
+#pragma region ”wŒiƒXƒvƒ‰ƒCƒg•`‰æ
+	// ”wŒiƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
 	Sprite::PreDraw(cmdList);
-	// èƒŒæ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
-	gameBG->Draw();
+	// ”wŒiƒXƒvƒ‰ƒCƒg•`‰æ
+	secondStageBG->Draw();
 
-	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å¾Œå‡¦ç†
+	// ƒXƒvƒ‰ƒCƒg•`‰æŒãˆ—
 	Sprite::PostDraw();
-	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
+	// [“xƒoƒbƒtƒ@ƒNƒŠƒA
 	dxCommon->ClearDepthBuffer();
 #pragma endregion
 
-#pragma region 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
-	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å‰å‡¦ç†
+#pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
+	// 3DƒIƒuƒWƒFƒNƒg•`‰æ‘Oˆ—
 	ObjObject::PreDraw(cmdList);
 
-	// 3Dã‚ªãƒ–ã‚¯ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
+	// 3DƒIƒuƒNƒWƒFƒNƒg‚Ì•`‰æ
 	player->Draw();
 	boss->Draw();
 
@@ -502,7 +501,7 @@ void GamePlay::Draw()
 
 	bossMainCore->Draw();
 
-#pragma region éƒ¨ä½ç ´å£Šå‡¦ç†ã‚’ä¸€æ™‚ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+#pragma region •”ˆÊ”j‰óˆ—‚ğˆêƒRƒƒ“ƒgƒAƒEƒg
 	/*if (bossCore_1->isAlive || bossCore_2->isAlive || bossCore_3->isAlive || bossCore_4->isAlive)
 	{
 		bossPartsRing->Draw();
@@ -540,18 +539,18 @@ void GamePlay::Draw()
 
 	objSkydome->Draw();
 
-	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æç”»
+	// ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ
 	circleParticle->Draw(cmdList);
 
-	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å¾Œå‡¦ç†
+	// 3DƒIƒuƒWƒFƒNƒg•`‰æŒãˆ—
 	ObjObject::PostDraw();
 #pragma endregion
 
-#pragma region å‰æ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
-	// å‰æ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‰å‡¦ç†
+#pragma region ‘OŒiƒXƒvƒ‰ƒCƒg•`‰æ
+	// ‘OŒiƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
 	Sprite::PreDraw(cmdList);
-	
-	// å‰æ™¯ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
+
+	// ‘OŒiƒXƒvƒ‰ƒCƒg•`‰æ
 	Reticle->Draw();
 
 	gageBoost->Draw();
@@ -565,84 +564,35 @@ void GamePlay::Draw()
 	//Rule->Draw();
 	Black->Draw();
 
-	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å¾Œå‡¦ç†
+	// ƒXƒvƒ‰ƒCƒg•`‰æŒãˆ—
 	Sprite::PostDraw();
 #pragma endregion
 }
 
-// ãƒã‚¦ã‚¹ã®å‡¦ç†
-void GamePlay::GetMouse()
+// ƒ}ƒEƒX‚Ìˆ—
+void SecondStage::GetMouse()
 {
-	//ãƒã‚¦ã‚¹ã®(ã‚¹ã‚¯ãƒªãƒ¼ãƒ³)åº§æ¨™ã‚’å–å¾—ã™ã‚‹
+	//ƒ}ƒEƒX‚Ì(ƒXƒNƒŠ[ƒ“)À•W‚ğæ“¾‚·‚é
 	GetCursorPos(&mousePosition);
 
-	//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢åº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//ƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒAÀ•W‚É•ÏŠ·‚·‚é
 	HWND hwnd = WinApp::GetInst()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
 
-	//ãƒã‚¦ã‚¹åº§æ¨™ã‚’2Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã«ä»£å…¥
+	//ƒ}ƒEƒXÀ•W‚ğ2DƒŒƒeƒBƒNƒ‹‚ÌƒXƒvƒ‰ƒCƒg‚É‘ã“ü
 	ReticlePos.x = (float)mousePosition.x;
 	ReticlePos.y = (float)mousePosition.y;
 }
 
-// ãƒ‡ãƒãƒƒã‚¯ãƒ†ã‚­ã‚¹ãƒˆ
-void GamePlay::DrawDebugText()
+void SecondStage::DrawDebugText()
 {
-	//ãƒã‚¦ã‚¹ã®åº§æ¨™
-	std::ostringstream MousePosition;
-	MousePosition << "MousePosition("
-		<< std::fixed << std::setprecision(5)
-		<< mousePosition.x << ","
-		<< mousePosition.y << ")";
-	debugText.Print(MousePosition.str(), 0, 0, 1.0f);
-
-	//ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®åº§æ¨™
-	std::ostringstream ReticlePosition;
-	ReticlePosition << "ReticlePosition("
-		<< std::fixed << std::setprecision(5)
-		<< ReticlePos.x << ","
-		<< ReticlePos.y << ")";
-	debugText.Print(ReticlePosition.str(), 0, 60, 1.0f);
-
-	std::ostringstream CoreLife_1;
-	CoreLife_1 << "CoreLife_1:("
-		<< std::fixed << std::setprecision(2)
-		<< bossCore_1->life << ")"; // z
-	debugText.Print(CoreLife_1.str(), 10, 270, 1.0f);
-
-	std::ostringstream CoreLife_2;
-	CoreLife_2 << "CoreLife_2:("
-		<< std::fixed << std::setprecision(2)
-		<< bossCore_2->life << ")"; // z
-	debugText.Print(CoreLife_2.str(), 10, 290, 1.0f);
-
-	std::ostringstream CoreLife_3;
-	CoreLife_3 << "CoreLife_3:("
-		<< std::fixed << std::setprecision(2)
-		<< bossCore_3->life << ")"; // z
-	debugText.Print(CoreLife_3.str(), 10, 310, 1.0f);
-
-	std::ostringstream CoreLife_4;
-	CoreLife_4 << "CoreLife_4:("
-		<< std::fixed << std::setprecision(2)
-		<< bossCore_4->life << ")"; // z
-	debugText.Print(CoreLife_4.str(), 10, 330, 1.0f);
-
-	std::ostringstream MainCoreLife;
-	MainCoreLife << "MainCoreLife:("
-		<< std::fixed << std::setprecision(2)
-		<< playerBulletType << ")"; // z
-	debugText.Print(MainCoreLife.str(), 10, 350, 1.0f);
-
-	std::ostringstream PlayerHP;
-	PlayerHP << "Player HP:("
-		<< std::fixed << std::setprecision(2)
-		<< player->HP << ")"; // z
-	debugText.Print(PlayerHP.str(), 10, 560, 1.0f);
+	std::ostringstream SecondStage;
+	SecondStage << "SecondStage";
+	debugText.Print(SecondStage.str(), 10, 10, 2.0f);
 }
 
-// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å¼¾ç™ºå°„
-void GamePlay::Shoot()
+// ƒvƒŒƒCƒ„[’e”­Ë
+void SecondStage::Shoot()
 {
 	shotRate -= 0.1f;
 
@@ -687,13 +637,13 @@ void GamePlay::Shoot()
 	player->shootSpeedTimeRate = min(player->shootSpeedTimeRate, 1.0f);
 }
 
-void GamePlay::chargeShoot()
+void SecondStage::chargeShoot()
 {
 	chargeRatio = chargeNow / chargeMax;
 
 	chargeSize = Easing::InOutQuadFloat(0.0, 10.0, chargeRatio);
 
-	circleParticle->BulletParticle(5, 2, player->GetPosition(), {0.1f,1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 1.0f, 1.0f}, chargeSize);
+	circleParticle->BulletParticle(5, 2, player->GetPosition(), { 0.1f,1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 1.0f, 1.0f }, chargeSize);
 
 	player->shootSpeed = Lerp::LerpFloat(player->GetShootSpeedMin(), player->GetChargeShootSpeedMax(), player->shootSpeedTimeRate);
 
@@ -701,7 +651,7 @@ void GamePlay::chargeShoot()
 	{
 		if (chargeNow < chargeMax)
 		{
-			if ( Input::GetInstance()->PushMouseLeft())
+			if (Input::GetInstance()->PushMouseLeft())
 			{
 				chargeNow++;
 				player->shootSpeedTimeRate += 0.05f;
@@ -744,7 +694,7 @@ void GamePlay::chargeShoot()
 	chargeNow = min(chargeNow, chargeMax);
 }
 
-void GamePlay::PlayerMovementBoundaryChecking()
+void SecondStage::PlayerMovementBoundaryChecking()
 {
 	if (player->CheckCollisionWithBoss(boss->GetPosition(), 80.0f))
 	{
@@ -808,7 +758,7 @@ void GamePlay::PlayerMovementBoundaryChecking()
 	}
 }
 
-void GamePlay::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed)
+void SecondStage::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed)
 {
 	std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
 	newBullet = Bullet::Create(modelBullet, startPosition, { 1.0f, 1.0f, 1.0f }, endPosition, bulletSpeed);
@@ -816,11 +766,11 @@ void GamePlay::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, flo
 	bossTargetBullets.push_back(std::move(newBullet));
 }
 
-// ã‚³ã‚¢æ’ƒç ´ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
-void GamePlay::CoreBreakEffect()
+// ƒRƒAŒ‚”jƒGƒtƒFƒNƒg
+void SecondStage::CoreBreakEffect()
 {
-	//ãƒ©ã‚¤ãƒ•ãŒ0ã«ãªã£ãŸæ™‚ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‹ã‚‰æ’ƒç ´ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’ç™ºç”Ÿ
-	// ã‚³ã‚¢1
+	//ƒ‰ƒCƒt‚ª0‚É‚È‚Á‚½‚ÉƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚©‚çŒ‚”jƒp[ƒeƒBƒNƒ‹‚ğ”­¶
+	// ƒRƒA1
 	if (bossCore_1->GetAliveFlag() == false)
 	{
 		if (bossCore_1->GetDestroyPartTime() > 0)
@@ -829,7 +779,7 @@ void GamePlay::CoreBreakEffect()
 		}
 	}
 
-	// ã‚³ã‚¢2
+	// ƒRƒA2
 	if (bossCore_2->GetAliveFlag() == false)
 	{
 		if (bossCore_2->GetDestroyPartTime() > 0)
@@ -838,7 +788,7 @@ void GamePlay::CoreBreakEffect()
 		}
 	}
 
-	// ã‚³ã‚¢3
+	// ƒRƒA3
 	if (bossCore_3->GetAliveFlag() == false)
 	{
 		if (bossCore_3->GetDestroyPartTime() > 0)
@@ -847,7 +797,7 @@ void GamePlay::CoreBreakEffect()
 		}
 	}
 
-	// ã‚³ã‚¢4
+	// ƒRƒA4
 	if (bossCore_4->GetAliveFlag() == false)
 	{
 		if (bossCore_4->GetDestroyPartTime() > 0)
@@ -857,12 +807,12 @@ void GamePlay::CoreBreakEffect()
 	}
 }
 
-// ã‚³ã‚¢ãƒ’ãƒƒãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
-void GamePlay::CoreHitEffect()
+// ƒRƒAƒqƒbƒgƒGƒtƒFƒNƒg
+void SecondStage::CoreHitEffect()
 {
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
-		// ã‚³ã‚¢1ã®ç–‘ä¼¼ãƒ’ãƒƒãƒˆå‡¦ç†
+		// ƒRƒA1‚Ì‹^—ƒqƒbƒgˆ—
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
@@ -877,7 +827,7 @@ void GamePlay::CoreHitEffect()
 			bullet->deathFlag = true;
 		}
 
-		// ã‚³ã‚¢2ã®ç–‘ä¼¼ãƒ’ãƒƒãƒˆå‡¦ç†
+		// ƒRƒA2‚Ì‹^—ƒqƒbƒgˆ—
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
@@ -892,7 +842,7 @@ void GamePlay::CoreHitEffect()
 			bullet->deathFlag = true;
 		}
 
-		// ã‚³ã‚¢3ã®ç–‘ä¼¼ãƒ’ãƒƒãƒˆå‡¦ç†
+		// ƒRƒA3‚Ì‹^—ƒqƒbƒgˆ—
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
@@ -907,7 +857,7 @@ void GamePlay::CoreHitEffect()
 			bullet->deathFlag = true;
 		}
 
-		// ã‚³ã‚¢4ã®ç–‘ä¼¼ãƒ’ãƒƒãƒˆå‡¦ç†
+		// ƒRƒA4‚Ì‹^—ƒqƒbƒgˆ—
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 24.0f))
 		{
 			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
@@ -922,7 +872,7 @@ void GamePlay::CoreHitEffect()
 			bullet->deathFlag = true;
 		}
 
-		// ãƒ¡ã‚¤ãƒ³ã‚³ã‚¢ã®ç–‘ä¼¼ãƒ’ãƒƒãƒˆå‡¦ç†
+		// ƒƒCƒ“ƒRƒA‚Ì‹^—ƒqƒbƒgˆ—
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossMainCore->GetWorldPosition(), 24.0f))
 		{
 			if (bossMainCore->GetLife() <= 1 && bossMainCore->GetLife() >= 0)
@@ -936,7 +886,7 @@ void GamePlay::CoreHitEffect()
 			{
 				bossMainCore->life--;
 			}
-			
+
 			bossMainCore->colorTimeRate = 0.0f;
 			bossMainCore->colorTimeRate2 = 0.0f;
 			bullet->deathFlag = true;
@@ -944,15 +894,15 @@ void GamePlay::CoreHitEffect()
 	}
 }
 
-// ãƒœã‚¹ãƒ‘ãƒ¼ãƒ„ãƒ’ãƒƒãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
-void GamePlay::BossPartsHitEffect()
+// ƒ{ƒXƒp[ƒcƒqƒbƒgƒGƒtƒFƒNƒg
+void SecondStage::BossPartsHitEffect()
 {
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		// Turret 1 collision detection
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossTurret_1->GetWorldPosition(), 24.0f))
 		{
-			// å¿…è¦ãªã¨ãã¯ã„ã¤ã§ã‚‚ã€æ¬¡ã®3è¡Œã‚’è‡ªç”±ã«å¾©å…ƒã—ã¦ãã ã•ã„ã€‚
+			// •K—v‚È‚Æ‚«‚Í‚¢‚Â‚Å‚àAŸ‚Ì3s‚ğ©—R‚É•œŒ³‚µ‚Ä‚­‚¾‚³‚¢B
 			if (bossTurret_1->isAlive == true)
 			{
 				bossTurret_1->colorTimeRate = 0.0f;
@@ -964,7 +914,7 @@ void GamePlay::BossPartsHitEffect()
 		// Turret 2 collision detection
 		//if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 24.0f))
 		//{
-		//	// å¿…è¦ãªã¨ãã¯ã„ã¤ã§ã‚‚ã€æ¬¡ã®3è¡Œã‚’è‡ªç”±ã«å¾©å…ƒã—ã¦ãã ã•ã„ã€‚
+		//	// •K—v‚È‚Æ‚«‚Í‚¢‚Â‚Å‚àAŸ‚Ì3s‚ğ©—R‚É•œŒ³‚µ‚Ä‚­‚¾‚³‚¢B
 		//	if (bossTurret_2->isAlive == true)
 		//	{
 		//		bossTurret_2->colorTimeRate = 0.0f;
@@ -975,14 +925,14 @@ void GamePlay::BossPartsHitEffect()
 	}
 }
 
-void GamePlay::PlayerHitEffect()
+void SecondStage::PlayerHitEffect()
 {
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, player->GetPosition(), 8.0f))
 		{
 			player->HP -= 1.0f;
-			circleParticle->DefaultParticle(20, 50, player->GetPosition(), 20.0f, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f});
+			circleParticle->DefaultParticle(20, 50, player->GetPosition(), 20.0f, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 			bullet->deathFlag = true;
 		}
@@ -990,12 +940,12 @@ void GamePlay::PlayerHitEffect()
 
 	if (player->HP <= 0.0f)
 	{
-		//ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆ
+		//ƒV[ƒ“Ø‚è‘Ö‚¦
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 }
 
-void GamePlay::CoreAllBreak()
+void SecondStage::CoreAllBreak()
 {
 	if (bossMainCore->isBreak == true)
 	{

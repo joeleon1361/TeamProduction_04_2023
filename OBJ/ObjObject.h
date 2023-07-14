@@ -9,7 +9,6 @@
 
 #include "ObjModel.h"
 #include "Camera.h"
-#include "Collider/CollisionInfo.h"
 
 class BaseCollider;
 
@@ -139,12 +138,6 @@ public: // メンバ関数
 	void SetParent(ObjObject* parent) { this->parent = parent; }
 
 	void SetBillboard(bool isBillboard) { this->isBillboard = isBillboard; }
-
-	// コライダーのセット
-	void SetCollider(BaseCollider* collider);
-
-	// 衝突時コールバック関数
-	virtual void OnCollision(const CollisionInfo& info){}
 
 protected: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ

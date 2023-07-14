@@ -24,7 +24,7 @@ public: // メンバ関数
 	~Camera() = default;
 
 	// 毎フレーム更新
-	void Update();
+	void Update(XMFLOAT3 new_position, XMFLOAT3 direction_position);
 
 	// ビュー行列を更新
 	void UpdateViewMatrix();
@@ -124,9 +124,6 @@ protected: // メンバ変数
 
 public:
 	// ビュー行列ダーティフラグ
-	XMFLOAT3 bossPos = { 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 playerPos = { 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 playerRot = { 0.0f, 0.0f, 0.0f };
 	float phi;
 	float theta;
 	float debugDot = 0.0f;

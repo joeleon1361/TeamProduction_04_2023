@@ -1,14 +1,14 @@
-#include "Result.h"
+#include "StageSelect.h"
 
-Result::Result()
+StageSelect::StageSelect()
 {
 }
 
-Result::~Result()
+StageSelect::~StageSelect()
 {
 }
 
-void Result::Initialize()
+void StageSelect::Initialize()
 {
 	// サウンド初期化
 	sound->Initialize();
@@ -24,30 +24,46 @@ void Result::Initialize()
 		return;
 	}
 
-	resultBG = Sprite::Create(TextureNumber::result_bg, { 0.0f,0.0f });
+	// デバッグテキスト用テクスチャ読み込み
+	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
+	// デバッグテキスト初期化
+	debugText.Initialize(0);
+
+	stageSelectBG = Sprite::Create(TextureNumber::result_bg, { 0.0f,0.0f });
 
 	camera->SetTarget({ 0, 0, 0 });
 	camera->SetEye({ 0, 0, 10 });
 	camera->SetUp({ 0, 1, 0 });
 }
 
-void Result::Finalize()
+void StageSelect::Finalize()
 {
-	safe_delete(resultBG);
 }
 
-void Result::Update()
+void StageSelect::Update()
 {
-	if (input->TriggerKey(DIK_SPACE))
+	if (input->TriggerKey(DIK_1))
 	{
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		SceneManager::GetInstance()->ChangeScene("GAMEPLAY");
+	}
+	else if (input->TriggerKey(DIK_2))
+	{
+		//シーン切り替え
+		SceneManager::GetInstance()->ChangeScene("SECONDSTAGE");
+	}
+	else if (input->TriggerKey(DIK_3))
+	{
+		//シーン切り替え
+		SceneManager::GetInstance()->ChangeScene("THIRDSTAGE");
 	}
 
 	camera->Update({ 0, 0, 10 }, { 0, 0, 0 });
+
+	DrawDebugText();
 }
 
-void Result::Draw()
+void StageSelect::Draw()
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
@@ -56,7 +72,6 @@ void Result::Draw()
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
-	resultBG->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -79,8 +94,16 @@ void Result::Draw()
 	Sprite::PreDraw(cmdList);
 
 	// 前景スプライト描画
+	debugText.DrawAll(cmdList);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
 #pragma endregion
+}
+
+void StageSelect::DrawDebugText()
+{
+	std::ostringstream StageSelect;
+	StageSelect << "StageSelect 1:FirstStage 2:SecondStage 3:ThirdStage";
+	debugText.Print(StageSelect.str(), 10, 10, 2.0f);
 }

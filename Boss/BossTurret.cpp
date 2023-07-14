@@ -2,9 +2,6 @@
 
 using namespace DirectX;
 
-extern XMFLOAT3 externPlayerPos;
-extern float externRotationY = 0.0f;
-
 BossTurret* BossTurret::Create(ObjModel* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
@@ -50,7 +47,7 @@ bool BossTurret::Initialize()
 	return true;
 }
 
-void BossTurret::Update()
+void BossTurret::Update(XMFLOAT3 target_position)
 {
 	ObjObject::Update();
 
@@ -85,9 +82,9 @@ void BossTurret::Update()
 	}
 	else
 	{
-		float axisX = (externPlayerPos.x - position.x);
-		float axisY = (externPlayerPos.y - position.y);
-		float axisZ = (externPlayerPos.z - position.z);
+		float axisX = (target_position.x - position.x);
+		float axisY = (target_position.y - position.y);
+		float axisZ = (target_position.z - position.z);
 		float hypotenuse = sqrt(pow(axisX, 2) + pow(axisY, 2) + pow(axisZ, 2));
 		float radians = atan2(axisZ, axisX);
 		float degrees = XMConvertToDegrees(radians);

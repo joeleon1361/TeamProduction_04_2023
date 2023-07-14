@@ -165,10 +165,7 @@
     <ClCompile Include="Bullet\TargetBullet.cpp" />
     <ClCompile Include="Bullet\Bullet.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
-    <ClCompile Include="Collider\Collision.cpp" />
-    <ClCompile Include="Collider\CollisionManager.cpp" />
-    <ClCompile Include="Collider\CollisionPrimitive.cpp" />
-    <ClCompile Include="Collider\SphereCollider.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DebugText\DebugText.cpp" />
     <ClCompile Include="DeltaGageUI.cpp" />
     <ClCompile Include="GageUI.cpp" />
@@ -197,9 +194,12 @@
     <ClCompile Include="GameBase\SceneFactory.cpp" />
     <ClCompile Include="GameBase\SceneManager.cpp" />
     <ClCompile Include="ScoreText\ScoreText.cpp" />
+    <ClCompile Include="SecondStage.cpp" />
     <ClCompile Include="Sound\Sound.cpp" />
     <ClCompile Include="Math\Spline.cpp" />
     <ClCompile Include="Sprite\Sprite.cpp" />
+    <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="ThirdStage.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Title\Title.cpp" />
   </ItemGroup>
@@ -302,6 +302,7 @@
     <ClInclude Include="Boss\BossTurret.h" />
     <ClInclude Include="Boss\BossCore.h" />
     <ClInclude Include="Boss\BossParts.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="DeltaGageUI.h" />
     <ClInclude Include="GageUI.h" />
     <ClInclude Include="GameBase\AbstractSceneFactory.h" />
@@ -310,14 +311,6 @@
     <ClInclude Include="Bullet\TargetBullet.h" />
     <ClInclude Include="Bullet\Bullet.h" />
     <ClInclude Include="Camera\Camera.h" />
-    <ClInclude Include="Collider\BaseCollider.h" />
-    <ClInclude Include="Collider\Collision.h" />
-    <ClInclude Include="Collider\CollisionInfo.h" />
-    <ClInclude Include="Collider\CollisionManager.h" />
-    <ClInclude Include="Collider\CollisionPrimitive.h" />
-    <ClInclude Include="Collider\CollisionTypes.h" />
-    <ClInclude Include="Collider\RaycastHit.h" />
-    <ClInclude Include="Collider\SphereCollider.h" />
     <ClInclude Include="DebugText\DebugText.h" />
     <ClInclude Include="Math\Easing.h" />
     <ClInclude Include="EngineBase\DirectXCommon.h" />
@@ -344,9 +337,12 @@
     <ClInclude Include="GameBase\SceneFactory.h" />
     <ClInclude Include="GameBase\SceneManager.h" />
     <ClInclude Include="ScoreText\ScoreText.h" />
+    <ClInclude Include="SecondStage.h" />
     <ClInclude Include="Sound\Sound.h" />
     <ClInclude Include="Math\Spline.h" />
     <ClInclude Include="Sprite\Sprite.h" />
+    <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="ThirdStage.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Title\Title.h" />
   </ItemGroup>

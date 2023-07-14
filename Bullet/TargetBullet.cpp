@@ -3,12 +3,8 @@
 extern HWND hwnd;
 
 using namespace DirectX;
-extern XMFLOAT2 ReticlePos;
-extern XMFLOAT3 PlayerPos;
 
-extern XMFLOAT3 velocity222;
-
-std::unique_ptr<TargetBullet> TargetBullet::Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed, XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up)
+std::unique_ptr<TargetBullet> TargetBullet::Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed, XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up, XMFLOAT3 near_point)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	TargetBullet* instance = new TargetBullet();
@@ -17,7 +13,7 @@ std::unique_ptr<TargetBullet> TargetBullet::Create(ObjModel* model, const XMFLOA
 	}
 
 	// 初期化
-	if (!instance->Initialize(position, scale, target, speed, eye, aimTarget, up)) {
+	if (!instance->Initialize(position, scale, target, speed, eye, aimTarget, up, near_point)) {
 		delete instance;
 		assert(0);
 	}
@@ -31,7 +27,7 @@ std::unique_ptr<TargetBullet> TargetBullet::Create(ObjModel* model, const XMFLOA
 }
 
 bool TargetBullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed,
-	XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up)
+	XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up, XMFLOAT3 near_point)
 {
 	if (!ObjObject::Initialize())
 	{
@@ -68,7 +64,7 @@ bool TargetBullet::Initialize(const XMFLOAT3 position, const XMFLOAT3 scale, con
 	// Calculate the ray direction in world space
 	XMFLOAT3 rayDirection;
 	XMVECTOR rayOrigin = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	XMVECTOR nearPoint = DirectX::XMVectorSet(PlayerPos.x, PlayerPos.y + 0.3f, 0.0f, 1.0f);
+	XMVECTOR nearPoint = DirectX::XMVectorSet(near_point.x, near_point.y + 0.3f, 0.0f, 1.0f);
 	XMVECTOR farPoint = DirectX::XMVectorSet(cursorPos.x, cursorPos.y, 1.0f, 1.0f);
 
 	// Create the view matrix based on the camera's position and orientation

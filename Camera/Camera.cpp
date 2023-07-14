@@ -20,7 +20,7 @@ Camera::Camera( int window_width, int window_height )
 	matViewProjection = matView * matProjection;
 }
 
-void Camera::Update()
+void Camera::Update(XMFLOAT3 new_position, XMFLOAT3 direction_position)
 {
 	dirty = false;
 
@@ -32,13 +32,13 @@ void Camera::Update()
 	XMStoreFloat3(&cameraPos, XMVectorNegate(XMVector3TransformCoord(XMLoadFloat3(&target), XMMatrixInverse(nullptr, view))));
 
 	// Calculate the direction vector from the camera's position to the boss position
-	XMFLOAT3 directionVector = XMFLOAT3(bossPos.x - cameraPos.x, bossPos.y - cameraPos.y, bossPos.z - cameraPos.z);
+	XMFLOAT3 directionVector = XMFLOAT3(direction_position.x - cameraPos.x, direction_position.y - cameraPos.y, direction_position.z - cameraPos.z);
 
 	// Normalize the direction vector
 	XMVECTOR directionVectorNormalized = XMVector3Normalize(XMLoadFloat3(&directionVector));
 
 	// Calculate the camera's new position based on the direction vector and camera speed
-	XMFLOAT3 newPosition = XMFLOAT3(playerPos.x + XMVectorGetX(directionVectorNormalized) * 48.0f, playerPos.y + XMVectorGetY(directionVectorNormalized) * 48.0f + 10.0f, playerPos.z + XMVectorGetZ(directionVectorNormalized) * 48.0f);
+	XMFLOAT3 newPosition = XMFLOAT3(new_position.x + XMVectorGetX(directionVectorNormalized) * 48.0f, new_position.y + XMVectorGetY(directionVectorNormalized) * 48.0f + 10.0f, new_position.z + XMVectorGetZ(directionVectorNormalized) * 48.0f);
 
 	// Convert cameraPos to cameraEye
 	XMVECTOR posV = XMLoadFloat3(&newPosition);
@@ -58,7 +58,7 @@ void Camera::Update()
 
 	// Update the camera's position, target, and up vectors
 	eye = cameraEye;
-	target = bossPos;
+	target = direction_position;
 	up = up;
 
 	viewDirty = true;

@@ -1,6 +1,4 @@
 ﻿#include "ObjObject.h"
-#include "Collider/BaseCollider.h"
-#include "Collider/CollisionManager.h"
 #include <d3dcompiler.h>
 #include <fstream>
 #include <sstream>
@@ -21,12 +19,6 @@ Camera* ObjObject::camera = nullptr;
 
 ObjObject::~ObjObject()
 {
-	if (collider)
-	{
-		// コリジョンマネージャーから登録を解除する
-		CollisionManager::GetInstance()->RemoveCollider(collider);
-		delete collider;
-	}
 }
 
 void ObjObject::StaticInitialize(ID3D12Device* device, Camera* camera)
@@ -321,12 +313,6 @@ void ObjObject::Update()
 	constMap->color = color;
 	constMap->mat = matWorld * matViewProjection;	// 行列の合成
 	constBuffB0->Unmap(0, nullptr);
-
-	// 当たり判定更新
-	if (collider)
-	{
-		collider->Update();
-	}
 }
 
 void ObjObject::Draw()
@@ -349,14 +335,4 @@ void ObjObject::Draw()
 
 	// モデル描画
 	model->Draw(cmdList);
-}
-
-void ObjObject::SetCollider(BaseCollider* collider)
-{
-	collider->SetObject(this);
-	this->collider = collider;
-	// コリジョンマネージャーに登録
-	CollisionManager::GetInstance()->AddCollider(collider);
-	// コライダーを更新しておく
-	collider->Update();
 }

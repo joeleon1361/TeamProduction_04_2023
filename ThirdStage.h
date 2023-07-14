@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include "BaseScene.h"
 
@@ -35,7 +35,7 @@
 
 #include "GageUI.h"
 #include "DeltaGageUI.h"
-#include "collision.h"
+#include "Collision.h"
 
 #include <cassert>
 #include <sstream>
@@ -46,6 +46,7 @@
 #include <list>
 #include <array>
 
+class CollisionManager;
 class Player;
 class Bullet;
 class PlayerSpecialBullet;
@@ -60,20 +61,19 @@ class BossTurret;
 class GageUI;
 class DeltaGageUI;
 
-// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
-class GamePlay : public BaseScene
+class ThirdStage : public BaseScene
 {
-private: // ã‚¨ã‚¤ãƒªã‚¢ã‚¹
-	// Microsoft::WRL::ã‚’çœç•¥
+private: // ƒGƒCƒŠƒAƒX
+// Microsoft::WRL::‚ğÈ—ª
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::ã‚’çœç•¥
+	// DirectX::‚ğÈ—ª
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
-private: // é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
-	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·
+private: // Ã“Iƒƒ“ƒo•Ï”
+// ƒXƒvƒ‰ƒCƒg‚ÌƒeƒNƒXƒ`ƒƒ”Ô†
 	static enum TextureNumber
 	{
 		debug_txt,
@@ -82,80 +82,80 @@ private: // é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 		black,
 		rule,
 
-		// ãƒœã‚¹
+		// ƒ{ƒX
 		game_boss_frame_1,
 		game_boss_frame_2,
 		game_boss_gauge
 	};
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çƒ
+	// ƒvƒŒƒCƒ„[‚Ì‹…
 	static enum BulletType
 	{
 		Normal,
 		Charge
 	};
 
-public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	// ã‚³ãƒ³ã‚¹ãƒˆã‚¯ãƒ©ã‚¿
-	GamePlay();
+public:
+	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	ThirdStage();
 
-	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
-	~GamePlay();
+	// ƒfƒXƒgƒ‰ƒNƒ^
+	~ThirdStage();
 
-	// åˆæœŸåŒ–
+	// ‰Šú‰»
 	void Initialize() override;
 
-	// çµ‚äº†
+	// I—¹
 	void Finalize() override;
 
-	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
+	// XV
 	void Update() override;
 
-	// æç”»
+	// •`‰æ
 	void Draw() override;
 
-	//ãƒã‚¦ã‚¹æƒ…å ±å–å¾—
+	//ƒ}ƒEƒXî•ñæ“¾
 	void GetMouse();
 
-	//ãƒ‡ãƒãƒƒã‚°ãƒ†ã‚­ã‚¹ãƒˆç”¨é–¢æ•°
+	//ƒfƒoƒbƒOƒeƒLƒXƒg—pŠÖ”
 	void DrawDebugText();
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾ã‚’ç™ºå°„
+	// ƒvƒŒƒCƒ„[‚Ì’e‚ğ”­Ë
 	void Shoot();
 
 	void chargeShoot();
 
 	void PlayerMovementBoundaryChecking();
 
-	// ãƒœã‚¹ã®å¼¾ã‚’ç™ºå°„
+	// ƒ{ƒX‚Ì’e‚ğ”­Ë
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
-	// ã‚³ã‚¢æ’ƒç ´ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	// ƒRƒAŒ‚”jƒGƒtƒFƒNƒg
 	void CoreBreakEffect();
 
-	// ã‚³ã‚¢ãƒ’ãƒƒãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	// ƒRƒAƒqƒbƒgƒGƒtƒFƒNƒg
 	void CoreHitEffect();
 
-	// ãƒœã‚¹ãƒ‘ãƒ¼ãƒ„ãƒ’ãƒƒãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	// ƒ{ƒXƒp[ƒcƒqƒbƒgƒGƒtƒFƒNƒg
 	void BossPartsHitEffect();
 
 	void PlayerHitEffect();
 
-	// å…¨ã¦ã®ã‚³ã‚¢ã‚’ç ´å£Šã—ãŸå¾Œã®å‡¦ç†
+	// ‘S‚Ä‚ÌƒRƒA‚ğ”j‰ó‚µ‚½Œã‚Ìˆ—
 	void CoreAllBreak();
 
-private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
+private: // ƒƒ“ƒo•Ï”
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	Input* input = Input::GetInstance();
 	Sound* sound = Sound::GetInstance();
 	DebugText debugText;
-	
+
 	Camera* camera = nullptr;
 
 	ParticleManager* circleParticle = nullptr;
 
-	Sprite* gameBG = nullptr;
+	Sprite* thirdStageBG = nullptr;
 	Sprite* Reticle = nullptr;
 	Sprite* test = nullptr;
 
@@ -168,7 +168,7 @@ private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 	GageUI* gageSpeed = nullptr;
 	GageUI* gageCharge = nullptr;
-	
+
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
 	ObjModel* modelBossPartsRing = nullptr;
@@ -209,33 +209,33 @@ private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 	std::list<std::unique_ptr<Bullet>>bossTargetBullets;
 
-	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	//ƒIƒuƒWƒFƒNƒgƒp[ƒeƒBƒNƒ‹
 	std::list<std::unique_ptr<ObjectParticle>> particle;
 
 	float shotRate = 0.0f;
 	bool shotFlag = true;
 
-	//é»’èƒŒæ™¯ã®å¤‰æ•°
+	//•”wŒi‚Ì•Ï”
 	bool BlackFlag = false;
 	float BlackAlpha = 1.0f;
 
 	float timer = 0.0f;
 
-	//ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«åº§æ¨™
+	//ƒŒƒeƒBƒNƒ‹À•W
 	XMFLOAT2 ReticlePos = { 0.0f, 0.0f };
 
-	//ãƒã‚¦ã‚¹åº§æ¨™
+	//ƒ}ƒEƒXÀ•W
 	POINT mousePosition;
 
-	// ãƒ¡ã‚¤ãƒ³ã‚³ã‚¢ã®HPãƒãƒ¼ã®åº§æ¨™
+	// ƒƒCƒ“ƒRƒA‚ÌHPƒo[‚ÌÀ•W
 	XMFLOAT2 bossHpUIPosition = { 1255.0f , 30.0f };
-	
-	// ãƒ–ãƒ¼ã‚¹ãƒˆã‚²ãƒ¼ã‚¸ã®åº§æ¨™
+
+	// ƒu[ƒXƒgƒQ[ƒW‚ÌÀ•W
 	XMFLOAT2 boostUIPosition = { 1255.0f , 650.0f };
 
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®é€Ÿåº¦ã‚²ãƒ¼ã‚¸ã®åº§æ¨™
+	// ƒvƒŒƒCƒ„[‚Ì‘¬“xƒQ[ƒW‚ÌÀ•W
 	XMFLOAT2 playerSpeedUIPosition = { 555.0f, 690.0f };
-	
+
 	XMFLOAT2 playerHpUIPosition = { 1255.0f, 690.0f };
 
 	XMFLOAT2 playerChargeUIPosition = { 555.0f, 650.0f };
@@ -250,3 +250,4 @@ private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 	XMFLOAT3 PlayerPos = { 0.0f, 0.0f, 0.0 };
 };
+
