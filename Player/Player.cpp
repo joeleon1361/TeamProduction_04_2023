@@ -1,8 +1,6 @@
 #include "Player.h"
 
 using namespace DirectX;
-extern XMFLOAT3 velocity222 = { 0.0f, 0.0f, 0.0f };
-extern XMFLOAT3 externPlayerPos = { 0.0f, 0.0f, 0.0f };
 
 ID3D12Device* Player::device = nullptr;
 //Camera* Player::camera = nullptr;
@@ -66,8 +64,6 @@ void Player::Update()
 
 	// オブジェクト移動
 	Move();
-
-	externPlayerPos = position;
 
 	// ローリング
 	Rolling();
@@ -230,10 +226,6 @@ void Player::Move()
 	position.x += totalSpeed * Vel.x;
 	position.y += totalSpeed * Vel.y;
 	position.z += totalSpeed * Vel.z;
-
-	velocity222.x = totalSpeed * Vel.x;
-	velocity222.y = totalSpeed * Vel.y;
-	velocity222.z = totalSpeed * Vel.z;
 
 	/*if (!input->PushKey(DIK_S) && !input->PushKey(DIK_W))
 	{

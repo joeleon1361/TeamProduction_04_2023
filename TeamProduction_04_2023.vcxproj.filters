@@ -244,6 +244,15 @@
     <ClCompile Include="ObjectParticle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="SecondStage.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdStage.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -261,6 +270,7 @@
     <None Include="Resources\shaders\PostEffect.hlsli">
       <Filter>Shader\PostEffect</Filter>
     </None>
+    <None Include="ObjPartBasic.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\FBXVS.hlsl">
@@ -296,6 +306,8 @@
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
       <Filter>Shader\PostEffect</Filter>
     </FxCompile>
+    <FxCompile Include="ObjPartGS.hlsl" />
+    <FxCompile Include="ObjPartPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FBX\FbxLoader.h">
@@ -448,5 +460,8 @@
     <ClInclude Include="GageUI.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="SecondStage.h" />
+    <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="ThirdStage.h" />
   </ItemGroup>
 </Project>

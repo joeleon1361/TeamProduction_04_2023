@@ -197,9 +197,12 @@
     <ClCompile Include="GameBase\SceneFactory.cpp" />
     <ClCompile Include="GameBase\SceneManager.cpp" />
     <ClCompile Include="ScoreText\ScoreText.cpp" />
+    <ClCompile Include="SecondStage.cpp" />
     <ClCompile Include="Sound\Sound.cpp" />
     <ClCompile Include="Math\Spline.cpp" />
     <ClCompile Include="Sprite\Sprite.cpp" />
+    <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="ThirdStage.cpp" />
     <ClCompile Include="Title\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -343,9 +346,12 @@
     <ClInclude Include="GameBase\SceneFactory.h" />
     <ClInclude Include="GameBase\SceneManager.h" />
     <ClInclude Include="ScoreText\ScoreText.h" />
+    <ClInclude Include="SecondStage.h" />
     <ClInclude Include="Sound\Sound.h" />
     <ClInclude Include="Math\Spline.h" />
     <ClInclude Include="Sprite\Sprite.h" />
+    <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="ThirdStage.h" />
     <ClInclude Include="Title\Title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

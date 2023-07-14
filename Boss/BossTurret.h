@@ -18,13 +18,15 @@ private: // 静的メンバ変数
 
 public: // メンバ関数
 // 初期化
-	bool Initialize() override;
+	bool Initialize();
 
 	// 毎フレーム処理
-	void Update() override;
+	void Update(XMFLOAT3 target_position);
 
 	// ヒット時のカラー変更
 	void HitChangeColor();
+
+	const float& GetExternRotationY() { return externRotationY; }
 
 private: // メンバ変数
 	Input* input = Input::GetInstance();
@@ -43,6 +45,8 @@ private: // メンバ変数
 
 	// 撃破時の角度
 	XMFLOAT3 breakRotation = { 30.0f, 0.0f, 0.0f };
+
+	float externRotationY = 0.0f;
 
 public:
 	// 生存フラグ

@@ -107,7 +107,7 @@ void Title::Update()
 	if (BlackAlpha >= 1.0f)
 	{
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("GAMEPLAY");
+		SceneManager::GetInstance()->ChangeScene("STAGESELECT");
 	}
 
 	//スプライト座標変更

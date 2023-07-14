@@ -2,9 +2,6 @@
 
 using namespace DirectX;
 extern HWND hwnd;
-extern XMFLOAT2 ReticlePos = { 0.0f, 0.0f };
-extern XMFLOAT3 PlayerPos = { 0.0f, 0.0f, 0.0 };
-extern float externRotationY;
 
 GamePlay::GamePlay()
 {
@@ -73,6 +70,8 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	// デバッグテキスト用テクスチャ読み込み
+	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化
 	debugText.Initialize(0);
 
@@ -426,9 +425,9 @@ void GamePlay::Update()
 	bossCore_2->Update();
 	bossCore_3->Update();
 	bossCore_4->Update();
-	bossTurret_1->Update();
+	bossTurret_1->Update(player->GetPosition());
 	//bossTurret_2->Update();
-	bossTurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, externRotationY, bossTurretStand_1->GetRotation().z });
+	bossTurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, bossTurret_1->GetExternRotationY(), bossTurretStand_1->GetRotation().z});
 	bossTurretStand_1->Update();
 	//bossTurretStand_2->Update();
 	bossPartsCoreStand->Update();
@@ -483,7 +482,6 @@ void GamePlay::Draw()
 	ObjObject::PreDraw(cmdList);
 
 	// 3Dオブクジェクトの描画
-
 	player->Draw();
 	boss->Draw();
 
@@ -675,7 +673,7 @@ void GamePlay::Shoot()
 		if (shotFlag == true)
 		{
 			std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
-			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 30.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
+			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 30.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp(), player->GetPosition());
 			newBullet->eyePosition = camera->GetEye();
 			//newBullet->eyePosition.y += 10.0f;
 			newBullet->targetPosition = camera->GetTarget();
@@ -736,7 +734,7 @@ void GamePlay::chargeShoot()
 	else
 	{
 		std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
-		newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp());
+		newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 15.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp(), player->GetPosition());
 		newBullet->eyePosition = camera->GetEye();
 		//newBullet->eyePosition.y += 10.0f;
 		newBullet->targetPosition = camera->GetTarget();
