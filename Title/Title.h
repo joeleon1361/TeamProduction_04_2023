@@ -16,6 +16,7 @@
 #include "Sound.h"
 #include "Camera.h"
 #include "ParticleManager.h"
+#include "Test.h"
 
 class Title : public BaseScene
 {
@@ -85,9 +86,11 @@ private: // メンバ変数
 	//3Dオブジェクト
 	ObjObject* objTitleFont = nullptr;
 
-	ObjectParticle* Object = nullptr;
+	std::unique_ptr<ObjectParticle> Object;
 
 	std::list<std::unique_ptr<ObjectParticle>> ObjPart;
+
+	std::unique_ptr<ObjectParticle> TestPart;
 
 	//モデル
 	ObjModel* modelTitleFont = nullptr;
@@ -99,6 +102,10 @@ private: // メンバ変数
 
 	//オブジェクトパーティクル
 	std::list<std::unique_ptr<ObjectParticle>> particle;
+
+
+	//テスト
+	Test* circleParticle = nullptr;
 
 	//タイトルスプライト座標
 	XMFLOAT2 TitlePos_LU = {0.0f, 0.0f};
@@ -116,6 +123,8 @@ private: // メンバ変数
 	
 	//描画タイマー
 	int DrawTimer = 0;
+
+	XMFLOAT3 Vector = {};
 
 	//デフォルトポイント
 	XMFLOAT3 DefaultPos = { 0.0f, 0.0f, 0.0f };

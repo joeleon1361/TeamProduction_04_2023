@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include <string>
+#include <forward_list>
 
 #include "ObjModel.h"
 #include "Camera.h"
@@ -26,6 +27,23 @@ private: // エイリアス
 	using XMVECTOR = DirectX::XMVECTOR;
 
 public: // サブクラス	
+	//パーティクル1粒
+	struct Particle
+	{
+		//DirectXを省略
+		using XMFLOAT3 = DirectX::XMFLOAT3;
+
+		//座標
+		XMFLOAT3 position = {};
+		//速度
+		XMFLOAT3 velocity = {};
+		//加速度
+		XMFLOAT3 accel = {};
+		//現在のフレーム
+		int frame = 0;
+		//終了フレーム
+		int num_frame = 0;
+	};
 
 	// パイプラインセット
 	struct PipelineSet
@@ -44,7 +62,7 @@ public: // サブクラス
 	};
 
 private: // 定数
-
+	static const int vertexCount = 1024;//頂点数
 
 public: // 静的メンバ関数
 	// 静的初期化
@@ -91,7 +109,7 @@ public: // メンバ関数
 	virtual bool Initialize(XMFLOAT3 pos);
 
 	// 毎フレーム処理
-	virtual void Update();
+	virtual void Update(XMFLOAT3 vel);
 
 	// 描画
 	virtual void Draw();
@@ -142,6 +160,10 @@ public: // メンバ関数
 
 	void SetBillboard(bool isBillboard) { this->isBillboard = isBillboard; }
 
+	void Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel);
+
+	void ObjPart(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel);
+
 protected: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	// 色
@@ -160,6 +182,9 @@ protected: // メンバ変数
 	XMMATRIX updateMatWorld;
 	// モデル
 	ObjModel* model = nullptr;
+
+	//パーティクル配列
+	std::forward_list<Particle> particles;
 
 	// ビルボード
 	bool isBillboard = false;

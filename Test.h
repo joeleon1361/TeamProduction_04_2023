@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 
 #include <Windows.h>
 #include <wrl.h>
@@ -7,158 +7,176 @@
 #include <d3dx12.h>
 #include <forward_list>
 
+#include "ObjModel.h"
 #include "Camera.h"
 
-// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£
-class ParticleManager
+// ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ
+class Test
 {
-private: // ã‚¨ã‚¤ãƒªã‚¢ã‚¹
-	// Microsoft::WRL::ã‚’çœç•¥
+private: // ƒGƒCƒŠƒAƒX
+	// Microsoft::WRL::‚ğÈ—ª
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::ã‚’çœç•¥
+	// DirectX::‚ğÈ—ª
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
-public: // ã‚µãƒ–ã‚¯ãƒ©ã‚¹
-	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
+public: // ƒTƒuƒNƒ‰ƒX
+	// ’¸“_ƒf[ƒ^\‘¢‘Ì
 	struct VertexPos
 	{
-		XMFLOAT3 pos; // xyzåº§æ¨™
-		float scale; // ã‚¹ã‚±ãƒ¼ãƒ«
+		XMFLOAT3 pos; // xyzÀ•W
+		float scale; // ƒXƒP[ƒ‹
 		XMFLOAT4 color;
 		float rotation;
 	};
 
-	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
-	struct ConstBufferData
+	// ƒpƒCƒvƒ‰ƒCƒ“ƒZƒbƒg
+	struct PipelineSet
 	{
-		XMMATRIX mat;	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—
-		XMMATRIX matBillboard;	// ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
+		// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		ComPtr<ID3D12RootSignature> rootsignature;
+		// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
+		ComPtr<ID3D12PipelineState> pipelinestate;
 	};
 
-	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«1ç²’
+	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	struct ConstBufferData
+	{
+		XMMATRIX mat;	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ
+		XMMATRIX matBillboard;	// ƒrƒ‹ƒ{[ƒhs—ñ
+	};
+
+	// ƒp[ƒeƒBƒNƒ‹1—±
 	class Particle
 	{
-		// Microsoft::WRL::ã‚’çœç•¥
+		// Microsoft::WRL::‚ğÈ—ª
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-		// DirectX::ã‚’çœç•¥
+		// DirectX::‚ğÈ—ª
 		using XMFLOAT2 = DirectX::XMFLOAT2;
 		using XMFLOAT3 = DirectX::XMFLOAT3;
 		using XMFLOAT4 = DirectX::XMFLOAT4;
 		using XMMATRIX = DirectX::XMMATRIX;
 	public:
-		// åº§æ¨™
+		// À•W
 		XMFLOAT3 position = {};
-		// é€Ÿåº¦
+		// ‘¬“x
 		XMFLOAT3 velocity = {};
-		// åŠ é€Ÿåº¦
+		// ‰Á‘¬“x
 		XMFLOAT3 accel = {};
-		// è‰²
+		// F
 		XMFLOAT4 color = {};
-		// ã‚¹ã‚±ãƒ¼ãƒ«
+		// ƒXƒP[ƒ‹
 		float scale = 1.0f;
-		// å›è»¢
+		// ‰ñ“]
 		float rotation = 0.0f;
-		// åˆæœŸå€¤
+		// ‰Šú’l
 		XMFLOAT4 s_color = {};
 		float s_scale = 1.0f;
 		float s_rotation = 0.0f;
-		// æœ€çµ‚å€¤
+		// ÅI’l
 		XMFLOAT4 e_color = {};
 		float e_scale = 0.0f;
 		float e_rotation = 0.0f;
-		// ç¾åœ¨ãƒ•ãƒ¬ãƒ¼ãƒ 
+		// Œ»İƒtƒŒ[ƒ€
 		int frame = 0;
-		// çµ‚äº†ãƒ•ãƒ¬ãƒ¼ãƒ 
+		// I—¹ƒtƒŒ[ƒ€
 		int num_frame = 0;
 	};
 
-private: // å®šæ•°
-	static const int vertexCount = 65536;		// é ‚ç‚¹æ•°
+private: // ’è”
+	static const int vertexCount = 65536;		// ’¸“_”
 
-public: // é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
-	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
-	static ParticleManager* Create(ID3D12Device* device, Camera* camera,int blensType, const wchar_t* filename);
+public: // Ã“Iƒƒ“ƒoŠÖ”
+	// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	static Test* Create(ID3D12Device* device, Camera* camera, int blensType, const wchar_t* filename);
 
-public: // ãƒ¡ãƒ³ãƒé–¢æ•°	
-	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
-	ParticleManager(ID3D12Device* device, Camera* camera);
+public: // ƒƒ“ƒoŠÖ”	
+	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	Test(ID3D12Device* device, Camera* camera);
 
-	// åˆæœŸåŒ–
-	void Initialize(int blendType, const wchar_t* filename );
+	// ‰Šú‰»
+	void Initialize(int blendType, const wchar_t* filename);
 
-	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
+	// –ˆƒtƒŒ[ƒ€ˆ—
 	void Update();
 
-	// æç”»
+	// •`‰æ
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
-	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®è¿½åŠ 
+	// ƒp[ƒeƒBƒNƒ‹‚Ì’Ç‰Á
 	void Add(int life, const XMFLOAT3& position, const XMFLOAT3& velocity, const XMFLOAT3& accel, const XMFLOAT4& start_color, const XMFLOAT4& end_color, float start_scale, float end_scale, float start_rotation, float end_rotation);
 
-	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®åˆæœŸåŒ–
+	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì‰Šú‰»
 	void InitializeDescriptorHeap();
 
-	// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
+	// ƒOƒ‰ƒtƒBƒbƒNƒpƒCƒvƒ‰ƒCƒ“¶¬
 	void InitializeGraphicsPipeline(int blendType);
 
-	// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
+	// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
 	void LoadTexture(const wchar_t* filename);
 
-	// ãƒ¢ãƒ‡ãƒ«ä½œæˆ
+	// ƒ‚ƒfƒ‹ì¬
 	void CreateModel();
 
-	//---ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«é–¢æ•°---//
-	//åŸºæœ¬ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	//---ƒp[ƒeƒBƒNƒ‹ŠÖ”---//
+	//Šî–{ƒp[ƒeƒBƒNƒ‹
 	void DefaultParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
-	 
-	//ãƒœã‚¹éƒ¨ä½ç ´å£Šãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+
+	//ƒ{ƒX•”ˆÊ”j‰óƒp[ƒeƒBƒNƒ‹
 	void BlastPart_1(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 	void BlastPart_2(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 	void BlastPart_3(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 	void BlastPart_4(int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
-	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¸ã‚§ãƒƒãƒˆãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
-	void JettParticle(int PartNum, int Life, XMFLOAT3 position, XMFLOAT3 velosity,  int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
+	//ƒvƒŒƒCƒ„[ƒWƒFƒbƒgƒp[ƒeƒBƒNƒ‹
+	void JettParticle(int PartNum, int Life, XMFLOAT3 position, XMFLOAT3 velosity, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
-	//ãƒ–ãƒ¼ã‚¹ãƒˆãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	//ƒu[ƒXƒgƒp[ƒeƒBƒNƒ‹
 	void BoostParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
-	//ç«èŠ±ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+	//‰Î‰Ôƒp[ƒeƒBƒNƒ‹
 	void SparkParticle(int PartNum, int Life, XMFLOAT3 position, int StartScale, int EndScale, XMFLOAT4 StartColor, XMFLOAT4 EndColor);
 
-	// å¼¾ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç”Ÿæˆ
+	// ’eƒp[ƒeƒBƒNƒ‹¶¬
 	void BulletParticle(int PartNum, int Life, XMFLOAT3 position, XMFLOAT4 start_color, XMFLOAT4 end_color, float start_scale);
 
-private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
-	// ãƒ‡ãƒã‚¤ã‚¹
+	// ƒ‚ƒfƒ‹‚ÌƒZƒbƒg
+	void SetModel(ObjModel* model) { this->model = model; }
+
+private: // ƒƒ“ƒo•Ï”
+
+	// ƒfƒoƒCƒX
 	ID3D12Device* device = nullptr;
-	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã‚µã‚¤ã‚º
-	UINT descriptorHandleIncrementSize = 0;
-	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
+	// ƒfƒXƒNƒŠƒvƒ^ƒTƒCƒY
+	UINT descriptorHandleIncrementSize = 0u;
+	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
 	ComPtr<ID3D12RootSignature> rootsignature;
-	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
 	ComPtr<ID3D12PipelineState> pipelinestate;
-	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
+	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
 	ComPtr<ID3D12DescriptorHeap> descHeap;
-	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+	// ’¸“_ƒoƒbƒtƒ@
 	ComPtr<ID3D12Resource> vertBuff;
-	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
+	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
 	ComPtr<ID3D12Resource> texbuff;
-	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
+	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
-	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
+	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
 	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
-	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
 	D3D12_VERTEX_BUFFER_VIEW vbView;
-	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
+	// ’è”ƒoƒbƒtƒ@
 	ComPtr<ID3D12Resource> constBuff;
-	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«é…åˆ—
+	// ƒp[ƒeƒBƒNƒ‹”z—ñ
 	std::forward_list<Particle> particles;
-	// ã‚«ãƒ¡ãƒ©
+	// ƒJƒƒ‰
 	Camera* camera = nullptr;
+	// ƒ‚ƒfƒ‹
+	ObjModel* model = nullptr;
+	// ƒeƒNƒXƒ`ƒƒ‚ ‚è—pƒpƒCƒvƒ‰ƒCƒ“
+	static PipelineSet pipelineSet;
 
 	enum blendType
 	{
@@ -167,14 +185,16 @@ private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 		sub
 	};
 
-	//é‡åŠ›åŠ é€Ÿåº¦
+	//d—Í‰Á‘¬“x
 	float Gravity = 9.8f;
 
-	//Yè»¸ã®ç§»å‹•é‡
+	//Y²‚ÌˆÚ“®—Ê
 	float VY = 0.0f;
 
-	//çµŒéæ™‚é–“
+	//Œo‰ßŠÔ
 	int elapsedTime = 0;
 
 };
+
+
 

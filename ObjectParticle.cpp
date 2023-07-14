@@ -296,9 +296,31 @@ bool ObjectParticle::Initialize(XMFLOAT3 pos)
 	return true;
 }
 
-void ObjectParticle::Update()
+void ObjectParticle::Update(XMFLOAT3 vel)
 {
 	assert(camera);
+	//寿命月来たパーティクルを全削除
+	particles.remove_if(
+		[](Particle& x)
+		{
+			return x.frame >= x.num_frame;
+		});
+
+	//全パーティクル更新
+	for (std::forward_list<Particle>::iterator it = particles.begin(); it != particles.end(); it++)
+	{
+		//経過フレーム数をカウント
+		it->frame++;
+		//速度に加速度を加算
+		it->velocity = it->velocity + it->accel;
+		//速度による移動
+		it->position = it->position + it->velocity;
+	}
+
+	
+	//頂点バッファへデータ転送
+	
+	
 
 	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
@@ -365,4 +387,45 @@ void ObjectParticle::Draw()
 
 	// モデル描画
 	model->Draw(cmdList);
+}
+
+void ObjectParticle::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel)
+{
+	//リストに要素を追加
+	particles.emplace_front();
+	//追加した要素の参照
+	Particle& p = particles.front();
+	//値のリセット
+	p.position = position;
+	p.velocity = velocity;
+	p.accel = accel;
+	p.num_frame = life;
+}
+
+void ObjectParticle::ObjPart(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		//X,Y,Z全てランダムに分布
+		const float md_pos = 10.0f;
+		XMFLOAT3 pos{};
+		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+
+		//X,Y,Z全てランダムに分布(ベクトル)
+		const float md_vel = 0.1f;
+		XMFLOAT3 vel{};
+		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+
+		//重力に見立ててYのみランダムに分布
+		XMFLOAT3 acc{};
+		const float md_acc = 0.01;
+		acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+		//追加
+		Add(life, pos, vel, acc);
+	}
 }
