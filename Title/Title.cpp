@@ -172,7 +172,7 @@ void Title::Update()
 		
 	}
 
-	if (CountTimer(100) == false)
+	if (CountTimer(30) == false)
 	{
 		CreateParticle();
 	}
