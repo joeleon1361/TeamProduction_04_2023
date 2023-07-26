@@ -167,8 +167,17 @@ void Title::Update()
 	if (input->TriggerKey(DIK_M))
 	{
 		//Object = ObjectParticle::Create(modelObject, DefaultPos);
+		//CreateParticle();
+		CountTime = 0;
+		
+	}
+
+	if (CountTimer(100) == false)
+	{
 		CreateParticle();
 	}
+
+
 
 	if (StartFlag == true)
 	{
@@ -176,12 +185,12 @@ void Title::Update()
 		Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 	}
 
-	objTitleFont->Update();
+//	objTitleFont->Update();
 
 
-	Object->ObjPart(30, { 0, 0, -300 }, { 1, 1, 1 }, { 0.5,  0.5, 0.5 });
+	//Object->ObjPart(30, { 0, 0, -300 }, { 1, 1, 1 }, { 0.5,  0.5, 0.5 });
 	
-	Object->Update(Vector);
+	//Object->Update(Vector);
 	
 	// パーティクル更新
 	//Particle->Update();
@@ -193,12 +202,21 @@ void Title::Update()
 	//オブジェクトパーティクルを更新
 	for (std::unique_ptr<ObjectParticle>& part : particle)
 	{
-		part->Update(Vector);
+		part->Update(part->vel);
 	}
 
 	//オブジェクトパーティクルを更新
 	for (std::unique_ptr<ObjectParticle>& objpart : ObjPart)
 	{
+		XMFLOAT3 Position = {};
+		const float md_width = 10.0f;
+
+		Position.x = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
+		Position.y = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
+		Position.z = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
+
+
+		objpart->ObjPart(30, Position, { 1, 1, 1 }, { 0.5,  0.5, 0.5 });
 		objpart->Update(Vector);
 	}
 
@@ -301,7 +319,7 @@ void Title::CreateParticle()
 {
 	XMFLOAT3 Position = {};
 
-	const float md_width = 10.0f;
+	const float md_width = 3.0f;
 
 	Position.x = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
 	Position.y = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
@@ -317,4 +335,29 @@ void Title::CreateParticle()
 	XMFLOAT3 acc{};
 	const float md_acc = 0.01f;
 	acc.y = -(float)rand() / RAND_MAX * md_acc;
+
+	std::unique_ptr<ObjectParticle> newObject = std::make_unique<ObjectParticle>();
+	newObject = ObjectParticle::Create(modelObject, {0, 0, 0});
+
+	newObject->vel = Position;
+
+	particle.push_back(std::move(newObject));
 }
+
+int Title::CountTimer(int Time)
+{
+
+	CountTime++;
+
+	if (CountTime >= Time)
+	{
+		return true;
+	}
+
+	else
+	{
+		return false;
+	}
+}
+
+

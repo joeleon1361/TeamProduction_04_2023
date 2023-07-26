@@ -164,6 +164,12 @@ public: // メンバ関数
 
 	void ObjPart(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel);
 
+	// ローカル座標
+	XMFLOAT3 position = { 0,0,0 };
+
+	//velocity
+	XMFLOAT3 vel = {};
+
 protected: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	// 色
@@ -172,8 +178,7 @@ protected: // メンバ変数
 	XMFLOAT3 scale = { 1,1,1 };
 	// X,Y,Z軸回りのローカル回転角
 	XMFLOAT3 rotation = { 0,0,0 };
-	// ローカル座標
-	XMFLOAT3 position = { 0,0,0 };
+	
 	// ワールド変換行列
 	XMMATRIX matWorld;
 	// 親オブジェクト
@@ -194,5 +199,10 @@ protected: // メンバ変数
 
 	//デスフラグ
 	bool DeathFlag = false;
+
+	//デスタイマー
+	int Timer = 60;
+
+	
 };
 

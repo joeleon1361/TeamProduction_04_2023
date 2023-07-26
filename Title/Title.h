@@ -61,6 +61,9 @@ public:
 	//パーティクル生成
 	void CreateParticle();
 
+	int CountTimer(int Time);
+
+
 private: // メンバ変数
 	//DirectXCommon
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
@@ -129,6 +132,7 @@ private: // メンバ変数
 	//デフォルトポイント
 	XMFLOAT3 DefaultPos = { 0.0f, 0.0f, 0.0f };
 
-	//オブジェクトパーティクル発生フラグ
+	//カウントタイマー
+	int CountTime = 0;
 
 };
