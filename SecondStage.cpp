@@ -337,8 +337,9 @@ void SecondStage::Update()
 		bossTurret_1->shotTimer--;
 		if (bossTurret_1->shotTimer <= 0)
 		{
-			BossTargetShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 10.0f);
-			bossTurret_1->shotTimer = bossTurret_1->ShotInterval;
+			BossReflectShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 1.0f);
+			//BossTargetShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 10.0f);
+			bossTurret_1->shotTimer = 360.0f;
 		}
 	}
 
@@ -353,6 +354,23 @@ void SecondStage::Update()
 	bossTargetBullets.remove_if([](std::unique_ptr<Bullet>& bullet)
 		{
 			return bullet->GetDeathFlag();
+		}
+	);
+
+	// ボスの反射弾を更新
+	for (std::unique_ptr<ReflectBullet>& reflectBullet : bossReflectBullets)
+	{
+		if (reflectBullet->isReflect)
+		{
+			circleParticle->BulletParticle(5, 15, reflectBullet->GetPosition(), { 1.0f,0.1f, 0.1f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f }, 30.0f);
+		}
+		reflectBullet->Update(boss->GetPosition());
+	}
+
+	// ボスの反射弾を消去
+	bossReflectBullets.remove_if([](std::unique_ptr<ReflectBullet>& reflectBullet)
+		{
+			return reflectBullet->GetDeathFlag();
 		}
 	);
 
@@ -380,6 +398,8 @@ void SecondStage::Update()
 	}
 
 	PlayerHitEffect();
+
+	ReflectHitEffect();
 
 	// ブーストゲージ
 	gageBoost->Update(player->GetBoostPowNow(), player->GetBoostPowMax(), boostUIPosition, { 0.6f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
@@ -480,6 +500,11 @@ void SecondStage::Draw()
 	for (std::unique_ptr<Bullet>& bullet : bossTargetBullets)
 	{
 		//bullet->Draw();
+	}
+
+	for (std::unique_ptr<ReflectBullet>& reflectBullet : bossReflectBullets)
+	{
+		reflectBullet->Draw();
 	}
 
 	bossPartsRing->Draw();
@@ -589,6 +614,13 @@ void SecondStage::DrawDebugText()
 	std::ostringstream SecondStage;
 	SecondStage << "SecondStage";
 	debugText.Print(SecondStage.str(), 10, 10, 2.0f);
+
+	std::ostringstream PlayerHP;
+	PlayerHP << "Turn:("
+		<< std::fixed << std::setprecision(2)
+		<< turnCount << ")"; // z
+	debugText.Print(PlayerHP.str(), 10, 560, 1.0f);
+
 }
 
 // プレイヤー弾発射
@@ -764,6 +796,14 @@ void SecondStage::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, 
 	newBullet = Bullet::Create(modelBullet, startPosition, { 1.0f, 1.0f, 1.0f }, endPosition, bulletSpeed);
 
 	bossTargetBullets.push_back(std::move(newBullet));
+}
+
+void SecondStage::BossReflectShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed)
+{
+	std::unique_ptr<ReflectBullet> newBullet = std::make_unique<ReflectBullet>();
+	newBullet = ReflectBullet::Create(modelBossPartsSphere, startPosition, { 10.0f, 10.0f, 10.0f }, endPosition, bulletSpeed);
+
+	bossReflectBullets.push_back(std::move(newBullet));
 }
 
 // コア撃破エフェクト
@@ -942,6 +982,99 @@ void SecondStage::PlayerHitEffect()
 	{
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
+	}
+}
+
+void SecondStage::ReflectHitEffect()
+{
+	for (std::unique_ptr<ReflectBullet>& reflectBullet : bossReflectBullets)
+	{
+		for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
+		{
+			if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, reflectBullet->GetPosition(), 19.0f))
+			{
+				reflectBullet->colorTimeRate = 0.0f;
+				reflectBullet->life -= 1.0f;
+
+				bullet->deathFlag = true;
+			}
+		}
+
+		if (reflectBullet->isReflect)
+		{
+			if (Collision::CCDCollisionDetection(reflectBullet->prevPosition, reflectBullet->GetPosition(), 18.0f, boss->GetPosition(), 24.0f))
+			{
+
+				// ラリーON
+				if (turnCount == 1) // 1ターン目
+				{
+					if (reflectBullet->rallyCount == 1)
+					{
+						circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+
+						bossMainCore->life -= 10.0f;
+						reflectBullet->deathFlag = true;
+						reflectBullet->rallyCount = 1;
+						turnCount++;
+					}
+				}
+				else if (turnCount == 2) // 2ターン目
+				{
+					if (reflectBullet->rallyCount == 1)
+					{
+						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 2.0f, 5.0f);
+						reflectBullet->rallyCount++;
+						reflectBullet->isReflect = false;
+					}
+					else if (reflectBullet->rallyCount == 2)
+					{
+						circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+
+						bossMainCore->life -= 10.0f;
+						reflectBullet->deathFlag = true;
+						reflectBullet->rallyCount = 1;
+						turnCount++;
+					}
+				}
+				else if (turnCount == 3) // 3ターン目
+				{
+					if (reflectBullet->rallyCount == 1)
+					{
+						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 2.0f, 5.0f);
+						reflectBullet->rallyCount++;
+						reflectBullet->isReflect = false;
+					}
+					else if (reflectBullet->rallyCount == 2)
+					{
+						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 3.0f, 3.0f);
+						reflectBullet->rallyCount++;
+						reflectBullet->isReflect = false;
+					}
+					else if (reflectBullet->rallyCount == 3)
+					{
+						circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+
+						bossMainCore->life -= 10.0f;
+						reflectBullet->deathFlag = true;
+						reflectBullet->rallyCount = 1;
+					}
+				}
+
+				// ラリーOFF
+				/*circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+
+				bossMainCore->life -= 10.0f;
+				reflectBullet->deathFlag = true;*/
+			}
+		}
 	}
 }
 

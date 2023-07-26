@@ -190,6 +190,7 @@
     <ClCompile Include="Particle\ParticleManager.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="PostEffect\PostEffect.cpp" />
+    <ClCompile Include="ReflectBullet.cpp" />
     <ClCompile Include="Result\Result.cpp" />
     <ClCompile Include="GameBase\SceneFactory.cpp" />
     <ClCompile Include="GameBase\SceneManager.cpp" />
@@ -333,6 +334,7 @@
     <ClInclude Include="Particle\ParticleManager.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="PostEffect\PostEffect.h" />
+    <ClInclude Include="ReflectBullet.h" />
     <ClInclude Include="Result\Result.h" />
     <ClInclude Include="GameBase\SceneFactory.h" />
     <ClInclude Include="GameBase\SceneManager.h" />

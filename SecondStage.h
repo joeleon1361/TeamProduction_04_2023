@@ -26,6 +26,7 @@
 #include "BossParts.h"
 #include "TargetBullet.h"
 #include "ObjectParticle.h"
+#include "ReflectBullet.h"
 
 #include "Spline.h"
 #include "Lerp.h"
@@ -60,6 +61,7 @@ class BossParts;
 class BossTurret;
 class GageUI;
 class DeltaGageUI;
+class ReflectBullet;
 
 class SecondStage : public BaseScene
 {
@@ -130,6 +132,9 @@ public:
 	// ボスの弾を発射
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
+	// ボスの弾を発射
+	void BossReflectShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
+
 	// コア撃破エフェクト
 	void CoreBreakEffect();
 
@@ -140,6 +145,8 @@ public:
 	void BossPartsHitEffect();
 
 	void PlayerHitEffect();
+
+	void ReflectHitEffect();
 
 	// 全てのコアを破壊した後の処理
 	void CoreAllBreak();
@@ -208,6 +215,8 @@ private: // メンバ変数
 
 	std::list<std::unique_ptr<Bullet>>bossTargetBullets;
 
+	std::list<std::unique_ptr<ReflectBullet>>bossReflectBullets;
+
 	//オブジェクトパーティクル
 	std::list<std::unique_ptr<ObjectParticle>> particle;
 
@@ -248,5 +257,7 @@ private: // メンバ変数
 	int playerBulletType = Normal;
 
 	XMFLOAT3 PlayerPos = { 0.0f, 0.0f, 0.0 };
+
+	int turnCount = 1;
 };
 
