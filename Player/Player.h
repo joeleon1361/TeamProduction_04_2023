@@ -10,6 +10,8 @@
 #include "Easing.h"
 #include "Lerp.h"
 
+#include <cmath>
+
 class Player :
 	public ObjObject
 {

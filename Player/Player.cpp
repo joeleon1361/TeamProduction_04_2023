@@ -189,19 +189,24 @@ void Player::Move()
 			{
 				yVel += 0.4f;
 			}
-			if (yVel > 1.0f)
+
+			if (yVel > 0.8f)
 			{
-				yVel = 1.0f;
+				yVel = 0.8f;
 			}
-			else if (yVel < -1.0f)
+			else if (yVel < -0.8f)
 			{
-				yVel = -1.0f;
+				yVel = -0.8f;
 			}
 		}
 
 		hypotenuse = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 		radians = atan2(z, x);
 		degrees = XMConvertToDegrees(radians);
+	}
+	else
+	{
+		yVel = 0.0f;
 	}
 
 	axis.y += yVel;
@@ -216,12 +221,31 @@ void Player::Move()
 		yVel = 0.0f;
 	}
 	y = (axis.y - position.y);
-	radians2 = asin(y / hypotenuse);
-	degrees2 = XMConvertToDegrees(radians2);
+	if (!std::isnan((y / hypotenuse)))
+	{
+		radians2 = asin(y / hypotenuse);
+		degrees2 = XMConvertToDegrees(radians2);
+	}
 
-	Vel.x = (x / hypotenuse);
-	Vel.y = (y / hypotenuse);
-	Vel.z = (z / hypotenuse);
+	if (degrees2 > 30.0f)
+	{
+		degrees2 = 30.0f;
+	}
+	else if (degrees2 < -30.0f)
+	{
+		degrees2 = -30.0f;
+	}
+
+	if (totalSpeed == 0.0f)
+	{
+		Vel = { 0.0f, 0.0f, 0.0f };
+	}
+	else
+	{
+		Vel.x = (x / hypotenuse);
+		Vel.y = (y / hypotenuse);
+		Vel.z = (z / hypotenuse);
+	}
 
 	position.x += totalSpeed * Vel.x;
 	position.y += totalSpeed * Vel.y;
