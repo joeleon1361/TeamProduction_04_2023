@@ -76,7 +76,7 @@ void BossMainCore::Update()
 		}
 
 		onTimer--;
-		if (onTimer < 0)
+		if (onTimer < 0.0f)
 		{
 			isBreak = true;
 		}

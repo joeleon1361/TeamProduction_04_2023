@@ -247,6 +247,9 @@
     <ClCompile Include="ReflectBullet.cpp">
       <Filter>Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="BossShield.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -443,6 +446,9 @@
     <ClInclude Include="Test.h" />
     <ClInclude Include="ReflectBullet.h">
       <Filter>Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BossShield.h">
+      <Filter>Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

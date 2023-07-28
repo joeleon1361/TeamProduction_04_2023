@@ -24,6 +24,7 @@
 #include "BossCore.h"
 #include "BossMainCore.h"
 #include "BossParts.h"
+#include "BossShield.h"
 #include "TargetBullet.h"
 #include "ObjectParticle.h"
 #include "ReflectBullet.h"
@@ -62,6 +63,7 @@ class BossTurret;
 class GageUI;
 class DeltaGageUI;
 class ReflectBullet;
+class BossShield;
 
 class SecondStage : public BaseScene
 {
@@ -192,23 +194,14 @@ private: // ÉÅÉìÉoïœêî
 	BossParts* bossPartsSphere = nullptr;
 	BossParts* bossPartsBody = nullptr;
 
-	BossCore* bossCore_1 = nullptr;
-	BossCore* bossCore_2 = nullptr;
-	BossCore* bossCore_3 = nullptr;
-	BossCore* bossCore_4 = nullptr;
-
 	BossMainCore* bossMainCore = nullptr;
 
-	BossParts* bossCoreBox_1 = nullptr;
-	BossParts* bossCoreBox_2 = nullptr;
-	BossParts* bossCoreBox_3 = nullptr;
-	BossParts* bossCoreBox_4 = nullptr;
-
 	BossParts* bossTurretStand_1 = nullptr;
-	//BossParts* bossTurretStand_2 = nullptr;
 
 	BossTurret* bossTurret_1 = nullptr;
-	//BossTurret* bossTurret_2 = nullptr;
+
+	BossShield* bossShield = nullptr;
+
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<TargetBullet>> playerBullets;

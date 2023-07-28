@@ -1,8 +1,9 @@
 #pragma once
 #include "ObjObject.h"
 #include "Lerp.h"
+#include "Easing.h"
 
-class BossTurret :
+class BossShield :
 	public ObjObject
 {
 private:
@@ -12,41 +13,42 @@ private:
 
 public: // 静的メンバ関数
 // 3Dオブジェクト生成
-	static BossTurret* Create(ObjModel* model = nullptr);
+	static BossShield* Create(ObjModel* model = nullptr);
 
 private: // 静的メンバ変数
 
 public: // メンバ関数
 // 初期化
-	bool Initialize();
+	bool Initialize() override;
 
 	// 毎フレーム処理
-	void Update(XMFLOAT3 target_position);
+	void Update() override;
 
 	// ヒット時のカラー変更
 	void HitChangeColor();
 
-	const float& GetExternRotationY() { return externRotationY; }
+	// 生存時のカラー変更
+	void AliveChangeColor();
+
+	// 反射時のモーション
+	void ReflectMotion();
+
+	void Revival();
 
 private: // メンバ変数
-	Input* input = Input::GetInstance();
-
-	ObjModel* modelBossTurret = nullptr;
-
-	float limitRot = 30.0f;
+	ObjModel* modelBossPartsShield = nullptr;
 
 	// 最大の体力
 	float lifeMax = 10.0f;
 
 	// 基本のカラー
-	XMFLOAT4 baseColor = { 0.3f, 0.3f, 0.3f, 1.0f };
+	XMFLOAT4 baseColor = { 0.9f, 0.2f, 0.2f, 1.0f };
 	// ヒット時のカラー
 	XMFLOAT4 hitColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-
-	// 撃破時の角度
-	XMFLOAT3 breakRotation = { 30.0f, 0.0f, 0.0f };
-
-	float externRotationY = 0.0f;
+	// 破壊後のカラー
+	XMFLOAT4 breakColor = { 0.4f, 0.2f, 0.2f, 1.0f };
+	// 生存時のカラー
+	XMFLOAT4 aliveColor = {};
 
 public:
 	// 生存フラグ
@@ -55,18 +57,17 @@ public:
 	// 現在の体力
 	float life = lifeMax;
 
-	bool isShot = false;
+	// タイムレート
+	float timeRate = 1.0f;
 
 	// カラー変更タイムレート
 	float colorTimeRate = 1.0f;
 
-	// 角度変更タイムレート
-	float rotationTimeRate = 0.0f;
+	// カラー変更タイムレート
+	float colorTimeRate2 = 1.0f;
 
-	// 弾の発射間隔
-	static const int32_t ShotInterval = 60;
+	float revivalTimeRate = 1.0f;
 
-	// 発射タイマー
-	int32_t shotTimer = 0;
+	bool isRevival = false;
 };
 

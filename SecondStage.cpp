@@ -103,20 +103,13 @@ void SecondStage::Initialize()
 	boss = Boss::Create();
 	bossPartsRing = BossParts::Create();
 	bossPartsSphere = BossParts::Create();
-	bossCore_1 = BossCore::Create();
-	bossCore_2 = BossCore::Create();
-	bossCore_3 = BossCore::Create();
-	bossCore_4 = BossCore::Create();
-	bossCoreBox_1 = BossParts::Create();
-	bossCoreBox_2 = BossParts::Create();
-	bossCoreBox_3 = BossParts::Create();
-	bossCoreBox_4 = BossParts::Create();
 	bossTurretStand_1 = BossParts::Create();
 	//bossTurretStand_2 = BossParts::Create();
 	bossTurret_1 = BossTurret::Create();
 	//bossTurret_2 = BossTurret::Create();
 	bossPartsCoreStand = BossParts::Create();
 	bossMainCore = BossMainCore::Create();
+	bossShield = BossShield::Create();
 
 	// モデルセット
 	modelSkydome = ObjModel::CreateFromOBJ("skydome");
@@ -125,10 +118,7 @@ void SecondStage::Initialize()
 	modelBullet = ObjModel::CreateFromOBJ("bullet2");
 
 	modelBossPartsCoreBox = ObjModel::CreateFromOBJ("bossPartsCoreBox");
-	bossCoreBox_1->SetModel(modelBossPartsCoreBox);
-	bossCoreBox_2->SetModel(modelBossPartsCoreBox);
-	bossCoreBox_3->SetModel(modelBossPartsCoreBox);
-	bossCoreBox_4->SetModel(modelBossPartsCoreBox);
+	
 
 	modelBossPartsRing = ObjModel::CreateFromOBJ("bossPartsRing");
 	bossPartsRing->SetModel(modelBossPartsRing);
@@ -142,6 +132,7 @@ void SecondStage::Initialize()
 
 	modelBossPartsCoreStand = ObjModel::CreateFromOBJ("bossPartsCoreStand");
 	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
+
 
 
 	// 座標のセット
@@ -169,54 +160,11 @@ void SecondStage::Initialize()
 	bossPartsSphere->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
 	bossPartsSphere->SetParent(boss);
 
-	bossPartsCoreStand->SetPosition({ 0.0f, -3.5f, 0.0f });
-	bossPartsCoreStand->SetRotation({ 180.0f, 0.0f, 0.0f });
+	bossPartsCoreStand->SetPosition({ 0.0f, 0.0f, -3.5f });
+	bossPartsCoreStand->SetRotation({ -90.0f, 0.0f, 0.0f });
 	bossPartsCoreStand->SetScale({ 2.0f, 2.0f, 2.0f });
 	bossPartsCoreStand->SetColor({ 0.647f, 0.619f, 0.658f, 1.0f });
 	bossPartsCoreStand->SetParent(boss);
-
-	// ボスのコアボックス1
-	bossCoreBox_1->SetPosition({ 0.0f , 0.0f, -1.2f });
-	bossCoreBox_1->SetRotation({ 0.0f, 180.0f, 0.0f });
-	bossCoreBox_1->SetScale({ 0.3f, 0.3f, 0.3f });
-	bossCoreBox_1->SetParent(bossPartsRing);
-
-	// ボスのコアボックス2
-	bossCoreBox_2->SetPosition({ 1.2f , 0.0f, 0.0f });
-	bossCoreBox_2->SetRotation({ 0.0f, 90.0f, 0.0f });
-	bossCoreBox_2->SetScale({ 0.3f, 0.3f, 0.3f });
-	bossCoreBox_2->SetParent(bossPartsRing);
-
-	// ボスのコアボックス3
-	bossCoreBox_3->SetPosition({ 0.0f , 0.0f, 1.2f });
-	bossCoreBox_3->SetScale({ 0.3f, 0.3f, 0.3f });
-	bossCoreBox_3->SetParent(bossPartsRing);
-
-	// ボスのコアボックス4
-	bossCoreBox_4->SetPosition({ -1.2f , 0.0f, 0.0f });
-	bossCoreBox_4->SetRotation({ 0.0f, 270.0f, 0.0f });
-	bossCoreBox_4->SetScale({ 0.3f, 0.3f, 0.3f });
-	bossCoreBox_4->SetParent(bossPartsRing);
-
-	// ボスのコア1
-	bossCore_1->SetPosition({ 0.0f , 0.0f, 1.0f });
-	bossCore_1->SetScale({ 0.7f, 0.7f, 0.7f });
-	bossCore_1->SetParent(bossCoreBox_1);
-
-	// ボスのコア2
-	bossCore_2->SetPosition({ 0.0f , 0.0f, 1.0f });
-	bossCore_2->SetScale({ 0.7f, 0.7f, 0.7f });
-	bossCore_2->SetParent(bossCoreBox_2);
-
-	// ボスのコア3
-	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.0f });
-	bossCore_3->SetScale({ 0.7f, 0.7f, 0.7f });
-	bossCore_3->SetParent(bossCoreBox_3);
-
-	// ボスのコア4
-	bossCore_4->SetPosition({ 0.0f , 0.0f, 1.0f });
-	bossCore_4->SetScale({ 0.7f, 0.7f, 0.7f });
-	bossCore_4->SetParent(bossCoreBox_4);
 
 	// ボスのメインコア
 	bossMainCore->SetPosition({ 0.0f, 0.0f, 0.0f });
@@ -232,15 +180,11 @@ void SecondStage::Initialize()
 	bossTurret_1->SetScale({ 1.0f, 1.0f, 1.0f });
 	bossTurret_1->SetParent({ bossTurretStand_1 });
 
-	// ボスの砲台2
-	/*bossTurretStand_2->SetPosition({ 0.0f, -0.9f, 0.0f });
-	bossTurretStand_2->SetRotation({ 0.0f, 0.0f, 180.0f });
-	bossTurretStand_2->SetScale({ 0.3f, 0.3f, 0.3f });
-	bossTurretStand_2->SetParent({ bossPartsSphere });
-
-	bossTurret_2->SetPosition({ 0.0f, 2.5, 0.0f });
-	bossTurret_2->SetScale({ 1.0f, 1.0f, 1.0f });
-	bossTurret_2->SetParent({ bossTurretStand_2 });*/
+	// ボスの盾
+	bossShield->SetPosition({ 0.0f, 0.0f, -9.0f });
+	bossShield->SetRotation({ 0.0f,180.0f, 0.0f });
+	bossShield->SetScale({ 2.0f, 2.0f, 2.0f });
+	bossShield->SetParent(boss);
 
 	objSkydome->SetPosition({ 0.0f, 0.0f, 0.0f });
 	objSkydome->SetRotation({ 0.0f,0.0f,0.0f, });
@@ -337,10 +281,24 @@ void SecondStage::Update()
 		bossTurret_1->shotTimer--;
 		if (bossTurret_1->shotTimer <= 0)
 		{
-			BossReflectShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 1.0f);
+			//BossReflectShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 1.0f);
 			//BossTargetShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 10.0f);
-			bossTurret_1->shotTimer = 360.0f;
+			//bossShield->isAlive = true;
+			bossTurret_1->shotTimer = 720.0f;
 		}
+	}
+
+	if (input->TriggerKey(DIK_U))
+	{
+		bossTurret_1->isShot = true;
+		bossShield->isAlive = true;
+	}
+
+	// 反射弾弾をフラグが立ったら発射
+	if (bossTurret_1->isShot == true)
+	{
+		BossReflectShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 1.0f);
+		bossTurret_1->isShot = false;
 	}
 
 	// ボスの狙い弾を更新
@@ -364,7 +322,7 @@ void SecondStage::Update()
 		{
 			circleParticle->BulletParticle(5, 15, reflectBullet->GetPosition(), { 1.0f,0.1f, 0.1f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f }, 30.0f);
 		}
-		reflectBullet->Update(boss->GetPosition());
+		reflectBullet->Update(bossShield->GetWorldPosition());
 	}
 
 	// ボスの反射弾を消去
@@ -424,14 +382,7 @@ void SecondStage::Update()
 	boss->Update();
 	bossPartsRing->Update();
 	bossPartsSphere->Update();
-	bossCoreBox_1->Update();
-	bossCoreBox_2->Update();
-	bossCoreBox_3->Update();
-	bossCoreBox_4->Update();
-	bossCore_1->Update();
-	bossCore_2->Update();
-	bossCore_3->Update();
-	bossCore_4->Update();
+	
 	bossTurret_1->Update(player->GetPosition());
 	//bossTurret_2->Update();
 	bossTurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, bossTurret_1->GetExternRotationY(), bossTurretStand_1->GetRotation().z });
@@ -439,6 +390,7 @@ void SecondStage::Update()
 	//bossTurretStand_2->Update();
 	bossPartsCoreStand->Update();
 	bossMainCore->Update();
+	bossShield->Update();
 
 	PlayerMovementBoundaryChecking();
 
@@ -509,22 +461,18 @@ void SecondStage::Draw()
 
 	bossPartsRing->Draw();
 	bossPartsSphere->Draw();
-	bossCoreBox_1->Draw();
-	bossCoreBox_2->Draw();
-	bossCoreBox_3->Draw();
-	bossCoreBox_4->Draw();
+	
 	bossTurret_1->Draw();
-	//bossTurret_2->Draw();
+	
 	bossTurretStand_1->Draw();
-	//bossTurretStand_2->Draw();
+	
 	bossPartsCoreStand->Draw();
 
-	bossCore_1->Draw();
-	bossCore_2->Draw();
-	bossCore_3->Draw();
-	bossCore_4->Draw();
-
 	bossMainCore->Draw();
+
+	bossShield->Draw();
+	
+	
 
 #pragma region 部位破壊処理を一時コメントアウト
 	/*if (bossCore_1->isAlive || bossCore_2->isAlive || bossCore_3->isAlive || bossCore_4->isAlive)
@@ -809,42 +757,7 @@ void SecondStage::BossReflectShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition,
 // コア撃破エフェクト
 void SecondStage::CoreBreakEffect()
 {
-	//ライフが0になった時にオブジェクトの位置から撃破パーティクルを発生
-	// コア1
-	if (bossCore_1->GetAliveFlag() == false)
-	{
-		if (bossCore_1->GetDestroyPartTime() > 0)
-		{
-			circleParticle->BlastPart_1(20, bossCore_1->GetWorldPosition(), 20.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-		}
-	}
-
-	// コア2
-	if (bossCore_2->GetAliveFlag() == false)
-	{
-		if (bossCore_2->GetDestroyPartTime() > 0)
-		{
-			circleParticle->BlastPart_2(20, bossCore_2->GetWorldPosition(), 20.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
-		}
-	}
-
-	// コア3
-	if (bossCore_3->GetAliveFlag() == false)
-	{
-		if (bossCore_3->GetDestroyPartTime() > 0)
-		{
-			circleParticle->BlastPart_3(20, bossCore_3->GetWorldPosition(), 20.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
-		}
-	}
-
-	// コア4
-	if (bossCore_4->GetAliveFlag() == false)
-	{
-		if (bossCore_4->GetDestroyPartTime() > 0)
-		{
-			circleParticle->BlastPart_4(20, bossCore_4->GetWorldPosition(), 20.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
-		}
-	}
+	
 }
 
 // コアヒットエフェクト
@@ -852,66 +765,6 @@ void SecondStage::CoreHitEffect()
 {
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
-		// コア1の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 24.0f))
-		{
-			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
-			}
-			bossCore_1->colorTimeRate = 0.0f;
-			bossCore_1->colorTimeRate2 = 0.0f;
-			bossCore_1->life--;
-			bullet->deathFlag = true;
-		}
-
-		// コア2の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 24.0f))
-		{
-			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_2->GetWorldPosition(), 50.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorYellow(), bossCore_2->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
-			}
-			bossCore_2->colorTimeRate = 0.0f;
-			bossCore_2->colorTimeRate2 = 0.0f;
-			bossCore_2->life--;
-			bullet->deathFlag = true;
-		}
-
-		// コア3の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 24.0f))
-		{
-			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_3->GetWorldPosition(), 50.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorYellow(), bossCore_3->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
-			}
-			bossCore_3->colorTimeRate = 0.0f;
-			bossCore_3->colorTimeRate2 = 0.0f;
-			bossCore_3->life--;
-			bullet->deathFlag = true;
-		}
-
-		// コア4の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 24.0f))
-		{
-			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_4->GetWorldPosition(), 50.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorYellow(), bossCore_4->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
-			}
-			bossCore_4->colorTimeRate = 0.0f;
-			bossCore_4->colorTimeRate2 = 0.0f;
-			bossCore_4->life--;
-			bullet->deathFlag = true;
-		}
-
 		// メインコアの疑似ヒット処理
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossMainCore->GetWorldPosition(), 24.0f))
 		{
@@ -951,17 +804,10 @@ void SecondStage::BossPartsHitEffect()
 			bullet->deathFlag = true;
 		}
 
-		// Turret 2 collision detection
-		//if (BasicCollisionDetection(bullet->GetPosition(), 3.0f, bossTurret_2->GetWorldPosition(), 24.0f))
-		//{
-		//	// 必要なときはいつでも、次の3行を自由に復元してください。
-		//	if (bossTurret_2->isAlive == true)
-		//	{
-		//		bossTurret_2->colorTimeRate = 0.0f;
-		//		bossTurret_2->life--;
-		//	}
-		//	bullet->deathFlag = true;
-		//}
+		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossShield->GetWorldPosition(), 24.0f) && bossShield->isAlive == true)
+		{
+			bullet->deathFlag = true;
+		}
 	}
 }
 
@@ -1002,19 +848,20 @@ void SecondStage::ReflectHitEffect()
 
 		if (reflectBullet->isReflect)
 		{
-			if (Collision::CCDCollisionDetection(reflectBullet->prevPosition, reflectBullet->GetPosition(), 18.0f, boss->GetPosition(), 24.0f))
+			if (Collision::CCDCollisionDetection(reflectBullet->prevPosition, reflectBullet->GetPosition(), 18.0f, bossShield->GetWorldPosition(), 5.0f))
 			{
-
 				// ラリーON
 				if (turnCount == 1) // 1ターン目
 				{
 					if (reflectBullet->rallyCount == 1)
 					{
-						circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+						circleParticle->DefaultParticle(20, 50, bossShield->GetWorldPosition(), 50.0f, 0.0f, bossMainCore->GetColorRed(), bossMainCore->GetColorRed());
+						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
+						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());
 
-						bossMainCore->life -= 10.0f;
+						bossMainCore->life -= 5.0f;
+						bossShield->isAlive = false;
+						bossShield->revivalTimeRate = 0.0f;
 						reflectBullet->deathFlag = true;
 						reflectBullet->rallyCount = 1;
 						turnCount++;
@@ -1024,17 +871,20 @@ void SecondStage::ReflectHitEffect()
 				{
 					if (reflectBullet->rallyCount == 1)
 					{
+						bossShield->timeRate = 0.0f;
 						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 2.0f, 5.0f);
 						reflectBullet->rallyCount++;
 						reflectBullet->isReflect = false;
 					}
 					else if (reflectBullet->rallyCount == 2)
 					{
-						circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+						circleParticle->DefaultParticle(20, 50, bossShield->GetWorldPosition(), 50.0f, 0.0f, bossMainCore->GetColorRed(), bossMainCore->GetColorRed());
+						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
+						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());
 
-						bossMainCore->life -= 10.0f;
+						bossMainCore->life -= 5.0f;
+						bossShield->isAlive = false;
+						bossShield->revivalTimeRate = 0.0f;
 						reflectBullet->deathFlag = true;
 						reflectBullet->rallyCount = 1;
 						turnCount++;
@@ -1044,35 +894,31 @@ void SecondStage::ReflectHitEffect()
 				{
 					if (reflectBullet->rallyCount == 1)
 					{
+						bossShield->timeRate = 0.0f;
 						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 2.0f, 5.0f);
 						reflectBullet->rallyCount++;
 						reflectBullet->isReflect = false;
 					}
 					else if (reflectBullet->rallyCount == 2)
 					{
+						bossShield->timeRate = 0.0f;
 						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 3.0f, 3.0f);
 						reflectBullet->rallyCount++;
 						reflectBullet->isReflect = false;
 					}
 					else if (reflectBullet->rallyCount == 3)
 					{
-						circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-						circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+						circleParticle->DefaultParticle(20, 50, bossShield->GetWorldPosition(), 50.0f, 0.0f, bossMainCore->GetColorRed(), bossMainCore->GetColorRed());
+						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
+						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());
 
-						bossMainCore->life -= 10.0f;
+						bossMainCore->life -= 5.0f;
+						bossShield->isAlive = false;
+						bossShield->revivalTimeRate = 0.0f;
 						reflectBullet->deathFlag = true;
 						reflectBullet->rallyCount = 1;
 					}
 				}
-
-				// ラリーOFF
-				/*circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
-
-				bossMainCore->life -= 10.0f;
-				reflectBullet->deathFlag = true;*/
 			}
 		}
 	}
@@ -1082,14 +928,11 @@ void SecondStage::CoreAllBreak()
 {
 	if (bossMainCore->isBreak == true)
 	{
-		bossCore_1->VarReset();
-		bossCore_2->VarReset();
-		bossCore_3->VarReset();
-		bossCore_4->VarReset();
+		bossShield->isRevival = true;
 
 		bossMainCore->VarReset();
 
-		if (bossCore_1->isAlive && bossCore_2->isAlive && bossCore_3->isAlive && bossCore_4->isAlive && bossMainCore->isAlive == false)
+		if (bossShield->isAlive)
 		{
 			bossMainCore->isBreak = false;
 		}
@@ -1097,7 +940,7 @@ void SecondStage::CoreAllBreak()
 
 	if (bossMainCore->isAlive == false)
 	{
-		if (!bossCore_1->isAlive && !bossCore_2->isAlive && !bossCore_3->isAlive && !bossCore_4->isAlive)
+		if (bossShield->isAlive == false)
 		{
 			bossMainCore->isAlive = true;
 		}
