@@ -23,6 +23,7 @@ private: // 静的メンバ変数
 		reticle,
 		black,
 		rule,
+		speed,
 
 		// ボス
 		game_boss_frame_1,

@@ -3,9 +3,9 @@
 #include "Sprite.h"
 #include "Lerp.h"
 
-class GageUI
+#pragma once
+class MeterUI
 {
-private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
@@ -33,24 +33,23 @@ private: // 静的メンバ変数
 
 public: // 静的メンバ関数
 // インスタンス生成
-	static GageUI* Create(XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color);
+	static MeterUI* Create(XMFLOAT2 position, float rotation, XMFLOAT4 color);
 
-	bool Initialize(XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color);
+	bool Initialize(XMFLOAT2 position, float rotation, XMFLOAT4 color);
 
-	void Update(float nowVal, float maxVal, XMFLOAT2 position, XMFLOAT4 start_color, XMFLOAT4 end_color);
+	void Update(float nowVal, float maxVal, XMFLOAT2 position);
 
 	void Draw();
 
 private:
-	Sprite* gageBase = nullptr;
-	Sprite* gageMain = nullptr;
-	Sprite* gageCover = nullptr;
-	Sprite* gageDelta = nullptr;
+	Sprite* meterBase = nullptr;
+	Sprite* meterNeedle = nullptr;
 
-	XMFLOAT2 nowSize = { 530.0f, 30.0f };
-	XMFLOAT2 maxSize = {};
+	float nowRotation = 0.0f;
+	float maxRotation = {};
 
 	float ratio = {};
 
 	XMFLOAT4 gageColor = {};
 };
+

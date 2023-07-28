@@ -35,7 +35,7 @@ void SecondStage::Initialize()
 		return;
 	}
 
-	// ボス
+	// ゲージUI
 	if (!Sprite::LoadTexture(TextureNumber::game_boss_frame_1, L"Resources/Sprite/GameUI/BossHpUI/game_boss_frame_1.png")) {
 		assert(0);
 		return;

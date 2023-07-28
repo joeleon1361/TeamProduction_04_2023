@@ -37,6 +37,8 @@
 #include "DeltaGageUI.h"
 #include "collision.h"
 
+#include "MeterUI.h"
+
 #include <cassert>
 #include <sstream>
 #include <iomanip>
@@ -59,6 +61,7 @@ class BossParts;
 class BossTurret;
 class GageUI;
 class DeltaGageUI;
+class MeterUI;
 
 // ゲームシーン
 class GamePlay : public BaseScene
@@ -81,6 +84,7 @@ private: // 静的メンバ変数
 		reticle,
 		black,
 		rule,
+		speed,
 
 		// ボス
 		game_boss_frame_1,
@@ -168,6 +172,8 @@ private: // メンバ変数
 
 	GageUI* gageSpeed = nullptr;
 	GageUI* gageCharge = nullptr;
+
+	MeterUI* meterSpeed = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;

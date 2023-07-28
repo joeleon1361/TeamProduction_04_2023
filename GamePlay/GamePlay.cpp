@@ -35,7 +35,7 @@ void GamePlay::Initialize()
 		return;
 	}
 
-	// ボス
+	// ゲージUI
 	if (!Sprite::LoadTexture(TextureNumber::game_boss_frame_1, L"Resources/Sprite/GameUI/BossHpUI/game_boss_frame_1.png")) {
 		assert(0);
 		return;
@@ -63,6 +63,12 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	// スピード
+	if (!Sprite::LoadTexture(TextureNumber::speed, L"Resources/Sprite/GameUI/Speed.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化
@@ -83,6 +89,7 @@ void GamePlay::Initialize()
 
 	// 速度ゲージ
 	gageSpeed = GageUI::Create(playerSpeedUIPosition, { 530.0f, 30.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
+	meterSpeed = MeterUI::Create({ 640.0f, 650.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
@@ -152,7 +159,7 @@ void GamePlay::Initialize()
 	camera->SetDistance(20.0f);
 
 	// プレイヤー
-	player->SetPosition({ 0.0f, 0.0f, -200.0f });
+	player->SetPosition({ 0.0f, 0.0f, -400.0f });
 	player->SetRotation({ 0.0f, 180.0f, 0.0f });
 	player->SetScale({ 2.0f, 2.0f, 2.0f });
 
@@ -388,6 +395,7 @@ void GamePlay::Update()
 	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax, bossHpUIPosition);
 	// プレイヤーの速度ゲージ
 	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition, { 0.1f, 0.6f, 0.6f, 1.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
+	meterSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), { 640.0f, 650.0f });
 
 	gagePlayerHp->Update(player->HP, player->HPMAX, playerHpUIPosition);
 
@@ -557,6 +565,7 @@ void GamePlay::Draw()
 	gageBoost->Draw();
 	gageBossHp->Draw();
 	gageSpeed->Draw();
+	meterSpeed->Draw();
 	gagePlayerHp->Draw();
 	gageCharge->Draw();
 
