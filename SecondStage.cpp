@@ -321,7 +321,7 @@ void SecondStage::Update()
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		circleParticle->BulletParticle(5, 10, bullet->GetPosition(), { 0.1f,1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 1.0f, 1.0f }, 5.0f);
-		bullet->Update();
+		//bullet->Update();
 	}
 
 	// ƒvƒŒƒCƒ„[‚Ì‘_‚¢’e‚ğÁ‹

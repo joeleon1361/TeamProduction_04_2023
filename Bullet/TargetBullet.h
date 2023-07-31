@@ -30,7 +30,7 @@ public: // メンバ関数
 		XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up, XMFLOAT3 near_point);
 
 	// 毎フレーム処理
-	void Update();
+	void Update(XMFLOAT3 prevPos, XMFLOAT3 currentPos, XMMATRIX viewMat, XMFLOAT3 playerRot);
 
 	const bool GetDeathFlag() { return deathFlag; }
 
@@ -47,6 +47,15 @@ private: // メンバ変数
 	int width = 0;
 	int height = 0;
 
+	float degrees = 0.0f;
+	float diff = 0.0f;
+	bool diffSet = false;
+
+	int stage = 0;
+
+	XMVECTOR permFarPoint;
+	XMVECTOR permNearPoint;
+
 	POINT cursorPos;
 
 public:
@@ -57,5 +66,9 @@ public:
 	XMFLOAT3 upVector = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 bulletDirection = { 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 prevPosition = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 futurePosition = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 nullVel = { 0.0f, 0.0f, 0.0f };
+
+	int testing;
 };
 

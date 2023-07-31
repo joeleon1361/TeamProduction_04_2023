@@ -143,6 +143,8 @@ public:
 	Vector3 direction = { 0, 0, 1 };
 	Vector3 moveDirection = {};
 
+	XMFLOAT3 prevPos = { 0.0f, 0.0f, 0.0f };
+
 	// ’e”­ŽËŽž‚Ì‘¬“x
 	float shootSpeed = 0.0f;
 	float shootSpeedTimeRate = 0.0f;
