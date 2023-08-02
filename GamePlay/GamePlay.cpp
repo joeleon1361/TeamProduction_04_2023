@@ -349,8 +349,9 @@ void GamePlay::Update()
 	// Debug Use Only
 	if (input->TriggerKey(DIK_C))
 	{
-		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("RESULT");
+		//victory = true;
+		////シーン切り替え
+		//SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 	
 	//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
@@ -366,10 +367,10 @@ void GamePlay::Update()
 	{
 		Shoot();
 
-		if (input->TriggerKey(DIK_T))
+		/*if (input->TriggerKey(DIK_T))
 		{
 			playerBulletType = Charge;
-		}
+		}*/
 	}
 	else if (playerBulletType == Charge)
 	{
@@ -431,10 +432,10 @@ void GamePlay::Update()
 	// 全てのコアを破壊した後
 	CoreAllBreak();
 
-	if (input->PushKey(DIK_H))
+	/*if (input->PushKey(DIK_H))
 	{
 		playerSpeedUIPosition.y += 1.0f;
-	}
+	}*/
 
 	PlayerHitEffect();
 

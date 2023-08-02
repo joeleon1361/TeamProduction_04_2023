@@ -467,13 +467,13 @@ void StageSelect::Update()
 		}
 
 		//決定キーを入力したら、シーン遷移
-		if (input->TriggerKey(DIK_SPACE))
+		if (input->TriggerKey(DIK_SPACE) && BlackAlpha <= 0.0f)
 		{
 			sound->PlayWav("SE/Title/Start.wav", 0.5f, false);
 			CamForwardFlag = true;
 		}
 
-		if (BlackAlpha >= 1.0f && FeedInFlag == true)
+		if (BlackAlpha >= 1.0f)
 		{
 			//シーン切り替え
 			SceneManager::GetInstance()->ChangeScene("GAMEPLAY");
@@ -523,7 +523,7 @@ void StageSelect::Update()
 		}
 
 		//決定キーを入力したら、シーン遷移
-		if (input->TriggerKey(DIK_SPACE))
+		if (input->TriggerKey(DIK_SPACE) && BlackAlpha <= 0.0f)
 		{
 			sound->PlayWav("SE/Title/Start.wav", 0.5f, false);
 			CamForwardFlag = true;
@@ -559,7 +559,7 @@ void StageSelect::Update()
 		}
 
 		//決定キーを入力したら、シーン遷移
-		if (input->TriggerKey(DIK_SPACE))
+		if (input->TriggerKey(DIK_SPACE) && BlackAlpha <= 0.0f)
 		{
 			sound->PlayWav("SE/Title/Start.wav", 0.5f, false);
 			CamForwardFlag = true;

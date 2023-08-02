@@ -290,7 +290,7 @@ void SecondStage::Update()
 	if (input->TriggerKey(DIK_C))
 	{
 		//シーン切り替え
-		SceneManager::GetInstance()->ChangeScene("RESULT");
+		//SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
 
 	//circleParticle->SparkParticle(20, 50, bossCore_1->GetWorldPosition(), 10.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
@@ -306,19 +306,19 @@ void SecondStage::Update()
 	{
 		Shoot();
 
-		if (input->TriggerKey(DIK_T))
+		/*if (input->TriggerKey(DIK_T))
 		{
 			playerBulletType = Charge;
-		}
+		}*/
 	}
 	else if (playerBulletType == Charge)
 	{
-		chargeShoot();
+		/*chargeShoot();
 
 		if (input->TriggerKey(DIK_T))
 		{
 			playerBulletType = Normal;
-		}
+		}*/
 	}
 
 	// プレイヤーの狙い弾を消去
@@ -399,7 +399,7 @@ void SecondStage::Update()
 
 	if (input->PushKey(DIK_H))
 	{
-		playerSpeedUIPosition.y += 1.0f;
+		//playerSpeedUIPosition.y += 1.0f;
 	}
 
 	PlayerHitEffect();
