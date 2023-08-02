@@ -118,6 +118,8 @@ void StageSelect::Initialize()
 	bossPartsCoreStand = BossParts::Create();
 	bossMainCore = BossMainCore::Create();
 
+	modelExit = ObjModel::CreateFromOBJ("TitleObj");
+
 	modelBossPartsCoreBox = ObjModel::CreateFromOBJ("bossPartsCoreBox");
 	bossCoreBox_1->SetModel(modelBossPartsCoreBox);
 	bossCoreBox_2->SetModel(modelBossPartsCoreBox);
@@ -307,7 +309,7 @@ void StageSelect::Initialize()
 
 	BossObj_1->SetModel(BossModel_1);
 	BossObj_2->SetModel(BossModel_2);
-	BossObj_3->SetModel(BossModel_3);
+	BossObj_3->SetModel(modelExit);
 
 	BossObj_1->SetPosition(BossSelectPos_3);
 	BossObj_2->SetPosition(BossSelectPos_4);
@@ -427,7 +429,7 @@ void StageSelect::Update()
 	{
 		//ボスモデル拡大
 		scaleRate += 0.04f;
-		BossScale_3 = Lerp::LerpFloat3({ 1.0f, 1.0f, 1.0 }, { 5.0f, 5.0f, 5.0f }, scaleRate);
+		BossScale_3 = Lerp::LerpFloat3({ 1.0f, 1.0f, 1.0 }, { 7.0f, 7.0f, 7.0f }, scaleRate);
 		BossObj_3->SetScale(BossScale_3);
 
 		//ボスモデルの拡大が終わったらモデル回転

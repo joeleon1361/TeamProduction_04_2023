@@ -155,6 +155,8 @@ private: // メンバ変数
 	ObjModel* modelBossPartsBody = nullptr;
 	ObjModel* modelBossPartsCoreStand = nullptr;
 
+	ObjModel* modelExit = nullptr;
+
 	ObjModel* model_Skydome = nullptr;
 
 	//スプライト
