@@ -5,11 +5,6 @@ using namespace DirectX;
 ID3D12Device* Player::device = nullptr;
 //Camera* Player::camera = nullptr;
 
-extern XMFLOAT3 externVel = { 0.0f, 0.0f, 0.0f };
-extern XMFLOAT3 externRotationL = { 0.0f, 0.0f, 0.0f };
-extern XMFLOAT3 externRotationR = { 0.0f, 0.0f, 0.0f };
-extern XMFLOAT3 playerRot = { 0.0f, 0.0f, 0.0f };
-
 Player* Player::Create(ObjModel* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
@@ -216,16 +211,6 @@ void Player::Move()
 		yVel = 0.0f;
 	}
 
-	externRotationL.x = position.x + cosf(XMConvertToRadians(xAngle - 148.0f)) * 50.0f;
-	externRotationL.z = position.z + sinf(XMConvertToRadians(xAngle - 148.0f)) * 50.0f;
-	externRotationR.x = position.x + cosf(XMConvertToRadians(xAngle + 148.0f)) * 50.0f;
-	externRotationR.z = position.z + sinf(XMConvertToRadians(xAngle + 148.0f)) * 50.0f;
-
-	externRotationL.x = (externRotationL.x - position.x);
-	externRotationL.z = (externRotationL.z - position.z);
-	externRotationR.x = (externRotationR.x - position.x);
-	externRotationR.z = (externRotationR.z - position.z);
-
 	axis.y += yVel;
 	if (axis.y > 140.0f)
 	{
@@ -269,18 +254,6 @@ void Player::Move()
 	position.y += totalSpeed * Vel.y;
 	position.z += totalSpeed * Vel.z;
 
-	externVel = Vel * totalSpeed;
-	externRotationL.x = (externRotationL.x / hypotenuse);
-	externRotationL.z = (externRotationL.z / hypotenuse);
-	externRotationR.x = (externRotationR.x / hypotenuse);
-	externRotationR.z = (externRotationR.z / hypotenuse);
-	externRotationL.x *= totalSpeed;
-	externRotationL.z *= totalSpeed;
-	externRotationR.x *= totalSpeed;
-	externRotationR.z *= totalSpeed;
-	externRotationL = (position - externRotationL);
-	externRotationR = (position - externRotationR);
-
 	/*if (!input->PushKey(DIK_S) && !input->PushKey(DIK_W))
 	{
 		axis.y = position.y + rotation.x;
@@ -288,8 +261,6 @@ void Player::Move()
 
 	SetPosition(position);
 	SetRotation({ -degrees2, -degrees + 90.0f, rotation.z });
-
-	playerRot = rotation;
 }
 
 // 前方向時の自機の傾き

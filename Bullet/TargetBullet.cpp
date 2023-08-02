@@ -4,11 +4,6 @@ extern HWND hwnd;
 
 using namespace DirectX;
 
-extern XMFLOAT3 externVel;
-extern XMFLOAT3 externRotationL;
-extern XMFLOAT3 externRotationR;
-extern XMFLOAT2 reticlePosition;
-
 std::unique_ptr<TargetBullet> TargetBullet::Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed, XMFLOAT3 eye, XMFLOAT3 aimTarget, XMFLOAT3 up, XMFLOAT3 near_point)
 {
 	// 3Dオブジェクトのインスタンスを生成
@@ -154,48 +149,6 @@ void TargetBullet::Update(XMFLOAT3 prevPos, XMFLOAT3 currentPos, XMMATRIX viewMa
 
 	XMFLOAT3 nowPos = (currentPos - prevPos);
 
-	//if (stage == 0)
-	//{
-	//	if (permFarPoint.m128_f32[0] > position.x)
-	//	{
-	//		position.x += (permFarPoint.m128_f32[0] - position.x) / 1.0f;
-	//		testing = 1;
-	//	}
-	//	else if (permFarPoint.m128_f32[0] < position.x)
-	//	{
-	//		position.x += (permFarPoint.m128_f32[0] - position.x) / 1.0f;
-	//		testing = 2;
-	//	}
-
-	//	if (permFarPoint.m128_f32[1] > position.y)
-	//	{
-	//		position.y += (permFarPoint.m128_f32[1] - position.y) / 1.0f;
-	//		//testing = 3;
-	//	}
-	//	else if (permFarPoint.m128_f32[1] < position.y)
-	//	{
-	//		position.y += (permFarPoint.m128_f32[1] - position.y) / 1.0f;
-	//		//testing = 4;
-	//	}
-
-	//	if (permFarPoint.m128_f32[2] > position.z)
-	//	{
-	//		position.z += (permFarPoint.m128_f32[2] - position.z) / 1.0f;
-	//		//testing = 5;
-	//	}
-	//	else if (permFarPoint.m128_f32[2] < position.z)
-	//	{
-	//		position.z += (permFarPoint.m128_f32[2] - position.z) / 1.0f;
-	//		//testing = 6;
-	//	}
-
-	//	stage = 1;
-	//}
-	//else if (stage == 1)
-	//{
-	//	
-	//}
-
 	if (!diffSet)
 	{
 		diff = ((-degrees + 90.0f) - playerRot.y);
@@ -211,51 +164,6 @@ void TargetBullet::Update(XMFLOAT3 prevPos, XMFLOAT3 currentPos, XMMATRIX viewMa
 
 		diffSet = true;
 	}
-
-	//if (diff < 0.0f && !isCursorOnRightHalf) // Going right
-	//{
-	//	/*nowPos = (permFarPoint.m128_f32 - externRotationR) / 2.0f;
-	//	position.x += nowPos.x * 0.5f;
-	//	position.y += nowPos.y * 0.5f;
-	//	position.z += nowPos.z * 0.5f;*/
-	//	testing = 0;
-	//	position.x += bulletDirection.x * speed;
-	//	position.y += bulletDirection.y * speed;
-	//	position.z += bulletDirection.z * speed;
-	//}
-	//else if (diff < 0.0f && isCursorOnRightHalf) // Going right
-	//{
-	//	/*nowPos = (permFarPoint.m128_f32 - externRotationR) / 2.0f;
-	//	position.x += nowPos.x;
-	//	position.y += nowPos.y * 0.8f;
-	//	position.z += nowPos.z;*/
-	//	testing = 1;
-	//	position.x += bulletDirection.x * speed;
-	//	position.y += bulletDirection.y * speed;
-	//	position.z += bulletDirection.z * speed;
-	//}
-	//else if (diff > 0.0f && !isCursorOnRightHalf) // Going left
-	//{
-	//	/*nowPos = (permFarPoint.m128_f32 - externRotationL) / 2.0f;
-	//	position.x += nowPos.x;
-	//	position.y += nowPos.y * 0.8f;
-	//	position.z += nowPos.z;*/
-	//	testing = 2;
-	//	position.x += bulletDirection.x * speed;
-	//	position.y += bulletDirection.y * speed;
-	//	position.z += bulletDirection.z * speed;
-	//}
-	//else if (diff > 0.0f && isCursorOnRightHalf) // Going left
-	//{
-	//	/*nowPos = (permFarPoint.m128_f32 - externRotationL) / 2.0f;
-	//	position.x += nowPos.x * 0.5f;
-	//	position.y += nowPos.y * 0.5f;
-	//	position.z += nowPos.z * 0.5f;*/
-	//	testing = 3;
-	//	position.x += bulletDirection.x * speed;
-	//	position.y += bulletDirection.y * speed;
-	//	position.z += bulletDirection.z * speed;
-	//}
 
 	//Debug Start
 	/*char msgbuf[256];

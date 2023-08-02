@@ -3,8 +3,6 @@
 using namespace DirectX;
 extern HWND hwnd;
 
-extern XMFLOAT2 reticlePosition = { 0.0f, 0.0f };
-
 GamePlay::GamePlay()
 {
 }
@@ -328,8 +326,6 @@ void GamePlay::Update()
 	{
 		ReticlePos.y = 575.0f;
 	}
-
-	reticlePosition = ReticlePos;
 
 	// Debug Use Only
 	if (input->TriggerKey(DIK_C))
