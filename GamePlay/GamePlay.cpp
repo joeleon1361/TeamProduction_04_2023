@@ -960,6 +960,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_1->colorTimeRate = 0.0f;
 				bossCore_1->colorTimeRate2 = 0.0f;
 				bossCore_1->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}
@@ -984,6 +985,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_2->colorTimeRate = 0.0f;
 				bossCore_2->colorTimeRate2 = 0.0f;
 				bossCore_2->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}
@@ -1008,6 +1010,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_3->colorTimeRate = 0.0f;
 				bossCore_3->colorTimeRate2 = 0.0f;
 				bossCore_3->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}
@@ -1032,6 +1035,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_4->colorTimeRate = 0.0f;
 				bossCore_4->colorTimeRate2 = 0.0f;
 				bossCore_4->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}

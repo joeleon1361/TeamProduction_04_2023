@@ -335,7 +335,7 @@ void SecondStage::Update()
 			bossTurret_1->isShot = true;
 			bossShield->isAlive = true;
 			//reflectionCount = 0.0f;
-			bossTurret_1->shotTimer = 720.0f;
+			bossTurret_1->shotTimer = 600.0f;
 		}
 	}
 

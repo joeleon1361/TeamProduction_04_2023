@@ -90,7 +90,7 @@ public:
 
 
 	// Å‘å‚Ì‘Ì—Í
-	float lifeMax = 30.0f;
+	float lifeMax = 40.0f;
 	// Œ»İ‚Ì‘Ì—Í
 	float life = lifeMax;
 
