@@ -142,4 +142,8 @@ private: // メンバ変数
 	//タイトル表示フラグ
 	bool TitleFlag = true;
 
+	//ディレイタイマーとフラグ
+	bool DelayFlag = false;
+	int DelayTimer = 0;
+
 };

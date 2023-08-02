@@ -1,7 +1,10 @@
 ﻿#include "GamePlay.h"
+#include "Result.h"
 
 using namespace DirectX;
 extern HWND hwnd;
+
+extern bool victory;
 
 GamePlay::GamePlay()
 {
@@ -509,6 +512,7 @@ void GamePlay::Update()
 	// HPが0になったら撃破
 	if (bossMainCore->life <= 0.0f)
 	{
+		victory = true;
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
@@ -1097,6 +1101,7 @@ void GamePlay::PlayerHitEffect()
 
 	if (player->HP <= 0.0f)
 	{
+		victory = false;
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}

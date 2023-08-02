@@ -34,7 +34,9 @@ private: // 静的メンバ変数
 // スプライトのテクスチャ番号
 	static enum TextureNumber
 	{
-		result_bg
+		result_bg,
+		result_win,
+		result_lose,
 	};
 
 public:
@@ -55,7 +57,6 @@ public:
 
 	// 描画
 	void Draw() override;
-
 private: // メンバ変数
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	Input* input = Input::GetInstance();
@@ -63,6 +64,8 @@ private: // メンバ変数
 
 	Camera* camera = nullptr;
 
-	Sprite* resultBG = nullptr;
+	//Sprite* resultBG = nullptr;
+	Sprite* resultBGWin = nullptr;
+	Sprite* resultBGLose = nullptr;
 };
 
