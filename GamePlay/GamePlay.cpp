@@ -88,7 +88,7 @@ void GamePlay::Initialize()
 		return;
 	}
 
-	if (!Sprite::LoadTexture(TextureNumber::breakshield, L"Resources/Sprite/GameUI/breakcore.png")) {
+	if (!Sprite::LoadTexture(TextureNumber::breakshield, L"Resources/Sprite/GameUI/breakshield.png")) {
 		assert(0);
 		return;
 	}
@@ -125,14 +125,14 @@ void GamePlay::Initialize()
 	meterSpeed = MeterUI::Create({ 640.0f, 660.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
 	processMainCore = ProcessUI::Create({ 0.0f, 0.0f }, 2);
-	processCore = ProcessUI::Create({ 0.0f, 0.0f }, 1);
+	processCore = ProcessUI::Create({ 0.0f, 0.0f }, 0);
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
 	BlackAlpha = 1.0f;
 	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 
-	Rule = Sprite::Create(TextureNumber::rule, { 0.0f, 0.0f });
+	Rule = Sprite::Create(TextureNumber::rule, { 0.0f, 70.0f });
 
 	// パーティクル
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -450,6 +450,7 @@ void GamePlay::Update()
 	gageCharge->Update(chargeNow, chargeMax,playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
 	processMainCore->Update({ 0.0f,0.0f });
+	processCore->Update({ 0.0f,0.0f });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -628,12 +629,20 @@ void GamePlay::Draw()
 	gageBossHp->Draw();
 	meterSpeed->Draw();
 	gagePlayerHp->Draw();
-	gageCharge->Draw();
-	processMainCore->Draw();
+	//gageCharge->Draw();
+	if (bossMainCore->isAlive)
+	{
+		processMainCore->Draw();
+	}
+	else
+	{
+		processCore->Draw();
+	}
+	
 
-	player->DebugTextDraw();
-	debugText.DrawAll(cmdList);
-	//Rule->Draw();
+	//player->DebugTextDraw();
+	//debugText.DrawAll(cmdList);
+	Rule->Draw();
 	Black->Draw();
 
 	// スプライト描画後処理
@@ -955,6 +964,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_1->colorTimeRate = 0.0f;
 				bossCore_1->colorTimeRate2 = 0.0f;
 				bossCore_1->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}
@@ -979,6 +989,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_2->colorTimeRate = 0.0f;
 				bossCore_2->colorTimeRate2 = 0.0f;
 				bossCore_2->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}
@@ -1003,6 +1014,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_3->colorTimeRate = 0.0f;
 				bossCore_3->colorTimeRate2 = 0.0f;
 				bossCore_3->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}
@@ -1027,6 +1039,7 @@ void GamePlay::CoreHitEffect()
 				bossCore_4->colorTimeRate = 0.0f;
 				bossCore_4->colorTimeRate2 = 0.0f;
 				bossCore_4->life--;
+				bossMainCore->life -= 2.0f;
 			}
 			bullet->deathFlag = true;
 		}

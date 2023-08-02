@@ -190,6 +190,7 @@ private: // ƒƒ“ƒo•Ï”
 	GageUI* gageCharge = nullptr;
 
 	ProcessUI* processMainCore = nullptr;
+	ProcessUI* processShield = nullptr;
 
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -199,6 +200,7 @@ private: // ƒƒ“ƒo•Ï”
 	ObjModel* modelBossPartsTurretStand = nullptr;
 	ObjModel* modelBossPartsBody = nullptr;
 	ObjModel* modelBossPartsCoreStand = nullptr;
+	ObjModel* modelRock = nullptr;
 
 	Player* player = nullptr;
 	Boss* boss = nullptr;
@@ -266,5 +268,7 @@ private: // ƒƒ“ƒo•Ï”
 	XMFLOAT3 PlayerPos = { 0.0f, 0.0f, 0.0 };
 
 	int turnCount = 1;
+
+	float reflectionCount = 1.0f;
 };
 

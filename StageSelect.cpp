@@ -272,7 +272,7 @@ void StageSelect::Initialize()
 	boss2Turret_1->SetParent({ boss2TurretStand_1 });
 
 	// ボスの盾
-	boss2Shield->SetPosition({ 0.0f, 0.0f, -9.0f });
+	boss2Shield->SetPosition({ 0.0f, 0.0f, -7.0f });
 	boss2Shield->SetRotation({ 0.0f,180.0f, 0.0f });
 	boss2Shield->SetScale({ 2.0f, 2.0f, 2.0f });
 	boss2Shield->SetParent(boss2);
@@ -566,7 +566,7 @@ void StageSelect::Update()
 		if (BlackAlpha >= 1.0f)
 		{
 			//シーン切り替え
-			SceneManager::GetInstance()->ChangeScene("THIRDSTAGE");
+			SceneManager::GetInstance()->ChangeScene("TITLE");
 		}
 	}
 

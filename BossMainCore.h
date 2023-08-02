@@ -90,7 +90,7 @@ public:
 
 
 	// 最大の体力
-	float lifeMax = 30.0f;
+	float lifeMax = 40.0f;
 	// 現在の体力
 	float life = lifeMax;
 
@@ -103,6 +103,6 @@ public:
 	float colorTimeRate2 = 1.0f;
 
 	// メインコアの出現時間
-	float onTimer = 800.0f;
+	float onTimer = 400.0f;
 };
 

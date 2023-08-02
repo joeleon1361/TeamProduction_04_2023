@@ -142,5 +142,5 @@ void BossMainCore::VarReset()
 	isAlive = false;
 
 	// メインコアの出現時間
-	onTimer = 800.0f;
+	onTimer = 400.0f;
 }

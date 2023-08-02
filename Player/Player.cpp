@@ -339,7 +339,7 @@ void Player::Boost()
 void Player::BoostTest()
 {
 	BoostPartColor = { (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , (float)rand() / RAND_MAX , 1.0f };
-	if (Input::GetInstance()->PushMouseRight() == true)
+	if (Input::GetInstance()->PushMouseRight() == true && boostCancel == false)
 	{
 		BoostFlag = true;
 	}
@@ -359,7 +359,7 @@ void Player::BoostTest()
 
 		if (BoostPowNow <= 0)
 		{
-			BoostFlag = false;
+			boostCancel = true;
 		}
 	}
 
@@ -369,6 +369,15 @@ void Player::BoostTest()
 		if (BoostPowNow < BoostPowMax)
 		{
 			BoostPowNow++;
+		}
+	}
+
+	if (boostCancel)
+	{
+		BoostFlag = false;
+		if (BoostPowNow >= BoostPowMax)
+		{
+			boostCancel = false;
 		}
 	}
 

@@ -20,7 +20,7 @@ ProcessUI* ProcessUI::Create(XMFLOAT2 position, int type)
 bool ProcessUI::Initialize(XMFLOAT2 position, int type)
 {
 	processBase = Sprite::Create(TextureNumber::process, position);
-	breakCore = Sprite::Create(TextureNumber::breakshield, { position.x + 201.0f , position.y + 32.0f });
+	breakCore = Sprite::Create(TextureNumber::breakcore, { position.x + 201.0f , position.y + 32.0f });
 	breakMainCore = Sprite::Create(TextureNumber::breakmaincore, { position.x + 201.0f , position.y + 32.0f });
 	breakShield = Sprite::Create(TextureNumber::breakshield, { position.x + 201.0f , position.y + 32.0f });
 
