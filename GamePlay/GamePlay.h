@@ -157,7 +157,7 @@ private: // メンバ変数
 
 	Sprite* gameBG = nullptr;
 	Sprite* Reticle = nullptr;
-	Sprite* test = nullptr;
+	Sprite* StoragePos = nullptr;
 
 	Sprite* Black = nullptr;
 	Sprite* Rule = nullptr;

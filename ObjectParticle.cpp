@@ -340,6 +340,10 @@ void ObjectParticle::Update(XMFLOAT3 vel)
 		scale.z = 0.0f;
 	}
 
+	rotation.x += (float)rand() / RAND_MAX * 50 - 50 / 2.0f;
+	rotation.y += (float)rand() / RAND_MAX * 50 - 50 / 2.0f;
+	rotation.z += (float)rand() / RAND_MAX * 50 - 50 / 2.0f;
+
 	//全パーティクル更新
 	for (std::forward_list<Particle>::iterator it = particles.begin(); it != particles.end(); it++)
 	{

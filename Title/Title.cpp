@@ -16,6 +16,9 @@ void Title::Initialize()
 	//遷移フラグリセット
 	StartFlag = false;
 
+	//タイトルフラグリセット
+	TitleFlag = true;
+
 	// カメラ生成
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
 
@@ -62,22 +65,19 @@ void Title::Initialize()
 	objTitleFont = ObjObject::Create();
 
 	// モデルセット
-	modelTitleFont = ObjModel::CreateFromOBJ("TitleSkydome");
+	modelTitleFont = ObjModel::CreateFromOBJ("TitleFont");
 	objTitleFont->SetModel(modelTitleFont);
 
-	objTitleFont->SetScale({ 20.0f,20.0f,20.0f });
-	objTitleFont->SetPosition({ 0.0f,10.0f,45.0f});
-	objTitleFont->SetRotation({ -20.0f,0.0f,0.0f});
+	objTitleFont->SetScale({ 6.0f,6.0f,6.0f });
+	objTitleFont->SetPosition({2.0f,4.0f,25.0f});
+	objTitleFont->SetRotation({ -25.0f,0.0f,0.0f});
 
 	//オブジェクトパーティクル
-	modelObject = ObjModel::CreateFromOBJ("TitleSkydome");
+	modelObject = ObjModel::CreateFromOBJ("Gear");
 	Object = ObjectParticle::Create(modelObject, DefaultPos);
 	Object->SetModel(modelObject);
-
-	//Object->SetScale({ 10.0f,10.0f,10.0f });
-	//Object->SetRotation({ 0.0f,0.0f,0.0f });
 	
-
+	
 	// パーティクル
 	//Particle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
 
@@ -88,8 +88,11 @@ void Title::Initialize()
 	circleParticle->SetModel(modelObject);
 
 	//カメラの注視点と座標を設定
-	camera->SetEye({ 0.0f, 0.0f, 0.0f });
-	camera->SetTarget({ 0.0f, 0.0f, 100.0f });
+	/*camera->SetEye({ 0.0f, 0.0f, 10.0f });
+	camera->SetTarget({ 0.0f, 0.0f, 100.0f });*/
+
+	//最初のパーティクル発生を防ぐ
+	PartFlag = false;
 }
 
 void Title::Finalize()
@@ -161,20 +164,17 @@ void Title::Update()
 
 	if (input->TriggerKey(DIK_SPACE))
 	{
-		StartFlag = true;
-	}
-
-	if (input->TriggerKey(DIK_M))
-	{
-		//Object = ObjectParticle::Create(modelObject, DefaultPos);
-		//CreateParticle();
+		TitleFlag = false;
+		PartFlag = true;
 		CountTime = 0;
-		
 	}
 
-	if (CountTimer(30) == false)
+	if (PartFlag == true)
 	{
-		CreateParticle();
+		if (CountTimer(30) == false)
+		{
+			CreateParticle(objTitleFont->GetPosition());
+		}
 	}
 
 
@@ -185,12 +185,8 @@ void Title::Update()
 		Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 	}
 
-//	objTitleFont->Update();
+	objTitleFont->Update();
 
-
-	//Object->ObjPart(30, { 0, 0, -300 }, { 1, 1, 1 }, { 0.5,  0.5, 0.5 });
-	
-	//Object->Update(Vector);
 	
 	// パーティクル更新
 	//Particle->Update();
@@ -236,7 +232,8 @@ void Title::Update()
 
 	camera->SetEye({ 0.0f, 0.0f, 0.0f });
 	camera->SetTarget({ 0.0f, 0.0f, 100.0f });
-	camera->Update({ 0, 0, 10 }, { 0, 0, 0 });
+	camera->Update({ 0, 0, 0 }, { 0, 0, 30 });
+
 }
 
 void Title::Draw()
@@ -248,14 +245,14 @@ void Title::Draw()
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
-	/*titleBG->Draw();
+	titleBG->Draw();
 	titleBG_LD->Draw();
 	titleBG_RU->Draw();
 	titleBG_RD->Draw();
 
-	TitleFont->Draw();*/
+	//TitleFont->Draw();
 
-	if (DrawTimer <= 30)
+	if (DrawTimer <= 40)
 	{
 		PressSpace->Draw();
 	}
@@ -274,8 +271,11 @@ void Title::Draw()
 	ObjectParticle::PreDraw(cmdList);
 
 	// 3Dオブクジェクトの描画
-	//objTitleFont->Draw();
 
+	if (TitleFlag == true)
+	{
+		objTitleFont->Draw();
+	}
 
 	Object->Draw();
 
@@ -292,8 +292,6 @@ void Title::Draw()
 
 	// パーティクルの描画
 	circleParticle->Draw(cmdList);
-
-	//TestPart->Draw();
 
 	//パーティクル更新
 	//Particle->Draw(cmdList);
@@ -315,7 +313,7 @@ void Title::Draw()
 
 }
 
-void Title::CreateParticle()
+void Title::CreateParticle(XMFLOAT3 pos)
 {
 	XMFLOAT3 Position = {};
 
@@ -325,7 +323,6 @@ void Title::CreateParticle()
 	Position.y = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
 	Position.z = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
 
-	//XMFLOAT3 Vector = {};
 	const float md_vel = 0.1f;
 	
 	Vector.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
@@ -340,6 +337,7 @@ void Title::CreateParticle()
 	newObject = ObjectParticle::Create(modelObject, {0, 0, 0});
 
 	newObject->vel = Position;
+	newObject->SetScale({ 3.0f, 3.0f, 3.0f });
 
 	particle.push_back(std::move(newObject));
 }
@@ -351,6 +349,7 @@ int Title::CountTimer(int Time)
 
 	if (CountTime >= Time)
 	{
+		StartFlag = true;
 		return true;
 	}
 

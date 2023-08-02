@@ -59,7 +59,7 @@ public:
 	void Draw() override;
 	
 	//パーティクル生成
-	void CreateParticle();
+	void CreateParticle(XMFLOAT3 pos);
 
 	int CountTimer(int Time);
 
@@ -85,6 +85,7 @@ private: // メンバ変数
 	Sprite* TitleFont = nullptr;
 	Sprite* PressSpace = nullptr;
 	Sprite* Black = nullptr;
+
 
 	//3Dオブジェクト
 	ObjObject* objTitleFont = nullptr;
@@ -134,5 +135,11 @@ private: // メンバ変数
 
 	//カウントタイマー
 	int CountTime = 0;
+
+	//パーティクル発生フラグ
+	bool PartFlag = false;
+
+	//タイトル表示フラグ
+	bool TitleFlag = true;
 
 };

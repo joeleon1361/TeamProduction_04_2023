@@ -105,6 +105,9 @@ public: // メンバ関数
 	// 座標の取得
 	const XMFLOAT3& GetRotation() { return rotation; }
 
+	//スケールの取得
+	const XMFLOAT3& GetScale() { return scale; }
+
 	// 色の取得
 	const XMFLOAT4& GetColor() { return color; }
 
