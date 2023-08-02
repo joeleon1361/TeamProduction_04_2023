@@ -39,6 +39,9 @@
 #include "DeltaGageUI.h"
 #include "Collision.h"
 
+#include "MeterUI.h"
+#include "ProcessUI.h"
+
 #include <cassert>
 #include <sstream>
 #include <iomanip>
@@ -64,6 +67,8 @@ class GageUI;
 class DeltaGageUI;
 class ReflectBullet;
 class BossShield;
+class MeterUI;
+class ProcessUI;
 
 class SecondStage : public BaseScene
 {
@@ -86,6 +91,11 @@ private: // 静的メンバ変数
 		black,
 		rule,
 		speed,
+		meter,
+		process,
+		breakshield,
+		breakmaincore,
+		breakcore,
 
 		// ボス
 		game_boss_frame_1,
@@ -175,8 +185,11 @@ private: // メンバ変数
 	DeltaGageUI* gageBossHp = nullptr;
 	DeltaGageUI* gagePlayerHp = nullptr;
 
-	GageUI* gageSpeed = nullptr;
+	MeterUI* meterSpeed = nullptr;
+
 	GageUI* gageCharge = nullptr;
+
+	ProcessUI* Process = nullptr;
 
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -230,17 +243,17 @@ private: // メンバ変数
 	POINT mousePosition;
 
 	// メインコアのHPバーの座標
-	XMFLOAT2 bossHpUIPosition = { 1255.0f , 30.0f };
+	XMFLOAT2 bossHpUIPosition = { 1272.0f , 30.0f };
 
 	// ブーストゲージの座標
-	XMFLOAT2 boostUIPosition = { 1255.0f , 650.0f };
+	XMFLOAT2 boostUIPosition = { 538.0f, 695.0f };
 
 	// プレイヤーの速度ゲージの座標
-	XMFLOAT2 playerSpeedUIPosition = { 555.0f, 690.0f };
+	XMFLOAT2 playerSpeedUIPosition = { 640.0f, 690.0f };
 
-	XMFLOAT2 playerHpUIPosition = { 1255.0f, 690.0f };
+	XMFLOAT2 playerHpUIPosition = { 1272.0f, 695.0f };
 
-	XMFLOAT2 playerChargeUIPosition = { 555.0f, 650.0f };
+	XMFLOAT2 playerChargeUIPosition = { 1272.0f, 650.0f };
 
 	float chargeNow = 0.0f;
 	float chargeMax = 30.0f;

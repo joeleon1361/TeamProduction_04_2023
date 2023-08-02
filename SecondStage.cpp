@@ -24,6 +24,13 @@ void SecondStage::Initialize()
 	Player::SetCamera(camera);
 	Boss::SetCamera(camera);
 
+	sound->LoadWav("SE/Game/game_player_shot.wav");
+	sound->LoadWav("SE/Game/game_boss_shot.wav");
+	sound->LoadWav("SE/Game/game_player_damage.wav");
+	sound->LoadWav("SE/Game/game_boss_damage.wav");
+	sound->LoadWav("BGM/Game/game_bgm.wav");
+	sound->LoadWav("SE/Game/game_reflect.wav");
+
 	if (!Sprite::LoadTexture(TextureNumber::game_bg, L"Resources/Sprite/GameUI/game_bg.png")) {
 		assert(0);
 		return;
@@ -63,6 +70,22 @@ void SecondStage::Initialize()
 		return;
 	}
 
+	// スピード
+	if (!Sprite::LoadTexture(TextureNumber::speed, L"Resources/Sprite/GameUI/Speed.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::meter, L"Resources/Sprite/GameUI/meter.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::process, L"Resources/Sprite/GameUI/process.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化
@@ -81,7 +104,9 @@ void SecondStage::Initialize()
 	gageCharge = GageUI::Create(playerChargeUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
 	// 速度ゲージ
-	gageSpeed = GageUI::Create(playerSpeedUIPosition, { 530.0f, 30.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
+	meterSpeed = MeterUI::Create({ 640.0f, 660.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+
+	Process = ProcessUI::Create({ 0.0f, 0.0f });
 
 	Black = Sprite::Create(TextureNumber::black, { 0.0f, 0.0f });
 
@@ -194,6 +219,8 @@ void SecondStage::Initialize()
 	camera->SetEye({ 0, 0, -10 });
 	camera->SetUp({ 0, 1, 0 });
 	//camera->SetDistance(48.0f);
+
+	sound->PlayWav("BGM/Game/game_bgm.wav", 0.07f, true);
 
 	ShowCursor(false);
 }
@@ -364,11 +391,13 @@ void SecondStage::Update()
 	// ボスのHPゲージ
 	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax, bossHpUIPosition);
 	// プレイヤーの速度ゲージ
-	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition, { 0.1f, 0.6f, 0.6f, 1.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
+	meterSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), { 640.0f, 650.0f });
 
 	gagePlayerHp->Update(player->HP, player->HPMAX, playerHpUIPosition);
 
 	gageCharge->Update(chargeNow, chargeMax, playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
+
+	Process->Update({ 0.0f,0.0f });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -528,10 +557,10 @@ void SecondStage::Draw()
 
 	gageBoost->Draw();
 	gageBossHp->Draw();
-	gageSpeed->Draw();
 	gagePlayerHp->Draw();
 	gageCharge->Draw();
-
+	meterSpeed->Draw();
+	Process->Draw();
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
 	//Rule->Draw();
@@ -748,6 +777,7 @@ void SecondStage::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, 
 
 void SecondStage::BossReflectShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed)
 {
+	sound->PlayWav("SE/Game/game_boss_shot.wav", 0.07f);
 	std::unique_ptr<ReflectBullet> newBullet = std::make_unique<ReflectBullet>();
 	newBullet = ReflectBullet::Create(modelBossPartsSphere, startPosition, { 10.0f, 10.0f, 10.0f }, endPosition, bulletSpeed);
 
@@ -778,10 +808,10 @@ void SecondStage::CoreHitEffect()
 			if (bossMainCore->isAlive == true)
 			{
 				bossMainCore->life--;
+				sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
+				bossMainCore->colorTimeRate = 0.0f;
+				bossMainCore->colorTimeRate2 = 0.0f;
 			}
-
-			bossMainCore->colorTimeRate = 0.0f;
-			bossMainCore->colorTimeRate2 = 0.0f;
 			bullet->deathFlag = true;
 		}
 	}
@@ -806,6 +836,7 @@ void SecondStage::BossPartsHitEffect()
 
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossShield->GetWorldPosition(), 24.0f) && bossShield->isAlive == true)
 		{
+			sound->PlayWav("SE/Game/game_reflect.wav", 0.07f);
 			bullet->deathFlag = true;
 		}
 	}
@@ -817,6 +848,7 @@ void SecondStage::PlayerHitEffect()
 	{
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, player->GetPosition(), 8.0f))
 		{
+			sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 			player->HP -= 1.0f;
 			circleParticle->DefaultParticle(20, 50, player->GetPosition(), 20.0f, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 
@@ -839,6 +871,7 @@ void SecondStage::ReflectHitEffect()
 		{
 			if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, reflectBullet->GetPosition(), 19.0f))
 			{
+				sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 				reflectBullet->colorTimeRate = 0.0f;
 				reflectBullet->life -= 1.0f;
 
@@ -855,6 +888,7 @@ void SecondStage::ReflectHitEffect()
 				{
 					if (reflectBullet->rallyCount == 1)
 					{
+						sound->PlayWav("SE/Game/game_boss_damage.wav", 0.07f);
 						circleParticle->DefaultParticle(20, 50, bossShield->GetWorldPosition(), 50.0f, 0.0f, bossMainCore->GetColorRed(), bossMainCore->GetColorRed());
 						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
 						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());
@@ -871,6 +905,7 @@ void SecondStage::ReflectHitEffect()
 				{
 					if (reflectBullet->rallyCount == 1)
 					{
+						sound->PlayWav("SE/Game/game_reflect.wav", 0.07f);
 						bossShield->timeRate = 0.0f;
 						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 2.0f, 5.0f);
 						reflectBullet->rallyCount++;
@@ -878,6 +913,7 @@ void SecondStage::ReflectHitEffect()
 					}
 					else if (reflectBullet->rallyCount == 2)
 					{
+						sound->PlayWav("SE/Game/game_boss_damage.wav", 0.07f);
 						circleParticle->DefaultParticle(20, 50, bossShield->GetWorldPosition(), 50.0f, 0.0f, bossMainCore->GetColorRed(), bossMainCore->GetColorRed());
 						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
 						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());
@@ -894,6 +930,7 @@ void SecondStage::ReflectHitEffect()
 				{
 					if (reflectBullet->rallyCount == 1)
 					{
+						sound->PlayWav("SE/Game/game_reflect.wav", 0.07f);
 						bossShield->timeRate = 0.0f;
 						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 2.0f, 5.0f);
 						reflectBullet->rallyCount++;
@@ -901,6 +938,7 @@ void SecondStage::ReflectHitEffect()
 					}
 					else if (reflectBullet->rallyCount == 2)
 					{
+						sound->PlayWav("SE/Game/game_reflect.wav", 0.07f);
 						bossShield->timeRate = 0.0f;
 						reflectBullet->RallyReset(reflectBullet->GetPosition(), player->GetPosition(), 3.0f, 3.0f);
 						reflectBullet->rallyCount++;
@@ -908,6 +946,7 @@ void SecondStage::ReflectHitEffect()
 					}
 					else if (reflectBullet->rallyCount == 3)
 					{
+						sound->PlayWav("SE/Game/game_boss_damage.wav", 0.07f);
 						circleParticle->DefaultParticle(20, 50, bossShield->GetWorldPosition(), 50.0f, 0.0f, bossMainCore->GetColorRed(), bossMainCore->GetColorRed());
 						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorYellow(), bossMainCore->GetColorYellow());
 						circleParticle->DefaultParticle(10, 50, bossShield->GetWorldPosition(), 25.0f, 0.0f, bossMainCore->GetColorOrange(), bossMainCore->GetColorOrange());

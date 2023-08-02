@@ -24,6 +24,12 @@ void GamePlay::Initialize()
 	Player::SetCamera(camera);
 	Boss::SetCamera(camera);
 
+	sound->LoadWav("SE/Game/game_player_shot.wav");
+	sound->LoadWav("SE/Game/game_boss_shot.wav");
+	sound->LoadWav("SE/Game/game_player_damage.wav");
+	sound->LoadWav("SE/Game/game_boss_damage.wav");
+	sound->LoadWav("BGM/Game/game_bgm.wav");
+
 	if (!Sprite::LoadTexture(TextureNumber::game_bg, L"Resources/Sprite/GameUI/game_bg.png")) {
 		assert(0);
 		return;
@@ -69,6 +75,16 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	if (!Sprite::LoadTexture(TextureNumber::meter, L"Resources/Sprite/GameUI/meter.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::process, L"Resources/Sprite/GameUI/process.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化
@@ -88,8 +104,9 @@ void GamePlay::Initialize()
 	gageCharge = GageUI::Create(playerChargeUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
 	// 速度ゲージ
-	gageSpeed = GageUI::Create(playerSpeedUIPosition, { 530.0f, 30.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
-	meterSpeed = MeterUI::Create({ 640.0f, 650.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+	meterSpeed = MeterUI::Create({ 640.0f, 660.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
+
+	Process = ProcessUI::Create({ 0.0f, 0.0f });
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
@@ -259,6 +276,8 @@ void GamePlay::Initialize()
 	camera->SetUp({ 0, 1, 0 });
 	//camera->SetDistance(48.0f);
 
+	sound->PlayWav("BGM/Game/game_bgm.wav", 0.07f, true);
+
 	ShowCursor(false);
 }
 
@@ -394,12 +413,13 @@ void GamePlay::Update()
 	// ボスのHPゲージ
 	gageBossHp->Update(bossMainCore->life, bossMainCore->lifeMax, bossHpUIPosition);
 	// プレイヤーの速度ゲージ
-	gageSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), playerSpeedUIPosition, { 0.1f, 0.6f, 0.6f, 1.0f }, { 0.1f, 0.6f, 0.6f, 1.0f });
 	meterSpeed->Update(player->GetTotalSpeed(), player->GetTotalSpeedMax(), { 640.0f, 650.0f });
 
 	gagePlayerHp->Update(player->HP, player->HPMAX, playerHpUIPosition);
 
 	gageCharge->Update(chargeNow, chargeMax,playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
+
+	Process->Update({ 0.0f,0.0f });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -564,14 +584,14 @@ void GamePlay::Draw()
 
 	gageBoost->Draw();
 	gageBossHp->Draw();
-	gageSpeed->Draw();
 	meterSpeed->Draw();
 	gagePlayerHp->Draw();
 	gageCharge->Draw();
+	Process->Draw();
 
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
-	//Rule->Draw();
+	Rule->Draw();
 	Black->Draw();
 
 	// スプライト描画後処理
@@ -670,6 +690,7 @@ void GamePlay::Shoot()
 
 		if (shotFlag == true)
 		{
+			sound->PlayWav("SE/Game/game_player_shot.wav", 0.07f);
 			std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
 			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 30.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp(), player->GetPosition());
 			newBullet->eyePosition = camera->GetEye();
@@ -819,6 +840,7 @@ void GamePlay::PlayerMovementBoundaryChecking()
 
 void GamePlay::BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed)
 {
+	sound->PlayWav("SE/Game/game_boss_shot.wav", 0.07f);
 	std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
 	newBullet = Bullet::Create(modelBullet, startPosition, { 1.0f, 1.0f, 1.0f }, endPosition, bulletSpeed);
 
@@ -872,62 +894,98 @@ void GamePlay::CoreHitEffect()
 	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
 	{
 		// コア1の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 24.0f))
+		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 24.0f) && bossCore_1->GetLife() > 1.0f)
 		{
-			if (bossCore_1->GetLife() <= 1 && bossCore_1->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
-			}
+			sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 			bossCore_1->colorTimeRate = 0.0f;
 			bossCore_1->colorTimeRate2 = 0.0f;
 			bossCore_1->life--;
 			bullet->deathFlag = true;
 		}
+		else if(Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_1->GetWorldPosition(), 24.0f))
+		{
+			if (bossCore_1->isAlive)
+			{
+				sound->PlayWav("SE/Game/game_boss_damage.wav", 0.07f);
+				circleParticle->DefaultParticle(20, 50, bossCore_1->GetWorldPosition(), 50.0f, 0.0f, bossCore_1->GetColorRed(), bossCore_1->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorYellow(), bossCore_1->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_1->GetWorldPosition(), 25.0f, 0.0f, bossCore_1->GetColorOrange(), bossCore_1->GetColorOrange());
+				bossCore_1->colorTimeRate = 0.0f;
+				bossCore_1->colorTimeRate2 = 0.0f;
+				bossCore_1->life--;
+			}
+			bullet->deathFlag = true;
+		}
 
 		// コア2の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 24.0f))
+		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 24.0f) && bossCore_2->GetLife() > 1.0f)
 		{
-			if (bossCore_2->GetLife() <= 1 && bossCore_2->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_2->GetWorldPosition(), 50.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorYellow(), bossCore_2->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
-			}
+			sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 			bossCore_2->colorTimeRate = 0.0f;
 			bossCore_2->colorTimeRate2 = 0.0f;
 			bossCore_2->life--;
 			bullet->deathFlag = true;
 		}
+		else if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_2->GetWorldPosition(), 24.0f))
+		{
+			if (bossCore_2->isAlive)
+			{
+				sound->PlayWav("SE/Game/game_boss_damage.wav", 0.07f);
+				circleParticle->DefaultParticle(20, 50, bossCore_2->GetWorldPosition(), 50.0f, 0.0f, bossCore_2->GetColorRed(), bossCore_2->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorYellow(), bossCore_2->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_2->GetWorldPosition(), 25.0f, 0.0f, bossCore_2->GetColorOrange(), bossCore_2->GetColorOrange());
+				bossCore_2->colorTimeRate = 0.0f;
+				bossCore_2->colorTimeRate2 = 0.0f;
+				bossCore_2->life--;
+			}
+			bullet->deathFlag = true;
+		}
 
 		// コア3の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 24.0f))
+		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 24.0f) && bossCore_3->GetLife() > 1.0f)
 		{
-			if (bossCore_3->GetLife() <= 1 && bossCore_3->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_3->GetWorldPosition(), 50.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorYellow(), bossCore_3->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
-			}
+			sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 			bossCore_3->colorTimeRate = 0.0f;
 			bossCore_3->colorTimeRate2 = 0.0f;
 			bossCore_3->life--;
 			bullet->deathFlag = true;
 		}
+		else if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_3->GetWorldPosition(), 24.0f))
+		{
+			if (bossCore_3->isAlive)
+			{
+				sound->PlayWav("SE/Game/game_boss_damage.wav", 0.07f);
+				circleParticle->DefaultParticle(20, 50, bossCore_3->GetWorldPosition(), 50.0f, 0.0f, bossCore_3->GetColorRed(), bossCore_3->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorYellow(), bossCore_3->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_3->GetWorldPosition(), 25.0f, 0.0f, bossCore_3->GetColorOrange(), bossCore_3->GetColorOrange());
+				bossCore_3->colorTimeRate = 0.0f;
+				bossCore_3->colorTimeRate2 = 0.0f;
+				bossCore_3->life--;
+			}
+			bullet->deathFlag = true;
+		}
 
 		// コア4の疑似ヒット処理
-		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 24.0f))
+		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 24.0f) && bossCore_4->GetLife() > 1.0f)
 		{
-			if (bossCore_4->GetLife() <= 1 && bossCore_4->GetLife() >= 0)
-			{
-				circleParticle->DefaultParticle(20, 50, bossCore_4->GetWorldPosition(), 50.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
-				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorYellow(), bossCore_4->GetColorYellow());
-				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
-			}
+			sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 			bossCore_4->colorTimeRate = 0.0f;
 			bossCore_4->colorTimeRate2 = 0.0f;
 			bossCore_4->life--;
+			bullet->deathFlag = true;
+		}
+		else if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, bossCore_4->GetWorldPosition(), 24.0f))
+		{
+			if (bossCore_4->isAlive)
+			{
+				sound->PlayWav("SE/Game/game_boss_damage.wav", 0.07f);
+				circleParticle->DefaultParticle(20, 50, bossCore_4->GetWorldPosition(), 50.0f, 0.0f, bossCore_4->GetColorRed(), bossCore_4->GetColorRed());
+				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorYellow(), bossCore_4->GetColorYellow());
+				circleParticle->DefaultParticle(10, 50, bossCore_4->GetWorldPosition(), 25.0f, 0.0f, bossCore_4->GetColorOrange(), bossCore_4->GetColorOrange());
+				bossCore_4->colorTimeRate = 0.0f;
+				bossCore_4->colorTimeRate2 = 0.0f;
+				bossCore_4->life--;
+			}
 			bullet->deathFlag = true;
 		}
 
@@ -944,10 +1002,10 @@ void GamePlay::CoreHitEffect()
 			if (bossMainCore->isAlive == true)
 			{
 				bossMainCore->life--;
+				sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
+				bossMainCore->colorTimeRate = 0.0f;
+				bossMainCore->colorTimeRate2 = 0.0f;
 			}
-			
-			bossMainCore->colorTimeRate = 0.0f;
-			bossMainCore->colorTimeRate2 = 0.0f;
 			bullet->deathFlag = true;
 		}
 	}
@@ -964,6 +1022,7 @@ void GamePlay::BossPartsHitEffect()
 			// 必要なときはいつでも、次の3行を自由に復元してください。
 			if (bossTurret_1->isAlive == true)
 			{
+				sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 				bossTurret_1->colorTimeRate = 0.0f;
 				bossTurret_1->life--;
 			}
@@ -990,6 +1049,7 @@ void GamePlay::PlayerHitEffect()
 	{
 		if (Collision::CCDCollisionDetection(bullet->prevPosition, bullet->GetPosition(), 3.0f, player->GetPosition(), 8.0f))
 		{
+			sound->PlayWav("SE/Game/game_player_damage.wav", 0.07f);
 			player->HP -= 1.0f;
 			circleParticle->DefaultParticle(20, 50, player->GetPosition(), 20.0f, 0.0f, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f});
 

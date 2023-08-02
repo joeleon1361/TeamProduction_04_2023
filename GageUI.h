@@ -24,6 +24,11 @@ private: // 静的メンバ変数
 		black,
 		rule,
 		speed,
+		meter,
+		process,
+		breakshield,
+		breakmaincore,
+		breakcore,
 
 		// ボス
 		game_boss_frame_1,

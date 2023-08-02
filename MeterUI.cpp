@@ -20,11 +20,15 @@ MeterUI* MeterUI::Create(XMFLOAT2 position, float rotation, XMFLOAT4 color)
 bool MeterUI::Initialize(XMFLOAT2 position, float rotation, XMFLOAT4 color)
 {
 	//meterBase = 
-	meterNeedle = Sprite::Create(TextureNumber::speed, position);
+	meterNeedle = Sprite::Create(TextureNumber::speed, {position.x, position.y + 44.0f});
+	meterBase = Sprite::Create(TextureNumber::meter, position);
 
 	meterNeedle->SetRotation(rotation);
 	meterNeedle->SetColor(color);
 	meterNeedle->SetAnchorPoint({ 0.9f, 0.5 });
+
+	meterBase->SetAnchorPoint({ 0.5f, 0.5f });
+	meterBase->SetSize({210.0f, 120.0f});
 
 	return true;
 }
@@ -33,12 +37,16 @@ void MeterUI::Update(float nowVal, float maxVal, XMFLOAT2 position)
 {
 	// メーターに入れる値の割合を計算
 	ratio = nowVal / maxVal;
-	nowRotation = ratio * 180.0f;
+	nowRotation = ratio * maxRotation;
 
-	meterNeedle->SetRotation(nowRotation);
+	EasRotation = Easing::OutCubicFloat(meterNeedle->GetRotation(), nowRotation, 0.1f);
+
+	meterNeedle->SetRotation(EasRotation);
 }
 
 void MeterUI::Draw()
 {
+	
+	meterBase->Draw();
 	meterNeedle->Draw();
 }

@@ -2,8 +2,8 @@
 
 #include "Sprite.h"
 #include "Lerp.h"
+#include "Easing.h"
 
-#pragma once
 class MeterUI
 {
 	// Microsoft::WRL::を省略
@@ -24,6 +24,11 @@ private: // 静的メンバ変数
 		black,
 		rule,
 		speed,
+		meter,
+		process,
+		breakshield,
+		breakmaincore,
+		breakcore,
 
 		// ボス
 		game_boss_frame_1,
@@ -46,7 +51,8 @@ private:
 	Sprite* meterNeedle = nullptr;
 
 	float nowRotation = 0.0f;
-	float maxRotation = {};
+	float maxRotation = 180.0f;
+	float EasRotation = {};
 
 	float ratio = {};
 
