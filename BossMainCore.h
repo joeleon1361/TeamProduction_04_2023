@@ -103,6 +103,6 @@ public:
 	float colorTimeRate2 = 1.0f;
 
 	// メインコアの出現時間
-	float onTimer = 800.0f;
+	float onTimer = 400.0f;
 };
 

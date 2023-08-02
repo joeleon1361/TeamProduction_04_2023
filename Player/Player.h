@@ -151,4 +151,7 @@ public:
 
 	float HPMAX = 15.0f;
 	float HP = HPMAX;
+
+	bool boostCancel = false;
+	//float boostCancelTimer = 
 };

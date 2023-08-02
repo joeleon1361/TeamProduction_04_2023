@@ -67,6 +67,6 @@ public:
 	static const int32_t ShotInterval = 60;
 
 	// 発射タイマー
-	int32_t shotTimer = 0;
+	int32_t shotTimer = 240;
 };
 

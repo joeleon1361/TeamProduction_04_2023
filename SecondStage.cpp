@@ -86,6 +86,21 @@ void SecondStage::Initialize()
 		return;
 	}
 
+	if (!Sprite::LoadTexture(TextureNumber::breakshield, L"Resources/Sprite/GameUI/breakshield.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::breakmaincore, L"Resources/Sprite/GameUI/breakmaincore.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::breakcore, L"Resources/Sprite/GameUI/breakcore.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化
@@ -106,14 +121,15 @@ void SecondStage::Initialize()
 	// 速度ゲージ
 	meterSpeed = MeterUI::Create({ 640.0f, 660.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	processMainCore = ProcessUI::Create({ 0.0f, 0.0f }, 0);
+	processMainCore = ProcessUI::Create({ 0.0f, 0.0f },2);
+	processShield = ProcessUI::Create({ 0.0f, 0.0f }, 1);
 
 	Black = Sprite::Create(TextureNumber::black, { 0.0f, 0.0f });
 
 	BlackAlpha = 1.0f;
 	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
 
-	Rule = Sprite::Create(TextureNumber::rule, { 0.0f, 0.0f });
+	Rule = Sprite::Create(TextureNumber::rule, { 0.0f, 70.0f });
 
 	// パーティクル
 	circleParticle = ParticleManager::Create(dxCommon->GetDevice(), camera, 1, L"Resources/effect1.png");
@@ -156,8 +172,7 @@ void SecondStage::Initialize()
 	modelBossPartsCoreStand = ObjModel::CreateFromOBJ("bossPartsCoreStand");
 	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
 
-
-
+	modelRock = ObjModel::CreateFromOBJ("largeRock");
 	// 座標のセット
 	camera->SetTarget({ 0, 0, 0 });
 	camera->SetEye({ 0, 30, -10 });
@@ -165,7 +180,7 @@ void SecondStage::Initialize()
 	camera->SetDistance(20.0f);
 
 	// プレイヤー
-	player->SetPosition({ 0.0f, 0.0f, -200.0f });
+	player->SetPosition({ 0.0f, 0.0f, -400.0f });
 	player->SetRotation({ 0.0f, 180.0f, 0.0f });
 	player->SetScale({ 2.0f, 2.0f, 2.0f });
 
@@ -314,20 +329,14 @@ void SecondStage::Update()
 	// ボスの砲台1を一定間隔で発射
 	if (bossTurret_1->isAlive == true)
 	{
-		bossTurret_1->shotTimer--;
+		bossTurret_1->shotTimer -= reflectionCount;
 		if (bossTurret_1->shotTimer <= 0)
 		{
-			//BossReflectShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 1.0f);
-			//BossTargetShoot(bossTurret_1->GetWorldPosition(), player->GetPosition(), 10.0f);
-			//bossShield->isAlive = true;
+			bossTurret_1->isShot = true;
+			bossShield->isAlive = true;
+			//reflectionCount = 0.0f;
 			bossTurret_1->shotTimer = 720.0f;
 		}
-	}
-
-	if (input->TriggerKey(DIK_U))
-	{
-		bossTurret_1->isShot = true;
-		bossShield->isAlive = true;
 	}
 
 	// 反射弾弾をフラグが立ったら発射
@@ -407,6 +416,7 @@ void SecondStage::Update()
 	gageCharge->Update(chargeNow, chargeMax, playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
 	processMainCore->Update({ 0.0f,0.0f });
+	processShield->Update({ 0.0f, 0.0f });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -577,12 +587,20 @@ void SecondStage::Draw()
 	gageBoost->Draw();
 	gageBossHp->Draw();
 	gagePlayerHp->Draw();
-	gageCharge->Draw();
+	//gageCharge->Draw();
 	meterSpeed->Draw();
-	processMainCore->Draw();
-	player->DebugTextDraw();
-	debugText.DrawAll(cmdList);
-	//Rule->Draw();
+	if (bossMainCore->isAlive)
+	{
+		processMainCore->Draw();
+	}
+	else
+	{
+		processShield->Draw();
+	}
+	
+	//player->DebugTextDraw();
+	//debugText.DrawAll(cmdList);
+	Rule->Draw();
 	Black->Draw();
 
 	// スプライト描画後処理
@@ -799,7 +817,7 @@ void SecondStage::BossReflectShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition,
 {
 	sound->PlayWav("SE/Game/game_boss_shot.wav", 0.07f);
 	std::unique_ptr<ReflectBullet> newBullet = std::make_unique<ReflectBullet>();
-	newBullet = ReflectBullet::Create(modelBossPartsSphere, startPosition, { 10.0f, 10.0f, 10.0f }, endPosition, bulletSpeed);
+	newBullet = ReflectBullet::Create(modelRock, startPosition, { 4.0f, 4.0f, 4.0f }, endPosition, bulletSpeed);
 
 	bossReflectBullets.push_back(std::move(newBullet));
 }
@@ -918,6 +936,7 @@ void SecondStage::ReflectHitEffect()
 						bossShield->revivalTimeRate = 0.0f;
 						reflectBullet->deathFlag = true;
 						reflectBullet->rallyCount = 1;
+						reflectionCount = 0.0f;
 						turnCount++;
 					}
 				}
@@ -943,6 +962,7 @@ void SecondStage::ReflectHitEffect()
 						bossShield->revivalTimeRate = 0.0f;
 						reflectBullet->deathFlag = true;
 						reflectBullet->rallyCount = 1;
+						reflectionCount = 0.0f;
 						turnCount++;
 					}
 				}
@@ -976,6 +996,7 @@ void SecondStage::ReflectHitEffect()
 						bossShield->revivalTimeRate = 0.0f;
 						reflectBullet->deathFlag = true;
 						reflectBullet->rallyCount = 1;
+						reflectionCount = 0.0f;
 					}
 				}
 			}
@@ -988,7 +1009,7 @@ void SecondStage::CoreAllBreak()
 	if (bossMainCore->isBreak == true)
 	{
 		bossShield->isRevival = true;
-
+		reflectionCount = 1.0f;
 		bossMainCore->VarReset();
 
 		if (bossShield->isAlive)
