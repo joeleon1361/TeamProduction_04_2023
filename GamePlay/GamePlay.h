@@ -181,7 +181,8 @@ private: // メンバ変数
 
 	MeterUI* meterSpeed = nullptr;
 
-	ProcessUI* Process = nullptr;
+	ProcessUI* processMainCore = nullptr;
+	ProcessUI* processCore = nullptr;
 	
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;

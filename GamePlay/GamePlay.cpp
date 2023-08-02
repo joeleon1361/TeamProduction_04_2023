@@ -87,6 +87,21 @@ void GamePlay::Initialize()
 		return;
 	}
 
+	if (!Sprite::LoadTexture(TextureNumber::breakshield, L"Resources/Sprite/GameUI/breakcore.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::breakmaincore, L"Resources/Sprite/GameUI/breakmaincore.png")) {
+		assert(0);
+		return;
+	}
+
+	if (!Sprite::LoadTexture(TextureNumber::breakcore, L"Resources/Sprite/GameUI/breakcore.png")) {
+		assert(0);
+		return;
+	}
+
 	// デバッグテキスト用テクスチャ読み込み
 	Sprite::LoadTexture(0, L"Resources/Sprite/Common/common_dtxt_1.png");
 	// デバッグテキスト初期化
@@ -108,7 +123,8 @@ void GamePlay::Initialize()
 	// 速度ゲージ
 	meterSpeed = MeterUI::Create({ 640.0f, 660.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	Process = ProcessUI::Create({ 0.0f, 0.0f });
+	processMainCore = ProcessUI::Create({ 0.0f, 0.0f }, 2);
+	processCore = ProcessUI::Create({ 0.0f, 0.0f }, 1);
 
 	Black = Sprite::Create(TextureNumber::black, {0.0f, 0.0f});
 
@@ -434,7 +450,7 @@ void GamePlay::Update()
 
 	gageCharge->Update(chargeNow, chargeMax,playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
-	Process->Update({ 0.0f,0.0f });
+	processMainCore->Update({ 0.0f,0.0f });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -613,11 +629,11 @@ void GamePlay::Draw()
 	meterSpeed->Draw();
 	gagePlayerHp->Draw();
 	gageCharge->Draw();
-	Process->Draw();
+	processMainCore->Draw();
 
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
-	Rule->Draw();
+	//Rule->Draw();
 	Black->Draw();
 
 	// スプライト描画後処理

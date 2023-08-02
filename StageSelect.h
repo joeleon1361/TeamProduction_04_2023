@@ -18,6 +18,19 @@
 #include "DebugText.h"
 #include "ScoreText.h"
 #include "Lerp.h"
+#include "Boss.h"
+#include "BossTurret.h"
+#include "BossCore.h"
+#include "BossMainCore.h"
+#include "BossParts.h"
+#include "BossShield.h"
+
+class Boss;
+class BossCore;
+class BossMainCore;
+class BossParts;
+class BossTurret;
+class BossShield;
 
 class StageSelect : public BaseScene
 {
@@ -85,7 +98,45 @@ private: // メンバ変数
 	//3Dオブジェクト
 	ObjObject* BossObj_1 = nullptr;
 
+	Boss* boss = nullptr;
+
+	BossParts* bossPartsCoreStand = nullptr;
+	BossParts* bossPartsRing = nullptr;
+	BossParts* bossPartsSphere = nullptr;
+	BossParts* bossPartsBody = nullptr;
+
+	BossCore* bossCore_1 = nullptr;
+	BossCore* bossCore_2 = nullptr;
+	BossCore* bossCore_3 = nullptr;
+	BossCore* bossCore_4 = nullptr;
+
+	BossMainCore* bossMainCore = nullptr;
+
+	BossParts* bossCoreBox_1 = nullptr;
+	BossParts* bossCoreBox_2 = nullptr;
+	BossParts* bossCoreBox_3 = nullptr;
+	BossParts* bossCoreBox_4 = nullptr;
+
+	BossParts* bossTurretStand_1 = nullptr;
+
+	BossTurret* bossTurret_1 = nullptr;
+
 	ObjObject* BossObj_2 = nullptr;
+
+	Boss* boss2 = nullptr;
+
+	BossParts* boss2PartsCoreStand = nullptr;
+	BossParts* boss2PartsRing = nullptr;
+	BossParts* boss2PartsSphere = nullptr;
+	BossParts* boss2PartsBody = nullptr;
+
+	BossMainCore* boss2MainCore = nullptr;
+
+	BossParts* boss2TurretStand_1 = nullptr;
+
+	BossTurret* boss2Turret_1 = nullptr;
+
+	BossShield* boss2Shield = nullptr;
 
 	ObjObject* BossObj_3 = nullptr;
 
@@ -96,6 +147,13 @@ private: // メンバ変数
 	ObjModel* BossModel_1 = nullptr;
 	ObjModel* BossModel_2 = nullptr;
 	ObjModel* BossModel_3 = nullptr;
+
+	ObjModel* modelBossPartsRing = nullptr;
+	ObjModel* modelBossPartsCoreBox = nullptr;
+	ObjModel* modelBossPartsSphere = nullptr;
+	ObjModel* modelBossPartsTurretStand = nullptr;
+	ObjModel* modelBossPartsBody = nullptr;
+	ObjModel* modelBossPartsCoreStand = nullptr;
 
 	ObjModel* model_Skydome = nullptr;
 
