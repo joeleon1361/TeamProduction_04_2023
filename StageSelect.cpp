@@ -20,6 +20,12 @@ void StageSelect::Initialize()
 	// サウンド初期化
 	sound->Initialize();
 
+	//音声のロード
+	sound->LoadWav("SE/Title/Start.wav");
+	sound->LoadWav("SE/Title/Move.wav");
+	sound->LoadWav("SE/Title/StageSelect.wav");
+
+
 	// カメラ生成
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
 
@@ -81,6 +87,8 @@ void StageSelect::Initialize()
 
 	Black = Sprite::Create(TextureNumber::black, { 0,0.0f });
 	Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
+
+	FeedInFlag = false;
 
 	SelectUI_UP = Sprite::Create(TextureNumber::triangle_up, { 0.0f, 0.0f });
 	SelectUI_DOWN = Sprite::Create(TextureNumber::triangle_down, { 0.0f, 0.0f });
@@ -170,7 +178,7 @@ void StageSelect::Initialize()
 	cameraPos = { 0.0f, 0.0f, 100.0f };
 	CamForwardFlag = false;
 
-	
+	sound->PlayWav("SE/Title/StageSelect.wav", 0.3f, false);
 }
 
 void StageSelect::Finalize()
@@ -179,6 +187,26 @@ void StageSelect::Finalize()
 
 void StageSelect::Update()
 {
+
+	if (FeedInFlag == false )
+	{
+		if (BlackAlpha >= 0.0f)
+		{
+			BlackAlpha -= 0.02f;
+			Black->SetColor({ 1.0f, 1.0f, 1.0f, BlackAlpha });
+
+			if (BlackAlpha <= 0.0f)
+			{
+				BlackAlpha = 0.0f;
+			}
+		}
+
+		if (BlackAlpha <= 0.0f)
+		{
+			FeedInFlag = true;
+		}
+	}
+
 	DrawTimer++;
 
 	if (DrawTimer >= 60)
@@ -245,6 +273,7 @@ void StageSelect::Update()
 	{
 		if (input->TriggerKey(DIK_W) && CameraMoveFlag_U == false && CameraMoveFlag_D == false)
 		{
+			sound->PlayWav("SE/Title/Move.wav", 0.3f, false);
 			StoragePos = BossObj_1->GetPosition();
 			CameraMoveFlag_U = true;
 		}
@@ -265,10 +294,11 @@ void StageSelect::Update()
 		//決定キーを入力したら、シーン遷移
 		if (input->TriggerKey(DIK_SPACE))
 		{
+			sound->PlayWav("SE/Title/Start.wav", 0.5f, false);
 			CamForwardFlag = true;
 		}
 
-		if (BlackAlpha >= 1.0f)
+		if (BlackAlpha >= 1.0f && FeedInFlag == true)
 		{
 			//シーン切り替え
 			SceneManager::GetInstance()->ChangeScene("GAMEPLAY");
@@ -280,6 +310,7 @@ void StageSelect::Update()
 		//上回転
 		if (input->TriggerKey(DIK_W) && CameraMoveFlag_U == false && CameraMoveFlag_D == false)
 		{
+			sound->PlayWav("SE/Title/Move.wav", 0.3f, false);
 			CameraMoveFlag_U = true;
 		}
 
@@ -299,6 +330,7 @@ void StageSelect::Update()
 		//下回転
 		if (input->TriggerKey(DIK_S) && CameraMoveFlag_D == false && CameraMoveFlag_U == false)
 		{
+			sound->PlayWav("SE/Title/Move.wav", 0.3f, false);
 			CameraMoveFlag_D = true;
 		}
 
@@ -318,6 +350,7 @@ void StageSelect::Update()
 		//決定キーを入力したら、シーン遷移
 		if (input->TriggerKey(DIK_SPACE))
 		{
+			sound->PlayWav("SE/Title/Start.wav", 0.5f, false);
 			CamForwardFlag = true;
 		}
 
@@ -333,6 +366,7 @@ void StageSelect::Update()
 		//下回転
 		if (input->TriggerKey(DIK_S) && CameraMoveFlag_D == false && CameraMoveFlag_U == false)
 		{
+			sound->PlayWav("SE/Title/Move.wav", 0.3f, false);
 			CameraMoveFlag_D = true;
 		}
 
@@ -352,6 +386,7 @@ void StageSelect::Update()
 		//決定キーを入力したら、シーン遷移
 		if (input->TriggerKey(DIK_SPACE))
 		{
+			sound->PlayWav("SE/Title/Start.wav", 0.5f, false);
 			CamForwardFlag = true;
 		}
 
@@ -496,10 +531,11 @@ void StageSelect::Draw()
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 
+	Black->Draw();
+
 	// 前景スプライト描画
 	debugText.DrawAll(cmdList);
 
-	Black->Draw();
 
 	if (CameraScene == 1 || CameraScene == 2)
 	{
@@ -551,11 +587,11 @@ void StageSelect::DrawDebugText()
 	//StageSelect << "StageSelect 1:FirstStage 2:SecondStage 3:ThirdStage";
 	//debugText.Print(StageSelect.str(), 10, 10, 2.0f);
 
-	//std::ostringstream TimeRate;
-	//TimeRate << "TimeRate:("
+	//std::ostringstream BlackAl;
+	//BlackAl << "blackalpha:("
 	//	<< std::fixed << std::setprecision(2)
-	//	<< timeRate << ")"; // z
-	//debugText.Print(TimeRate.str(), 10, 560, 1.0f);
+	//	<< BlackAlpha << ")"; // z
+	//debugText.Print(BlackAl.str(), 10, 560, 1.0f);
 
 	//std::ostringstream cameraScene;
 	//cameraScene << "cameraScene:("
