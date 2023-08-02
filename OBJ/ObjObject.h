@@ -4,7 +4,7 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include <DirectXMath.h>
-#include <d3dx12.h>
+#include <d3dx12.h>         
 #include <string>
 
 #include "ObjModel.h"
@@ -104,6 +104,9 @@ public: // メンバ関数
 
 	// 座標の取得
 	const XMFLOAT3& GetRotation() { return rotation; }
+
+	//スケールの取得
+	const XMFLOAT3& GetScale() { return scale; }
 
 	// 色の取得
 	const XMFLOAT4& GetColor() { return color; }

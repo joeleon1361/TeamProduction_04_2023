@@ -59,7 +59,10 @@ public:
 	void Draw() override;
 	
 	//パーティクル生成
-	void CreateParticle();
+	void CreateParticle(XMFLOAT3 pos);
+
+	int CountTimer(int Time);
+
 
 private: // メンバ変数
 	//DirectXCommon
@@ -82,6 +85,7 @@ private: // メンバ変数
 	Sprite* TitleFont = nullptr;
 	Sprite* PressSpace = nullptr;
 	Sprite* Black = nullptr;
+
 
 	//3Dオブジェクト
 	ObjObject* objTitleFont = nullptr;
@@ -129,6 +133,13 @@ private: // メンバ変数
 	//デフォルトポイント
 	XMFLOAT3 DefaultPos = { 0.0f, 0.0f, 0.0f };
 
-	//オブジェクトパーティクル発生フラグ
+	//カウントタイマー
+	int CountTime = 0;
+
+	//パーティクル発生フラグ
+	bool PartFlag = false;
+
+	//タイトル表示フラグ
+	bool TitleFlag = true;
 
 };

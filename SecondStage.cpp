@@ -72,7 +72,7 @@ void SecondStage::Initialize()
 
 	Reticle = Sprite::Create(TextureNumber::reticle, ReticlePos);
 
-	test = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
+	StoragePos = Sprite::Create(TextureNumber::reticle, { (float)mousePosition.x, (float)mousePosition.y });
 
 	// ブーストゲージ
 	gageBoost = GageUI::Create(boostUIPosition, { 530.0f, 30.0f }, { 0.6f, 0.6f, 0.1f, 1.0f });
@@ -447,7 +447,7 @@ void SecondStage::Update()
 	Reticle->SetAnchorPoint({ 0.5f, 0.5f });
 	Reticle->SetPosition(ReticlePos);
 
-	test->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
+	StoragePos->SetPosition({ (float)mousePosition.x, (float)mousePosition.y });
 
 	DrawDebugText();
 

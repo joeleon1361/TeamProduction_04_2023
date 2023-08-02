@@ -157,7 +157,7 @@ private: // ƒƒ“ƒo•Ï”
 
 	Sprite* thirdStageBG = nullptr;
 	Sprite* Reticle = nullptr;
-	Sprite* test = nullptr;
+	Sprite* StoragePos = nullptr;
 
 	Sprite* Black = nullptr;
 	Sprite* Rule = nullptr;

@@ -299,12 +299,50 @@ bool ObjectParticle::Initialize(XMFLOAT3 pos)
 void ObjectParticle::Update(XMFLOAT3 vel)
 {
 	assert(camera);
+	
+	Timer--;
+
+
+	if (Timer <= 0)
+	{
+		DeathFlag = true;
+	}
+
 	//寿命月来たパーティクルを全削除
 	particles.remove_if(
 		[](Particle& x)
 		{
 			return x.frame >= x.num_frame;
 		});
+
+	const float md_width = 10.0f;
+
+	position.x += vel.x;
+	position.y += vel.y;
+	position.z += vel.z;
+
+	scale.x -= 0.02f;
+	scale.y -= 0.02f;
+	scale.z -= 0.02f;
+
+	if (scale.x <= 0.0f)
+	{
+		scale.x = 0.0f;
+	}
+
+	if (scale.y <= 0.0f)
+	{
+		scale.y = 0.0f;
+	}
+
+	if (scale.z <= 0.0f)
+	{
+		scale.z = 0.0f;
+	}
+
+	rotation.x += (float)rand() / RAND_MAX * 50 - 50 / 2.0f;
+	rotation.y += (float)rand() / RAND_MAX * 50 - 50 / 2.0f;
+	rotation.z += (float)rand() / RAND_MAX * 50 - 50 / 2.0f;
 
 	//全パーティクル更新
 	for (std::forward_list<Particle>::iterator it = particles.begin(); it != particles.end(); it++)
