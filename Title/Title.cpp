@@ -13,11 +13,19 @@ void Title::Initialize()
 	// サウンド初期化
 	sound->Initialize();
 
+	//音声のロード
+	sound->LoadWav("SE/Title/Crash.wav");
+	sound->LoadWav("SE/Title/Push.wav");
+	sound->LoadWav("SE/Title/BGM.wav");
+
 	//遷移フラグリセット
 	StartFlag = false;
 
 	//タイトルフラグリセット
 	TitleFlag = true;
+
+	//ディレイフラグリセット
+	DelayFlag = false;
 
 	// カメラ生成
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
@@ -93,6 +101,9 @@ void Title::Initialize()
 
 	//最初のパーティクル発生を防ぐ
 	PartFlag = false;
+
+	//BGMの再生
+	sound->PlayWav("SE/Title/BGM.wav", 0.3f, true);
 }
 
 void Title::Finalize()
@@ -164,9 +175,11 @@ void Title::Update()
 
 	if (input->TriggerKey(DIK_SPACE))
 	{
-		TitleFlag = false;
-		PartFlag = true;
-		CountTime = 0;
+		if (DelayFlag == false)
+		{
+			sound->PlayWav("SE/Title/Push.wav", 0.3f, false);
+			DelayFlag = true;
+		}
 	}
 
 	if (PartFlag == true)
@@ -177,7 +190,21 @@ void Title::Update()
 		}
 	}
 
+	//ディレイフラグが上がったらタイマーをカウント
+	if (DelayFlag == true)
+	{
+		DelayTimer++;
+	}
 
+	if (DelayTimer == 20)
+	{
+		sound->PlayWav("SE/Title/Crash.wav", 0.6f, false);
+		TitleFlag = false;
+		PartFlag = true;
+		CountTime = 0;
+		DelayTimer = 0;
+		DelayFlag = false;
+	}
 
 	if (StartFlag == true)
 	{
@@ -257,7 +284,7 @@ void Title::Draw()
 		PressSpace->Draw();
 	}
 
-	//Black->Draw();
+	Black->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
