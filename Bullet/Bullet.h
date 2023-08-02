@@ -1,6 +1,5 @@
 #pragma once
 #include "ObjObject.h"
-#include "GamePlay.h"
 
 class Bullet :
 	public ObjObject
@@ -47,4 +46,3 @@ public:
 
 	XMFLOAT3 prevPosition = { 0.0f, 0.0f, 0.0f };
 };
-

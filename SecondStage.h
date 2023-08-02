@@ -24,8 +24,10 @@
 #include "BossCore.h"
 #include "BossMainCore.h"
 #include "BossParts.h"
+#include "BossShield.h"
 #include "TargetBullet.h"
 #include "ObjectParticle.h"
+#include "ReflectBullet.h"
 
 #include "Spline.h"
 #include "Lerp.h"
@@ -36,6 +38,9 @@
 #include "GageUI.h"
 #include "DeltaGageUI.h"
 #include "Collision.h"
+
+#include "MeterUI.h"
+#include "ProcessUI.h"
 
 #include <cassert>
 #include <sstream>
@@ -60,6 +65,10 @@ class BossParts;
 class BossTurret;
 class GageUI;
 class DeltaGageUI;
+class ReflectBullet;
+class BossShield;
+class MeterUI;
+class ProcessUI;
 
 class SecondStage : public BaseScene
 {
@@ -81,6 +90,12 @@ private: // 静的メンバ変数
 		reticle,
 		black,
 		rule,
+		speed,
+		meter,
+		process,
+		breakshield,
+		breakmaincore,
+		breakcore,
 
 		// ボス
 		game_boss_frame_1,
@@ -130,6 +145,9 @@ public:
 	// ボスの弾を発射
 	void BossTargetShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
 
+	// ボスの弾を発射
+	void BossReflectShoot(XMFLOAT3 startPosition, XMFLOAT3 endPosition, float bulletSpeed);
+
 	// コア撃破エフェクト
 	void CoreBreakEffect();
 
@@ -140,6 +158,8 @@ public:
 	void BossPartsHitEffect();
 
 	void PlayerHitEffect();
+
+	void ReflectHitEffect();
 
 	// 全てのコアを破壊した後の処理
 	void CoreAllBreak();
@@ -165,8 +185,11 @@ private: // メンバ変数
 	DeltaGageUI* gageBossHp = nullptr;
 	DeltaGageUI* gagePlayerHp = nullptr;
 
-	GageUI* gageSpeed = nullptr;
+	MeterUI* meterSpeed = nullptr;
+
 	GageUI* gageCharge = nullptr;
+
+	ProcessUI* Process = nullptr;
 
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;
@@ -185,28 +208,21 @@ private: // メンバ変数
 	BossParts* bossPartsSphere = nullptr;
 	BossParts* bossPartsBody = nullptr;
 
-	BossCore* bossCore_1 = nullptr;
-	BossCore* bossCore_2 = nullptr;
-	BossCore* bossCore_3 = nullptr;
-	BossCore* bossCore_4 = nullptr;
-
 	BossMainCore* bossMainCore = nullptr;
 
-	BossParts* bossCoreBox_1 = nullptr;
-	BossParts* bossCoreBox_2 = nullptr;
-	BossParts* bossCoreBox_3 = nullptr;
-	BossParts* bossCoreBox_4 = nullptr;
-
 	BossParts* bossTurretStand_1 = nullptr;
-	//BossParts* bossTurretStand_2 = nullptr;
 
 	BossTurret* bossTurret_1 = nullptr;
-	//BossTurret* bossTurret_2 = nullptr;
+
+	BossShield* bossShield = nullptr;
+
 	ObjObject* objSkydome = nullptr;
 
 	std::list<std::unique_ptr<TargetBullet>> playerBullets;
 
 	std::list<std::unique_ptr<Bullet>>bossTargetBullets;
+
+	std::list<std::unique_ptr<ReflectBullet>>bossReflectBullets;
 
 	//オブジェクトパーティクル
 	std::list<std::unique_ptr<ObjectParticle>> particle;
@@ -227,17 +243,17 @@ private: // メンバ変数
 	POINT mousePosition;
 
 	// メインコアのHPバーの座標
-	XMFLOAT2 bossHpUIPosition = { 1255.0f , 30.0f };
+	XMFLOAT2 bossHpUIPosition = { 1272.0f , 30.0f };
 
 	// ブーストゲージの座標
-	XMFLOAT2 boostUIPosition = { 1255.0f , 650.0f };
+	XMFLOAT2 boostUIPosition = { 538.0f, 695.0f };
 
 	// プレイヤーの速度ゲージの座標
-	XMFLOAT2 playerSpeedUIPosition = { 555.0f, 690.0f };
+	XMFLOAT2 playerSpeedUIPosition = { 640.0f, 690.0f };
 
-	XMFLOAT2 playerHpUIPosition = { 1255.0f, 690.0f };
+	XMFLOAT2 playerHpUIPosition = { 1272.0f, 695.0f };
 
-	XMFLOAT2 playerChargeUIPosition = { 555.0f, 650.0f };
+	XMFLOAT2 playerChargeUIPosition = { 1272.0f, 650.0f };
 
 	float chargeNow = 0.0f;
 	float chargeMax = 30.0f;
@@ -248,5 +264,7 @@ private: // メンバ変数
 	int playerBulletType = Normal;
 
 	XMFLOAT3 PlayerPos = { 0.0f, 0.0f, 0.0 };
+
+	int turnCount = 1;
 };
 

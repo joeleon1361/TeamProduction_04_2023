@@ -244,6 +244,18 @@
     <ClCompile Include="Test.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ReflectBullet.cpp">
+      <Filter>Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BossShield.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="MeterUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessUI.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\FBX.hlsli">
@@ -438,5 +450,13 @@
     </ClInclude>
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="ReflectBullet.h">
+      <Filter>Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BossShield.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="MeterUI.h" />
+    <ClInclude Include="ProcessUI.h" />
   </ItemGroup>
 </Project>

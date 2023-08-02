@@ -1,7 +1,5 @@
 #include "Bullet.h"
 
-using namespace DirectX;
-
 std::unique_ptr<Bullet> Bullet::Create(ObjModel* model, const XMFLOAT3 position, const XMFLOAT3 scale, const XMFLOAT3 target, const float speed)
 {
 	// 3Dオブジェクトのインスタンスを生成

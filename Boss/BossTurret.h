@@ -55,6 +55,8 @@ public:
 	// 現在の体力
 	float life = lifeMax;
 
+	bool isShot = false;
+
 	// カラー変更タイムレート
 	float colorTimeRate = 1.0f;
 
