@@ -195,7 +195,10 @@ private: // メンバ変数
 	bool CamForwardFlag = false;
 
 	//黒背景のアルファ値
-	float BlackAlpha = 0.0f;
+	float BlackAlpha = 1.0f;
+
+	//フェードインフラグ
+	bool FeedInFlag = false;
 
 	//スプライトのDrawタイマー
 	int DrawTimer = 0;
