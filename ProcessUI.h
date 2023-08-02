@@ -38,9 +38,9 @@ private: // 静的メンバ変数
 
 public: // 静的メンバ関数
 // インスタンス生成
-	static ProcessUI* Create(XMFLOAT2 position);
+	static ProcessUI* Create(XMFLOAT2 position, int type);
 
-	bool Initialize(XMFLOAT2 position);
+	bool Initialize(XMFLOAT2 position, int type);
 
 	void Update(XMFLOAT2 position);
 
@@ -48,5 +48,10 @@ public: // 静的メンバ関数
 
 private:
 	Sprite* processBase = nullptr; 
+	Sprite* breakCore = nullptr;
+	Sprite* breakMainCore = nullptr;
+	Sprite* breakShield = nullptr;
+
+	int type = 1;
 };
 

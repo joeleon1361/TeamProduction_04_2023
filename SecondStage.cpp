@@ -106,7 +106,7 @@ void SecondStage::Initialize()
 	// 速度ゲージ
 	meterSpeed = MeterUI::Create({ 640.0f, 660.0f }, 0.0f, { 1.0f, 1.0f, 1.0f, 1.0f });
 
-	Process = ProcessUI::Create({ 0.0f, 0.0f });
+	processMainCore = ProcessUI::Create({ 0.0f, 0.0f }, 0);
 
 	Black = Sprite::Create(TextureNumber::black, { 0.0f, 0.0f });
 
@@ -129,9 +129,7 @@ void SecondStage::Initialize()
 	bossPartsRing = BossParts::Create();
 	bossPartsSphere = BossParts::Create();
 	bossTurretStand_1 = BossParts::Create();
-	//bossTurretStand_2 = BossParts::Create();
 	bossTurret_1 = BossTurret::Create();
-	//bossTurret_2 = BossTurret::Create();
 	bossPartsCoreStand = BossParts::Create();
 	bossMainCore = BossMainCore::Create();
 	bossShield = BossShield::Create();
@@ -408,7 +406,7 @@ void SecondStage::Update()
 
 	gageCharge->Update(chargeNow, chargeMax, playerChargeUIPosition, { 0.1f, 0.6f, 0.1f, 1.0f }, { 0.6f, 0.1f, 0.1f, 1.0f });
 
-	Process->Update({ 0.0f,0.0f });
+	processMainCore->Update({ 0.0f,0.0f });
 
 	// カメラターゲットのセット
 	// camera->SetTarget(boss->GetPosition());
@@ -581,7 +579,7 @@ void SecondStage::Draw()
 	gagePlayerHp->Draw();
 	gageCharge->Draw();
 	meterSpeed->Draw();
-	Process->Draw();
+	processMainCore->Draw();
 	player->DebugTextDraw();
 	debugText.DrawAll(cmdList);
 	//Rule->Draw();
@@ -641,6 +639,7 @@ void SecondStage::Shoot()
 
 		if (shotFlag == true)
 		{
+			sound->PlayWav("SE/Game/game_player_shot.wav", 0.07f);
 			std::unique_ptr<TargetBullet> newBullet = std::make_unique<TargetBullet>();
 			newBullet = TargetBullet::Create(modelBullet, { player->GetPosition().x, player->GetPosition().y + 0.3f, player->GetPosition().z }, { 1.0f, 1.0f, 1.0f }, boss->GetPosition(), 30.0f, camera->GetEye(), camera->GetTarget(), camera->GetUp(), player->GetPosition());
 			newBullet->eyePosition = camera->GetEye();

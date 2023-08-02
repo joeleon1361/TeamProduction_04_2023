@@ -189,7 +189,7 @@ private: // ƒƒ“ƒo•Ï”
 
 	GageUI* gageCharge = nullptr;
 
-	ProcessUI* Process = nullptr;
+	ProcessUI* processMainCore = nullptr;
 
 	ObjModel* modelSkydome = nullptr;
 	ObjModel* modelBullet = nullptr;

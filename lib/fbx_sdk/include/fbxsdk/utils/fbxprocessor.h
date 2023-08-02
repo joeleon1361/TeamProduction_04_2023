@@ -33,12 +33,12 @@ public:
 	* \name Processor management
 	*/
 	//@{
-        /** Process the specified collection.
+        /** processMainCore the specified collection.
         * \param pCollection
         */
 		bool					ProcessCollection(FbxCollection *pCollection=0);
 
-        /** Process the specified object.
+        /** processMainCore the specified object.
         * \param pCollection FbxObject to process
         */
 		bool					ProcessObject	 (FbxObject *pCollection=0);

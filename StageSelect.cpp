@@ -92,10 +92,182 @@ void StageSelect::Initialize()
 	Stage_Select->SetPosition({ 20, 20 });
 
 	Stage01 = Sprite::Create(TextureNumber::stage01, { 0.0f, 0.0f });
+
+	// ステージ1
+	boss = Boss::Create();
+	bossPartsRing = BossParts::Create();
+	bossPartsSphere = BossParts::Create();
+	bossCore_1 = BossCore::Create();
+	bossCore_2 = BossCore::Create();
+	bossCore_3 = BossCore::Create();
+	bossCore_4 = BossCore::Create();
+	bossCoreBox_1 = BossParts::Create();
+	bossCoreBox_2 = BossParts::Create();
+	bossCoreBox_3 = BossParts::Create();
+	bossCoreBox_4 = BossParts::Create();
+	bossTurretStand_1 = BossParts::Create();
+	bossTurret_1 = BossTurret::Create();
+	bossPartsCoreStand = BossParts::Create();
+	bossMainCore = BossMainCore::Create();
+
+	modelBossPartsCoreBox = ObjModel::CreateFromOBJ("bossPartsCoreBox");
+	bossCoreBox_1->SetModel(modelBossPartsCoreBox);
+	bossCoreBox_2->SetModel(modelBossPartsCoreBox);
+	bossCoreBox_3->SetModel(modelBossPartsCoreBox);
+	bossCoreBox_4->SetModel(modelBossPartsCoreBox);
+
+	modelBossPartsRing = ObjModel::CreateFromOBJ("bossPartsRing");
+	bossPartsRing->SetModel(modelBossPartsRing);
+
+	modelBossPartsSphere = ObjModel::CreateFromOBJ("bossPartsSphere");
+	bossPartsSphere->SetModel(modelBossPartsSphere);
+
+	modelBossPartsTurretStand = ObjModel::CreateFromOBJ("TurretStand");
+	bossTurretStand_1->SetModel(modelBossPartsTurretStand);
+
+	modelBossPartsCoreStand = ObjModel::CreateFromOBJ("bossPartsCoreStand");
+	bossPartsCoreStand->SetModel(modelBossPartsCoreStand);
+
 	Stage02 = Sprite::Create(TextureNumber::stage02, { 0.0f, 0.0f });
 
+	// ステージ2
+	boss2 = Boss::Create();
+	boss2PartsRing = BossParts::Create();
+	boss2PartsSphere = BossParts::Create();
+	boss2TurretStand_1 = BossParts::Create();
+	boss2Turret_1 = BossTurret::Create();
+	boss2PartsCoreStand = BossParts::Create();
+	boss2MainCore = BossMainCore::Create();
+	boss2Shield = BossShield::Create();
+
+	boss2PartsRing->SetModel(modelBossPartsRing);
+
+	boss2PartsSphere->SetModel(modelBossPartsSphere);
+
+	boss2TurretStand_1->SetModel(modelBossPartsTurretStand);
+
+	boss2PartsCoreStand->SetModel(modelBossPartsCoreStand);
+
 	Stage01->SetPosition({ 550, 500 });
+
+	// ボスのベース
+	boss->SetPosition(BossSelectPos_3);
+	boss->SetRotation({ 0.0f, 0.0f, 0.0f });
+	boss->SetScale({ 1.0f, 1.0f, 1.0f });
+
+	// ボスのリングパーツ
+	bossPartsRing->SetScale({ 4.0f, 4.0f, 4.0f });
+	bossPartsRing->SetParent(boss);
+
+	// ボスの球パーツ
+	bossPartsSphere->SetScale({ 4.2f, 4.2f, 4.2f });
+	bossPartsSphere->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+	bossPartsSphere->SetParent(boss);
+
+	bossPartsCoreStand->SetPosition({ 0.0f, -3.5f, 0.0f });
+	bossPartsCoreStand->SetRotation({ 180.0f, 0.0f, 0.0f });
+	bossPartsCoreStand->SetScale({ 2.0f, 2.0f, 2.0f });
+	bossPartsCoreStand->SetColor({ 0.647f, 0.619f, 0.658f, 1.0f });
+	bossPartsCoreStand->SetParent(boss);
+
+	// ボスのコアボックス1
+	bossCoreBox_1->SetPosition({ 0.0f , 0.0f, -1.2f });
+	bossCoreBox_1->SetRotation({ 0.0f, 180.0f, 0.0f });
+	bossCoreBox_1->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_1->SetParent(bossPartsRing);
+
+	// ボスのコアボックス2
+	bossCoreBox_2->SetPosition({ 1.2f , 0.0f, 0.0f });
+	bossCoreBox_2->SetRotation({ 0.0f, 90.0f, 0.0f });
+	bossCoreBox_2->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_2->SetParent(bossPartsRing);
+
+	// ボスのコアボックス3
+	bossCoreBox_3->SetPosition({ 0.0f , 0.0f, 1.2f });
+	bossCoreBox_3->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_3->SetParent(bossPartsRing);
+
+	// ボスのコアボックス4
+	bossCoreBox_4->SetPosition({ -1.2f , 0.0f, 0.0f });
+	bossCoreBox_4->SetRotation({ 0.0f, 270.0f, 0.0f });
+	bossCoreBox_4->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossCoreBox_4->SetParent(bossPartsRing);
+
+	// ボスのコア1
+	bossCore_1->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_1->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_1->SetParent(bossCoreBox_1);
+
+	// ボスのコア2
+	bossCore_2->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_2->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_2->SetParent(bossCoreBox_2);
+
+	// ボスのコア3
+	bossCore_3->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_3->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_3->SetParent(bossCoreBox_3);
+
+	// ボスのコア4
+	bossCore_4->SetPosition({ 0.0f , 0.0f, 1.0f });
+	bossCore_4->SetScale({ 0.7f, 0.7f, 0.7f });
+	bossCore_4->SetParent(bossCoreBox_4);
+
+	// ボスのメインコア
+	bossMainCore->SetPosition({ 0.0f, 0.0f, 0.0f });
+	bossMainCore->SetScale({ 0.75f, 0.75f, 0.75f });
+	bossMainCore->SetParent(bossPartsCoreStand);
+
+	// ボスの砲台1
+	bossTurretStand_1->SetPosition({ 0.0f, 0.9f, 0.0f });
+	bossTurretStand_1->SetScale({ 0.3f, 0.3f, 0.3f });
+	bossTurretStand_1->SetParent({ bossPartsSphere });
+
+	bossTurret_1->SetPosition({ 0.0f, 2.5, 0.0f });
+	bossTurret_1->SetScale({ 1.0f, 1.0f, 1.0f });
+	bossTurret_1->SetParent({ bossTurretStand_1 });
+
 	Stage02->SetPosition({ 550, 500 });
+
+	// ボスのベース
+	boss2->SetPosition(BossSelectPos_4);
+	boss2->SetRotation({ 0.0f, 0.0f, 0.0f });
+	boss2->SetScale({ 1.0f, 1.0f, 1.0f });
+
+	// ボスのリングパーツ
+	boss2PartsRing->SetScale({ 4.0f, 4.0f, 4.0f });
+	boss2PartsRing->SetParent(boss2);
+
+	// ボスの球パーツ
+	boss2PartsSphere->SetScale({ 4.2f, 4.2f, 4.2f });
+	boss2PartsSphere->SetColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+	boss2PartsSphere->SetParent(boss2);
+
+	boss2PartsCoreStand->SetPosition({ 0.0f, 0.0f, -3.5f });
+	boss2PartsCoreStand->SetRotation({ -90.0f, 0.0f, 0.0f });
+	boss2PartsCoreStand->SetScale({ 2.0f, 2.0f, 2.0f });
+	boss2PartsCoreStand->SetColor({ 0.647f, 0.619f, 0.658f, 1.0f });
+	boss2PartsCoreStand->SetParent(boss2);
+
+	// ボスのメインコア
+	boss2MainCore->SetPosition({ 0.0f, 0.0f, 0.0f });
+	boss2MainCore->SetScale({ 0.75f, 0.75f, 0.75f });
+	boss2MainCore->SetParent(boss2PartsCoreStand);
+
+	// ボスの砲台1
+	boss2TurretStand_1->SetPosition({ 0.0f, 0.9f, 0.0f });
+	boss2TurretStand_1->SetScale({ 0.3f, 0.3f, 0.3f });
+	boss2TurretStand_1->SetParent({ boss2PartsSphere });
+
+	boss2Turret_1->SetPosition({ 0.0f, 2.5, 0.0f });
+	boss2Turret_1->SetScale({ 1.0f, 1.0f, 1.0f });
+	boss2Turret_1->SetParent({ boss2TurretStand_1 });
+
+	// ボスの盾
+	boss2Shield->SetPosition({ 0.0f, 0.0f, -9.0f });
+	boss2Shield->SetRotation({ 0.0f,180.0f, 0.0f });
+	boss2Shield->SetScale({ 2.0f, 2.0f, 2.0f });
+	boss2Shield->SetParent(boss2);
 
 	Key_W = Sprite::Create(TextureNumber::key_w, { 0.0f, 0.0f });
 	Key_S = Sprite::Create(TextureNumber::key_s, { 0.0f, 0.0f });
@@ -192,35 +364,35 @@ void StageSelect::Update()
 		//BossObj_2->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 		//ボスモデル拡大
 		scaleRate += 0.04f;
-		BossScale_1 = Lerp::LerpFloat3({ 1.0f, 1.0f, 1.0 }, { 5.0f, 5.0f, 5.0f }, scaleRate);
-		BossObj_1->SetScale(BossScale_1);
+		BossScale_1 = Lerp::LerpFloat3({ 1.0f, 1.0f, 1.0 }, { 2.0f, 2.0f, 2.0f }, scaleRate);
+		boss->SetScale(BossScale_1);
 
 		//ボスモデルの拡大が終わったらモデル回転
 		if (scaleRate >= 1.0f)
 		{
 			BossRot_1.y += 0.5f;
-			BossObj_1->SetRotation(BossRot_1);
+			boss->SetRotation(BossRot_1);
 		}
 
-		CamTargetPos_U = BossObj_2->GetPosition();
+		CamTargetPos_U = boss2->GetPosition();
 	}
 
 	if (CameraScene == 2)
 	{
 		//ボスモデル拡大
 		scaleRate += 0.04f;
-		BossScale_2 = Lerp::LerpFloat3({ 1.0f, 1.0f, 1.0 }, { 5.0f, 5.0f, 5.0f }, scaleRate);
-		BossObj_2->SetScale(BossScale_2);
+		BossScale_2 = Lerp::LerpFloat3({ 1.0f, 1.0f, 1.0 }, { 2.0f, 2.0f, 2.0f }, scaleRate);
+		boss2->SetScale(BossScale_2);
 
 		//ボスモデルの拡大が終わったらモデル回転
 		if (scaleRate >= 1.0f)
 		{
 			BossRot_2.y += 0.5f;
-			BossObj_2->SetRotation(BossRot_2);
+			boss2->SetRotation(BossRot_2);
 		}
 
 		CamTargetPos_U = BossObj_3->GetPosition();
-		CamTargetPos_D = BossObj_1->GetPosition();
+		CamTargetPos_D = boss->GetPosition();
 	}
 
 	if (CameraScene == 3)
@@ -237,7 +409,7 @@ void StageSelect::Update()
 			BossObj_3->SetRotation(BossRot_3);
 		}
 
-		CamTargetPos_D = BossObj_2->GetPosition();
+		CamTargetPos_D = boss2->GetPosition();
 	}
 
 	//各シーンイージング処理
@@ -245,7 +417,7 @@ void StageSelect::Update()
 	{
 		if (input->TriggerKey(DIK_W) && CameraMoveFlag_U == false && CameraMoveFlag_D == false)
 		{
-			StoragePos = BossObj_1->GetPosition();
+			StoragePos = boss->GetPosition();
 			CameraMoveFlag_U = true;
 		}
 
@@ -256,7 +428,7 @@ void StageSelect::Update()
 				CameraMoveFlag_U = false;
 				BossScale_1 = { 1.0f, 1.0f, 1.0f };
 				scaleRate = 0.0f;
-				BossObj_1->SetScale(BossScale_1);
+				boss->SetScale(BossScale_1);
 				timeRate = 0.0f;
 				CameraScene = 2;
 			}
@@ -290,7 +462,7 @@ void StageSelect::Update()
 				CameraMoveFlag_U = false;
 				timeRate = 0.0f;
 				BossScale_2 = { 1.0f, 1.0f, 1.0f };
-				BossObj_2->SetScale(BossScale_2);
+				boss2->SetScale(BossScale_2);
 				scaleRate = 0.0f;
 				CameraScene = 3;
 			}
@@ -309,7 +481,7 @@ void StageSelect::Update()
 				CameraMoveFlag_D = false;
 				timeRate = 0.0f;
 				BossScale_2 = { 1.0f, 1.0f, 1.0f };
-				BossObj_2->SetScale(BossScale_2);
+				boss2->SetScale(BossScale_2);
 				scaleRate = 0.0f;
 				CameraScene = 1;
 			}
@@ -367,15 +539,15 @@ void StageSelect::Update()
 	{
 		if (CameraScene == 1)
 		{
-			BossObj_1->SetPosition(Easing(StoragePos, BossSelectPos_2, timeRate));
-			BossObj_2->SetPosition(Easing(BossSelectPos_4, BossSelectPos_3, timeRate));
+			boss->SetPosition(Easing(StoragePos, BossSelectPos_2, timeRate));
+			boss2->SetPosition(Easing(BossSelectPos_4, BossSelectPos_3, timeRate));
 			BossObj_3->SetPosition(Easing(BossSelectPos_5, BossSelectPos_4, timeRate));
 		}
 
 		if (CameraScene == 2)
 		{
-			BossObj_1->SetPosition(Easing(BossSelectPos_2, BossSelectPos_1, timeRate));
-			BossObj_2->SetPosition(Easing(BossSelectPos_3, BossSelectPos_2, timeRate));
+			boss->SetPosition(Easing(BossSelectPos_2, BossSelectPos_1, timeRate));
+			boss2->SetPosition(Easing(BossSelectPos_3, BossSelectPos_2, timeRate));
 			BossObj_3->SetPosition(Easing(BossSelectPos_4, BossSelectPos_3, timeRate));
 		}
 
@@ -387,15 +559,15 @@ void StageSelect::Update()
 	{
 		if (CameraScene == 3)
 		{
-			BossObj_1->SetPosition(Easing(BossSelectPos_1, BossSelectPos_2, timeRate));
-			BossObj_2->SetPosition(Easing(BossSelectPos_2, BossSelectPos_3, timeRate));
+			boss->SetPosition(Easing(BossSelectPos_1, BossSelectPos_2, timeRate));
+			boss2->SetPosition(Easing(BossSelectPos_2, BossSelectPos_3, timeRate));
 			BossObj_3->SetPosition(Easing(BossSelectPos_3, BossSelectPos_4, timeRate));
 		}
 
 		if (CameraScene == 2)
 		{
-			BossObj_1->SetPosition(Easing(BossSelectPos_2, BossSelectPos_3, timeRate));
-			BossObj_2->SetPosition(Easing(BossSelectPos_3, BossSelectPos_4, timeRate));
+			boss->SetPosition(Easing(BossSelectPos_2, BossSelectPos_3, timeRate));
+			boss2->SetPosition(Easing(BossSelectPos_3, BossSelectPos_4, timeRate));
 			BossObj_3->SetPosition(Easing(BossSelectPos_4, BossSelectPos_5, timeRate));
 		}
 
@@ -441,9 +613,42 @@ void StageSelect::Update()
 	}
 
 	//ボスオブジェクト更新
-	BossObj_1->Update();
-	BossObj_2->Update();
+	/*boss->Update();
+	boss2->Update();*/
 	BossObj_3->Update();
+
+
+	boss->Update();
+	bossPartsRing->Update();
+	bossPartsSphere->Update();
+	bossCoreBox_1->Update();
+	bossCoreBox_2->Update();
+	bossCoreBox_3->Update();
+	bossCoreBox_4->Update();
+	bossCore_1->Update();
+	bossCore_2->Update();
+	bossCore_3->Update();
+	bossCore_4->Update();
+	bossTurret_1->Update({});
+	
+	bossTurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, bossTurret_1->GetExternRotationY(), bossTurretStand_1->GetRotation().z });
+	bossTurretStand_1->Update();
+	
+	bossPartsCoreStand->Update();
+	bossMainCore->Update();
+
+	boss2->Update();
+	boss2PartsRing->Update();
+	boss2PartsSphere->Update();
+
+	boss2Turret_1->Update({});
+	//bossTurret_2->Update();
+	boss2TurretStand_1->SetRotation({ bossTurretStand_1->GetRotation().x, bossTurret_1->GetExternRotationY(), bossTurretStand_1->GetRotation().z });
+	boss2TurretStand_1->Update();
+	//bossTurretStand_2->Update();
+	boss2PartsCoreStand->Update();
+	boss2MainCore->Update();
+	boss2Shield->Update();
 
 	//カメラ更新
 	camera->Update(cameraPos,  cameraPos);
@@ -483,6 +688,35 @@ void StageSelect::Draw()
 	BossObj_1->Draw();
 	BossObj_2->Draw();
 	BossObj_3->Draw();
+
+	bossPartsRing->Draw();
+	bossPartsSphere->Draw();
+	bossCoreBox_1->Draw();
+	bossCoreBox_2->Draw();
+	bossCoreBox_3->Draw();
+	bossCoreBox_4->Draw();
+	bossTurret_1->Draw();
+	bossTurretStand_1->Draw();
+	bossPartsCoreStand->Draw();
+	bossCore_1->Draw();
+	bossCore_2->Draw();
+	bossCore_3->Draw();
+	bossCore_4->Draw();
+
+	bossMainCore->Draw();
+
+	boss2PartsRing->Draw();
+	boss2PartsSphere->Draw();
+
+	boss2Turret_1->Draw();
+
+	boss2TurretStand_1->Draw();
+
+	boss2PartsCoreStand->Draw();
+
+	boss2MainCore->Draw();
+
+	boss2Shield->Draw();
 
 	//天球の描画
 	Skydome->Draw();
