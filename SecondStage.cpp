@@ -282,6 +282,24 @@ void SecondStage::Update()
 	ReticlePos.x = ((float)(mousePosition.x) / (float)width) * WinApp::window_width;
 	ReticlePos.y = ((float)(mousePosition.y) / (float)height) * WinApp::window_height;
 
+	if (ReticlePos.x <= 280.0f)
+	{
+		ReticlePos.x = 280.0f;
+	}
+	if (ReticlePos.x >= 1000.0f)
+	{
+		ReticlePos.x = 1000.0f;
+	}
+
+	if (ReticlePos.y <= 180.0f)
+	{
+		ReticlePos.y = 180.0f;
+	}
+	if (ReticlePos.y >= 575.0f)
+	{
+		ReticlePos.y = 575.0f;
+	}
+
 	// Debug Use Only
 	if (input->TriggerKey(DIK_C))
 	{
@@ -315,13 +333,6 @@ void SecondStage::Update()
 		{
 			playerBulletType = Normal;
 		}
-	}
-
-	// プレイヤーの狙い弾を更新
-	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
-	{
-		circleParticle->BulletParticle(5, 10, bullet->GetPosition(), { 0.1f,1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 1.0f, 1.0f }, 5.0f);
-		//bullet->Update();
 	}
 
 	// プレイヤーの狙い弾を消去
@@ -401,6 +412,16 @@ void SecondStage::Update()
 
 	// プレイヤーの更新
 	player->Update();
+
+	for (std::unique_ptr<TargetBullet>& bullet : playerBullets)
+	{
+		circleParticle->BulletParticle(5, 10, bullet->GetPosition(), { 0.1f,1.0f, 1.0f, 1.0f }, { 0.0f, 1.0f, 1.0f, 1.0f }, 5.0f);
+		bullet->eyePosition = camera->GetEye();
+		bullet->targetPosition = camera->GetTarget();
+		bullet->upVector = camera->GetUp();
+		bullet->Update(player->prevPos, player->GetPosition(), camera->GetViewMatrix(), player->GetRotation());
+	}
+
 	boss->Update();
 	bossPartsRing->Update();
 	bossPartsSphere->Update();
