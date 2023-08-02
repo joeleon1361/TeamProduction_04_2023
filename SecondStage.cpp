@@ -3,6 +3,8 @@
 using namespace DirectX;
 extern HWND hwnd;
 
+extern bool victory;
+
 SecondStage::SecondStage()
 {
 }
@@ -462,6 +464,7 @@ void SecondStage::Update()
 	// HPが0になったら撃破
 	if (bossMainCore->life <= 0.0f)
 	{
+		victory = true;
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}
@@ -878,6 +881,7 @@ void SecondStage::PlayerHitEffect()
 
 	if (player->HP <= 0.0f)
 	{
+		victory = false;
 		//シーン切り替え
 		SceneManager::GetInstance()->ChangeScene("RESULT");
 	}

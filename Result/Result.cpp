@@ -1,5 +1,7 @@
 #include "Result.h"
 
+extern bool victory;
+
 Result::Result()
 {
 }
@@ -19,12 +21,24 @@ void Result::Initialize()
 	// カメラセット
 	ObjObject::SetCamera(camera);
 
-	if (!Sprite::LoadTexture(TextureNumber::result_bg, L"Resources/Sprite/ResultUI/result_bg.png")) {
+	/*if (!Sprite::LoadTexture(TextureNumber::result_bg, L"Resources/Sprite/ResultUI/result_bg.png")) {
+		assert(0);
+		return;
+	}*/
+
+	if (!Sprite::LoadTexture(TextureNumber::result_win, L"Resources/Sprite/ResultUI/result_bg_win.png")) {
+		assert(0);
+		return;
+	}
+	
+	if (!Sprite::LoadTexture(TextureNumber::result_lose, L"Resources/Sprite/ResultUI/result_bg_lose.png")) {
 		assert(0);
 		return;
 	}
 
-	resultBG = Sprite::Create(TextureNumber::result_bg, { 0.0f,0.0f });
+	//resultBG = Sprite::Create(TextureNumber::result_bg, { 0.0f,0.0f });
+	resultBGWin = Sprite::Create(TextureNumber::result_win, { 0.0f,0.0f });
+	resultBGLose = Sprite::Create(TextureNumber::result_lose, { 0.0f,0.0f });
 
 	camera->SetTarget({ 0, 0, 0 });
 	camera->SetEye({ 0, 0, 10 });
@@ -33,7 +47,8 @@ void Result::Initialize()
 
 void Result::Finalize()
 {
-	safe_delete(resultBG);
+	safe_delete(resultBGWin);
+	safe_delete(resultBGLose);
 }
 
 void Result::Update()
@@ -56,7 +71,15 @@ void Result::Draw()
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
-	resultBG->Draw();
+	if (victory)
+	{
+		resultBGWin->Draw();
+	}
+	else
+	{
+		resultBGLose->Draw();
+	}
+	//resultBG->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

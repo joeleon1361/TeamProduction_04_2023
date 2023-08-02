@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+extern bool victory = false;
+
 SceneManager* SceneManager::GetInstance()
 {
 	static SceneManager instance;
